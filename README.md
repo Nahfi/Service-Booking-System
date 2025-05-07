@@ -60,13 +60,13 @@ This repository contains a Laravel-based application. Follow the steps below to 
 
 ---
 
-## Default Super Admin Credentials
+## Default user Credentials
 
 After setting up the database, you can use the following credentials to log in as the Super Admin:
 
-- **Username:** `admin`
-- **Name:** `superadmin`
-- **Email:** `admin@gmail.com`
+- **Username:** `demouser`
+- **Name:** `demouser`
+- **Email:** `demouser@gmail.com`
 - **Password:** `123123`
 
 ---
