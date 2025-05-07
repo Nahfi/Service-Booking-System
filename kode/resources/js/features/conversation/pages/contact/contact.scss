@@ -1,0 +1,22 @@
+
+@use "@/styles/sass/abstracts/" as *;
+
+.contact-page {
+  .contact-status-card {
+    border: 1px solid $border-primary;
+    text-align: center;
+    border-radius: $radius-20;
+    padding: 20px;
+    > p {
+      font-size: 17px;
+      font-weight: 500;
+    }
+    > h6 {
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: 10px;
+    }
+  }
+}
+
+  

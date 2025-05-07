@@ -1,0 +1,36 @@
+@use "../../../styles/sass/abstracts/" as *;
+
+.page-header-wrapper {
+  @include flex(
+    $align: center,
+    $justify: space-between,
+    $gap: 10px,
+    $wrap: wrap
+  );
+  .page-header-left {
+    h2 {
+      font-size: 30px;
+      color: $text-primary;
+      margin-bottom: 5px;
+      margin-top: -8px;
+      @include lg {
+        font-size: 26px;
+      }
+
+      @include md {
+        font-size: 24px;
+      }
+      @include md-down {
+        font-size: 22px;
+      }
+    }
+    p {
+      margin-bottom: 0px;
+      color: $text-secondary;
+      line-height: 1.2;
+    }
+  }
+  .page-header-action {
+    @include flex($align: center, $gap: 20px, $wrap: wrap);
+  }
+}

@@ -1,0 +1,7 @@
+@use "../../../styles/sass/abstracts/" as *;
+
+.collapse-item {
+  .collapse-btn {
+    @include flex($align: center, $justify: space-between, $gap: 10px);
+  }
+}

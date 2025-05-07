@@ -1,0 +1,58 @@
+@use "../../../styles/sass/abstracts/" as *;
+
+.rating-wrapper {
+  @include flex($align: center, $gap: 10px);
+  line-height: 1;
+  @at-root {
+    .rating {
+      @include flex($align: center);
+      font-size: 18px;
+      color: $text-ternary;
+      line-height: 1;
+      &-1 {
+        > .rate-icon {
+          &:nth-child(1) {
+            color: $color-warning;
+          }
+        }
+      }
+
+      &-2 {
+        > .rate-icon {
+          &:nth-child(-n + 2) {
+            color: $color-warning;
+          }
+        }
+      }
+
+      &-3 {
+        > .rate-icon {
+          &:nth-child(-n + 3) {
+            color: $color-warning;
+          }
+        }
+      }
+
+      &-4 {
+        > .rate-icon {
+          &:nth-child(-n + 4) {
+            color: $color-warning;
+          }
+        }
+      }
+
+      &-5 {
+        > .rate-icon {
+          &:nth-child(-n + 5) {
+            color: $color-warning;
+          }
+        }
+      }
+    }
+
+    .rating-count {
+      font-size: 14px;
+      color: $text-ternary;
+    }
+  }
+}

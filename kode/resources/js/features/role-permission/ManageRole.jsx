@@ -1,0 +1,42 @@
+
+import { BsPlusLg } from "react-icons/bs";
+import Button from "../../components/common/button/Button";
+import Filter from "../../components/common/filter/Filter";
+import PageHeader from "../../components/common/Page-header/PageHeader";
+import PaginationWrapper from "../../components/common/pagination/PaginationWrapper";
+import Table from "../../components/common/table/Table";
+import BaseLayout from "../../components/layouts/BaseLayout";
+import RoleListTable from "./components/table/RoleListTable";
+const ManageRole = () => {
+  return (
+    <BaseLayout>
+      <>
+        <PageHeader title={"Manage Roles"} shortTitle={"Manage your roles"}>
+          <Button
+            href="/roles/create"
+            className="btn--primary btn--md rounded-3"
+          >
+            <BsPlusLg className="fs-16" />
+            Add New
+          </Button>
+        </PageHeader>
+
+        <div>
+          <div className="mb-4">
+            <Filter />
+          </div>
+
+          <Table>
+            <RoleListTable />
+          </Table>
+
+          <div className="mt-4">
+            <PaginationWrapper />
+          </div>
+        </div>
+      </>
+    </BaseLayout>
+  );
+};
+
+export default ManageRole;

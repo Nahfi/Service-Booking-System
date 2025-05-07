@@ -1,0 +1,105 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.error-wrapper {
+  --eye-size: 80px;
+  --eye-pupil-color: #050505;
+  background-color: #e7ffff;
+  min-height: 100dvh;
+  @include item-center;
+  .error-content {
+    text-align: center;
+
+    .eyes {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 30px;
+      .eye {
+        width: var(--eye-size);
+        height: var(--eye-size);
+        background-color: $color-primary;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+
+        &__pupil {
+          @include square(30px);
+          background-color: $color-white;
+          border-radius: 50%;
+          -webkit-animation: movePupil 2.5s infinite ease-in-out;
+          animation: movePupil 2.5s infinite ease-in-out;
+          -webkit-transform-origin: center center;
+          -ms-transform-origin: center center;
+          transform-origin: center center;
+        }
+
+        @-webkit-keyframes movePupil {
+          0%,
+          100% {
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+          }
+          25% {
+            -webkit-transform: translate(-10px, -10px);
+            transform: translate(-10px, -10px);
+          }
+          50% {
+            -webkit-transform: translate(10px, 10px);
+            transform: translate(10px, 10px);
+          }
+          75% {
+            -webkit-transform: translate(-10px, 10px);
+            transform: translate(-10px, 10px);
+          }
+        }
+
+        @keyframes movePupil {
+          0%,
+          100% {
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+          }
+          25% {
+            -webkit-transform: translate(-10px, -10px);
+            transform: translate(-10px, -10px);
+          }
+          50% {
+            -webkit-transform: translate(10px, 10px);
+            transform: translate(10px, 10px);
+          }
+          75% {
+            -webkit-transform: translate(-10px, 10px);
+            transform: translate(-10px, 10px);
+          }
+        }
+      }
+    }
+
+    .error-status {
+      font-size: 180px;
+
+      color: #008b62;
+      text-shadow: 1px 1px 1px #00593e, 2px 2px 1px #00593e, 3px 3px 1px #00593e,
+        4px 4px 1px #00593e, 5px 5px 1px #00593e, 6px 6px 1px #00593e,
+        7px 7px 1px #00593e, 8px 8px 1px #00593e,
+        25px 25px 8px rgba(0, 0, 0, 0.2);
+
+      @include md-down {
+        font-size: 150px;
+      }
+      @include sm-down {
+        font-size: 120px;
+      }
+    }
+
+    .error-message {
+      margin-top: 30px;
+      font-size: 20px;
+      color: $text-primary;
+    }
+  }
+}

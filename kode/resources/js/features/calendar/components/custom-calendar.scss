@@ -1,0 +1,184 @@
+@use "@/styles/sass/abstracts/"as *;
+
+.calendar-wrapper {
+    width: 100%;
+    max-height: calc(100dvh - $header-h);
+    overflow-y: auto;
+    overflow-x: hidden;
+  .calendar-header {
+    padding: 15px 25px;
+    border-bottom: 1px solid $border-primary;
+    @include flex($align: center, $justify:space-between, $wrap:wrap, $gap:20px);
+    position: sticky;
+    top: 0;
+    inset-inline: 0;
+    background-color: $site-bg;
+    z-index: 1;
+    .calendar-header-middle {
+      @include flex($align: center, $wrap:wrap,$gap:5px);
+      .view-mood-item {
+        .view-mood-btn {
+          padding: 8px 15px;
+          border-radius: $radius-4;
+          line-height: 1;
+          transition:0.3s all linear;
+          font-size: 14px;
+          color: $text-secondary;
+          &.active {
+            background-color: $color-primary;
+            color: $color-primary-text
+          }
+          &:hover {
+            background-color: $color-primary;
+            color: $color-primary-text
+          }
+        }
+      }
+    }
+  }
+
+  .calendar-body {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: auto;
+    .days-header {
+      @include grid($t-columns: repeat(7, minmax(130px, 1fr)));
+      border-bottom: 1px solid $border-primary;
+      >.day-title {
+        font-size: 14px;
+        text-align: center;
+        text-transform: uppercase;
+        color: $color-primary;
+        font-weight: 700;
+        padding: 10px 0px;
+        border-right: 1px solid $border-primary;
+        text-align: center;
+        &:last-of-type {
+          border-right: none;
+        }
+      }
+    }
+
+    .calendar-days {
+      @include grid($t-columns: repeat(7, minmax(130px, 1fr)));
+      .cell {
+        min-height: 100px;
+        border-right: 1px solid $border-primary;
+        border-bottom: 1px solid $border-primary;
+        &:nth-child(7n) { 
+          border-right: none;
+        }
+        &.empty-cell {
+          background-color: $light-bg;
+        }
+
+        &.day-cell {
+          padding: 5px;
+          &.today-cell{
+            background-color: $color-primary-light;
+          }
+        }
+      }
+    }
+
+  }
+
+  .weekly-calendar {
+    .weekly-grid {
+      @include grid($t-columns: 80px repeat(7, minmax(120px, 1fr)));
+      gap: 1px;
+      background-color: $border-primary;
+    }
+
+    .time-column {
+      background-color: $color-white;
+    }
+
+    .time-header {
+      height: 50px;
+      border-bottom: 1px solid $border-primary;
+    }
+
+    .time-slot {
+      height: 50px;
+      @include flex($align: center, $justify: center);
+      font-size: 12px;
+      color: $text-secondary;
+      border-bottom: 1px solid $border-primary;
+    }
+
+    .day-column {
+      background-color: $color-white;
+      position: relative;
+    }
+
+    .day-header {
+      height: 50px;
+      @include flex($align: center, $justify: center);
+      border-bottom: 1px solid $border-secondary;
+      line-height: 1;
+      &.today-header {
+        background-color: $color-primary-light;
+      }
+
+      .day-info {
+        @include flex($direction: column, $gap: 4px);
+
+        .day-name {
+          font-size: 12px;
+          color: $text-secondary;
+        }
+
+        .day-number {
+          font-size: 14px;
+          font-weight: 500;
+        }
+      }
+    }
+
+    .events-container {
+      position: relative;
+      height: calc(50px * 13);
+    }
+
+    .event-slot {
+      position: absolute;
+      width: 100%;
+      padding: 4px;
+      box-sizing: border-box;
+      .event-card {
+        width: 100%;
+      }
+    }
+  }
+
+  .event-card {
+      height: 100%;
+      padding: 5px;
+      background-color: $light-bg;
+      border-radius: $radius-4;
+      border: 1px solid $border-secondary;
+      .event-title {
+        font-size: 12px;
+        line-height: 1;
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+           text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+      }
+      .event-time {
+        font-size: 10px;
+        color: $text-secondary;
+      }
+      .event-action {
+        @include flex($align: center,$justify:end, $gap: 5px);
+        margin-block-start: 5px;
+        .icon-btn.btn-sm {
+          @include square(20px);
+          font-size: 10px;
+        }
+      }
+  }
+}

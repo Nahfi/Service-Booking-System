@@ -1,0 +1,54 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build"
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.25.9",
+        "@headlessui/react": "^2.0.0",
+        "@inertiajs/react": "^1.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-react": "^4.4.1",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.7.7",
+        "laravel-vite-plugin": "^1.0.5",
+        "postcss": "^8.4.31",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-snap": "^1.23.0",
+        "sass-embedded": "^1.87.0",
+        "tailwindcss": "^3.2.1",
+        "vite": "^5.4.19"
+    },
+    "dependencies": {
+        "i18next": "^23.16.4",
+        "next": "^15.0.1",
+        "next-seo": "^6.6.0",
+        "react-helmet": "^6.1.0",
+        "react-i18next": "^15.1.0",
+        "react-icons": "^5.5.0",
+        "react-router-dom": "^6.30.0",
+        "react-bootstrap": "^2.10.9",
+        "react-responsive": "^10.0.1",
+        "react-datepicker": "^8.3.0",
+
+        "@fullcalendar/core": "^6.1.15",
+        "@fullcalendar/daygrid": "^6.1.15",
+        "@fullcalendar/interaction": "^6.1.15",
+        "@fullcalendar/multimonth": "^6.1.15",
+        "@fullcalendar/react": "^6.1.15",
+        "@fullcalendar/timegrid": "^6.1.15",
+        "apexcharts": "^4.5.0",
+        "bootstrap": "^5.3.5",
+        "quill": "^2.0.3",
+        "react": "^19.0.0",
+        "react-apexcharts": "^1.7.0",
+        "react-dom": "^19.0.0",
+        "react-router": "^7.5.1",
+        "react-select": "^5.10.1",
+        "react-tooltip": "^5.28.1",
+        "swiper": "^11.2.6"
+    }
+}

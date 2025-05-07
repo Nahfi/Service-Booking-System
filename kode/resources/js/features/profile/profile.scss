@@ -1,0 +1,74 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.nav-tabs {
+  gap: 10px 35px;
+  .nav-link {
+    color: $text-ternary;
+    border: 1px solid $border-primary;
+    font-size: 16px;
+    @include transition-3;
+    padding: 6px 15px;
+    font-weight: 600;
+  }
+
+  &.style-1 {
+    margin-bottom: 20px;
+    border-bottom: 1px solid $border-primary;
+
+    .nav-link {
+      border: none;
+      border-radius: 0px;
+      position: relative;
+      font-size: 15px;
+      &::after {
+        content: "";
+        position: absolute;
+        height: 2px;
+        bottom: 0;
+        background-color: $color-primary;
+        right: 0;
+        left: 0;
+        @include transition-3;
+        width: 0%;
+      }
+
+      &.active {
+        background-color: transparent;
+        color: $color-primary;
+        &::after {
+          width: 100%;
+        }
+      }
+
+      i {
+        margin-right: 8px;
+      }
+    }
+  }
+}
+
+.info-block {
+  padding-block: 30px;
+  &:not(:last-child) {
+    border-bottom: 1px solid $border-primary;
+  }
+}
+
+.common-list {
+  li {
+    margin-bottom: 15px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    span {
+      display: inline-block;
+      margin-right: 5px;
+
+      svg {
+        stroke: $color-primary;
+        stroke-width: 3px;
+      }
+    }
+  }
+}

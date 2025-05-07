@@ -1,0 +1,35 @@
+import React from "react";
+
+import Field from "../../../../components/common/from/Field";
+import ImageUpload from "../../../../components/common/from/ImageUpload";
+const SetAudience = () => {
+  const handleAudienceImages = () => {};
+
+  return (
+    <div className="row g-4">
+      <div className="col-12">
+        <Field
+          label="Choose Groups"
+          inputNote="Select the members of your group where you want to send this campaign."
+        >
+          <select className="form-select" id="country" aria-label="State">
+            <option selected>Choose your state</option>
+            <option value="1">Spain</option>
+            <option value="2">England</option>
+            <option value="3">Bangladesh</option>
+            <option value="3">Dhaka</option>
+          </select>
+        </Field>
+      </div>
+      <div className="col-12">
+        <ImageUpload
+          label="Or Upload your file"
+          onImagesUpload={handleAudienceImages}
+          inputNote="Only support extension of .csv, .dsv, .txt or .xlsx."
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SetAudience;

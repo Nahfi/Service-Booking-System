@@ -1,0 +1,19 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.swiper-pagination{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    bottom: 20px !important;
+    left: 0px !important;
+}
+
+.swiper-pagination-bullet{
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
+    background-color: $color-white;
+    min-width: 30px;
+    height: 6px;
+    border-radius: $radius-12;
+}

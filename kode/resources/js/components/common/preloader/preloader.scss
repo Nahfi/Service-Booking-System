@@ -1,0 +1,17 @@
+@use "../../../styles/sass/abstracts/" as *;
+
+.preloader-wrapper {
+  height: 100dvh;
+  width: 100%;
+  background-color: #ffffff2c;
+  position: relative;
+  @include item-center;
+  .progress-loader {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    height: 5px;
+    width: 100%;
+    background-color: $color-primary;
+  }
+}

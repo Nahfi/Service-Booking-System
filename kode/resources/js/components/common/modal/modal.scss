@@ -1,0 +1,61 @@
+// @use "../../../../src/styles/sass/abstracts/" as *;
+
+@use "../../../styles/sass/abstracts/" as *;
+
+.modal {
+  .modal-content {
+    border-color: $border-primary;
+    border-radius: $radius-20;
+    background-color: $card-bg;
+    @include md-down {
+      border-radius: $radius-12;
+    }
+    .modal-header {
+      -webkit-box-pack: justify;
+          -ms-flex-pack: justify;
+              justify-content: space-between;
+      padding: 25px;
+      -webkit-padding-after: 0;
+              padding-block-end: 0;
+      border: none;
+      @include md {
+        padding: 20px;
+        -webkit-padding-after: 0;
+                padding-block-end: 0;
+      }
+      @include md-down {
+        padding: 15px;
+        -webkit-padding-after: 0;
+                padding-block-end: 0;
+      }
+      .modal-title {
+        color: $text-primary;
+        font-weight: 600;
+        font-size: 18px;
+      }
+    }
+
+    .modal-body {
+      padding: 25px;
+      @include md {
+        padding: 20px;
+      }
+      @include md-down {
+        padding: 15px;
+      }
+    }
+
+    .modal-footer {
+      padding-inline: 25px;
+      -webkit-padding-before: 0;
+              padding-block-start: 0;
+      border: none;
+      @include md {
+        padding-inline: 20px;
+      }
+      @include md-down {
+        padding-inline: 15px;
+      }
+    }
+  }
+}

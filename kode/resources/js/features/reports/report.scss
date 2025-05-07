@@ -1,0 +1,43 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.campaign-report {
+  @at-root {
+    .campaign-status-card {
+      @include flex($direction: column, $justify: space-between, $gap: 40px);
+      height: 100%;
+      .campaign-status {
+        .campaign-status-wrapper {
+          @include flex($align: start, $gap: 10px);
+          .campaign-status-dots {
+            @include square(12px, $radius-rounded);
+            margin-top: 5px;
+          }
+          .campaign-status-content {
+            line-height: 1.4;
+            font-size: 12px;
+            color: $text-secondary;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+  }
+  .campaign-progress {
+    .progress,
+    .progress-stacked {
+      --bs-progress-height: 7px;
+    }
+  }
+
+  .country-status-card {
+    border: 1px solid $border-primary;
+    text-align: center;
+    border-radius: $radius-12;
+    padding: 20px;
+    > p {
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: $text-secondary;
+    }
+  }
+}

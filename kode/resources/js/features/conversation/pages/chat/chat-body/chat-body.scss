@@ -1,0 +1,212 @@
+@use "../../../../../styles/sass/abstracts/" as *;
+
+.chat-body {
+  .chat-body-header {
+    @include flex($align: center, $justify: space-between, $gap: 20px);
+  }
+
+  .chat-box {
+    padding-inline: 15px;
+    -webkit-padding-after: 20px;
+    padding-block-end: 20px;
+    position: relative;
+    margin-block: 5px;
+
+    @include md-down {
+      padding-inline: 10px;
+    }
+    .chatting {
+      @include flex($direction: column, $gap: 30px);
+      padding-block: 10px;
+      .message {
+        &.incoming {
+          .message-wrapper {
+            -webkit-margin-end: auto;
+            margin-inline-end: auto;
+            text-align: start;
+            .message-body {
+              .message-content {
+                color: $text-primary;
+                background-color: $color-primary-light;
+                border-start-start-radius: $radius-8;
+                border-start-end-radius: $radius-8;
+                border-end-end-radius: $radius-8;
+              }
+            }
+          }
+        }
+
+        &.outgoing {
+          .message-wrapper {
+            -webkit-margin-start: auto;
+            margin-inline-start: auto;
+            text-align: end;
+            @include flex($direction: row-reverse);
+            .message-body {
+              .message-content {
+                background-color: $color-primary;
+                border-start-start-radius: $radius-8;
+                border-start-end-radius: $radius-8;
+                border-end-start-radius: $radius-8;
+                color: $text-light;
+              }
+
+              .message-file {
+                -webkit-margin-start: auto;
+                margin-inline-start: auto;
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: reverse;
+                -ms-flex-direction: row-reverse;
+                flex-direction: row-reverse;
+              }
+              .given-react {
+                inset-inline-start: 10px;
+              }
+
+              .message-time {
+                -webkit-box-orient: horizontal;
+                -webkit-box-direction: reverse;
+                -ms-flex-direction: row-reverse;
+                flex-direction: row-reverse;
+              }
+            }
+          }
+        }
+
+        .message-wrapper {
+          @include flex($align: start, $gap: 10px);
+          max-width: 65%;
+          @include sxxl-down {
+            max-width: 75%;
+          }
+
+          @include xxl {
+            max-width: 85%;
+          }
+
+          @include xl-down {
+            max-width: 90%;
+          }
+
+          @include lg-down {
+            max-width: 98%;
+          }
+
+          @include sm-down {
+            max-width: 100%;
+          }
+
+          .message-body {
+            width: -webkit-max-content;
+            width: -moz-max-content;
+            width: max-content;
+            position: relative;
+            .message-content {
+              padding: 12px;
+              font-size: 15px;
+              line-height: 1.6;
+              @include md-down {
+                padding: 10px;
+                font-size: 14px;
+              }
+            }
+
+            .message-file {
+              max-width: 350px;
+              width: 100%;
+              background-color: $color-primary-light;
+              border-radius: $radius-8;
+              @include flex($align: center, $gap: 15px);
+              padding: 15px;
+              &-type {
+                -ms-flex-negative: 0;
+                flex-shrink: 0;
+                font-size: 30px;
+                line-height: 1;
+              }
+              &-info {
+                line-height: 1.1;
+                > h6 {
+                  font-size: 14px;
+                }
+
+                > span {
+                  font-size: 12px;
+                }
+              }
+            }
+
+            .given-react {
+              position: absolute;
+              inset-inline-end: 10px;
+              inset-block-end: 6px;
+              width: 34px;
+              height: 24px;
+              font-size: 12px;
+              line-height: 1;
+              background-color: $color-white;
+              border: 1px solid $border-primary;
+              @include item-center;
+              border-radius: $radius-pill;
+            }
+
+            .message-time {
+              @include flex($align: center, $gap: 5px);
+              margin-top: 8px;
+              line-height: 1;
+              color: $text-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    .date-divider {
+      max-width: 100%;
+      width: 100%;
+      position: -webkit-sticky;
+      position: sticky;
+      inset-inline: 0;
+      inset-block-start: -5px;
+      z-index: 2;
+      padding-block: 15px;
+      line-height: 1;
+      @include item-center;
+      -webkit-transition: 0.3s ease-in-out;
+      -o-transition: 0.3s ease-in-out;
+      transition: 0.3s ease-in-out;
+      > span {
+        background-color: $color-white;
+        -webkit-box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
+          rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+        border-radius: $radius-pill;
+        color: $text-primary;
+        font-size: 12px;
+        padding-block: 4px;
+        padding-inline: 15px;
+        [data-bs-theme="dark"] & {
+          -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 24px 0px,
+            rgba(255, 255, 255, 0.2) 0px 0px 0px 1px;
+          box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 24px 0px,
+            rgba(255, 255, 255, 0.2) 0px 0px 0px 1px;
+        }
+      }
+    }
+  }
+
+  .chat-body-footer {
+    border: 1px solid $border-primary;
+    margin-inline: 15px;
+    margin-bottom: 15px;
+    padding: 12px 20px;
+    border-radius: $radius-16;
+
+    @include md-down {
+      margin-inline: 10px;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+    }
+  }
+}

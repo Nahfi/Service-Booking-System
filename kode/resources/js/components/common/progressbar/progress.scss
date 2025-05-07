@@ -1,0 +1,76 @@
+@use "../../../styles/sass/abstracts/" as *;
+
+.linear-progress-container {
+  width: 100%;
+  position: relative;
+  .flag-image {
+    width: 20px;
+    height: 18px;
+    border-radius: 4px;
+    position: absolute;
+    top: 7px;
+    left: 8px;
+    z-index: 2;
+  }
+}
+
+.linear-progress-bar {
+  border-radius: $radius-8;
+  height: 36px;
+  width: 100%;
+  background-color: $light-bg;
+  border-radius: 5px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 1;
+  position: relative;
+  -webkit-padding-start: 10px;
+          padding-inline-start: 10px;
+  &.progress--md {
+    height: 16px;
+  }
+}
+
+.linear-progress-fill {
+  height: 36px;
+  background-color: $color-primary-light;
+  -webkit-transition: width 1s ease;
+  -o-transition: width 1s ease;
+  transition: width 1s ease;
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: 0;
+  z-index: -1;
+}
+
+.linear--text {
+  font-size: 13px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.progress-value {
+  color: $text-primary;
+  font-size: 13px;
+  font-weight: 500;
+  position: absolute;
+  inset-inline-end: 10px;
+  inset-block-start: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.progress-wrapper {
+  text {
+    fill: $text-primary;
+  }
+}

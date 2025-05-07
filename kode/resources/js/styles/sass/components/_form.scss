@@ -1,0 +1,239 @@
+@use "../abstracts/" as *;
+
+.form-inner {
+  .form-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: $text-primary;
+    text-transform: capitalize;
+    line-height: 1;
+  }
+
+  .form-control,
+  .form-select {
+    background-color: transparent;
+    font-size: 14px;
+    color: $text-primary;
+    height: 48px;
+    border-radius: $radius-12;
+    border-color: $border-primary !important;
+    &:focus {
+      border-color: $color-primary !important;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+    }
+    &::-webkit-input-placeholder {
+      color: $text-placeholder;
+    }
+    &::-moz-placeholder {
+      color: $text-placeholder;
+    }
+    &:-ms-input-placeholder {
+      color: $text-placeholder;
+    }
+    &::-ms-input-placeholder {
+      color: $text-placeholder;
+    }
+    &::placeholder {
+      color: $text-placeholder;
+    }
+  }
+
+  .form-control[type="file"] {
+    padding-inline: 12px;
+    padding-block: 0;
+    line-height: 50px;
+  }
+
+  .form-select {
+    cursor: pointer;
+    -webkit-padding-end: 30px;
+    padding-inline-end: 30px;
+    background-color: $site-bg;
+    > option {
+      background-color: transparent;
+    }
+  }
+
+  .form-check-input {
+    border-color: $border-primary;
+    &:checked {
+      background-color: $color-primary;
+      border-color: $color-primary;
+    }
+    &:focus {
+      border-color: $color-primary;
+      outline: 0;
+      -webkit-box-shadow: 0 0 0 0.25rem $color-primary-soft;
+      box-shadow: 0 0 0 0.25rem $color-primary-soft;
+    }
+  }
+
+  .field-with-icon {
+    position: relative;
+    .field-icon {
+      position: absolute;
+      inset-block-start: 50%;
+      inset-inline-start: 12px;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+      font-size: 18px;
+    }
+    .form-control {
+      text-indent: 30px;
+    }
+  }
+}
+
+.form-switch {
+  // padding-inline-start: -3.5em !important;
+  .form-check-input {
+    width: 3em;
+    -webkit-margin-end: -3.5em;
+    margin-inline-end: -3.5em;
+  }
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input[type="checkbox"] {
+  border-color: $border-primary !important;
+  padding: 10px;
+  accent-color: $color-primary;
+  width: 17px;
+  height: 17px;
+  border-radius: $radius-8;
+  cursor: pointer;
+}
+textarea.form-control {
+  min-height: 80px;
+}
+
+// File Input
+
+.file-input-wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: start;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  position: relative !important;
+
+  input[type="file"] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0;
+  }
+}
+
+.file-input {
+  border: 1px dashed $color-primary;
+  border-radius: $radius-8;
+  height: 200px;
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  background-color: $site-bg;
+  -webkit-transition: 0.4s ease;
+  -o-transition: 0.4s ease;
+  transition: 0.4s ease;
+
+  svg {
+    color: $color-primary;
+  }
+
+  span {
+    display: inline-block;
+    font-size: 12px;
+  }
+}
+
+.file-input p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: $text-primary;
+}
+
+.input-clearable-wrapper {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
+  .clear-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .clear-btn svg {
+    color: #333; /* Adjust color as needed */
+  }
+
+  input {
+    padding-right: 30px; /* Add space for the clear button */
+  }
+}
+
+.switch-wrapper {
+  @include flex($align: center, $gap: 20px, $justify: space-between);
+  border: 1px solid $border-primary;
+  border-radius: $radius-12;
+  padding-inline: 15px 25px;
+  height: 48px;
+  cursor: pointer;
+}
+
+.form-element {
+  padding-block: 30px;
+  -webkit-border-after: 1px solid $border-primary;
+  border-block-end: 1px solid $border-primary;
+  &:is(:first-child) {
+    -webkit-padding-before: 0;
+            padding-block-start: 0;
+  }
+}

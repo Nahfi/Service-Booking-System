@@ -1,0 +1,98 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.chat-contacts {
+  .contact-header {
+    @include flex($align: center, $justify: space-between);
+    .contact-tab {
+      .nav-link {
+        padding: 10px 10px;
+        line-height: 1;
+        font-size: 14px;
+        font-weight: 600;
+        color: $text-ternary;
+        &:is(.active) {
+          color: $color-primary;
+          background-color: $color-primary-light;
+        }
+      }
+    }
+  }
+
+  .contact-tab-content {
+    .gateway-dropdown {
+      > .btn {
+        background: $color-primary-light;
+        color: $color-primary;
+        font-size: 14px;
+        padding: var(--bs-btn-padding-y);
+        line-height: 1;
+      }
+      .dropdown-content {
+        padding-inline: 8px;
+      }
+    }
+    .contact-list {
+      .contact-link {
+        display: inline-block;
+        width: 100%;
+        -webkit-transition: 0.3s ease-in-out;
+        -o-transition: 0.3s ease-in-out;
+        transition: 0.3s ease-in-out;
+        &:is(.active) {
+          background-color: $light-bg;
+          position: relative;
+          &::after {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            inset-block: 0;
+            inset-inline-end: 0;
+            background-color: $color-primary;
+          }
+        }
+
+        &:hover {
+          background-color: $light-bg;
+        }
+        .contact-item {
+          @include flex($align: center, $justify: space-between, $gap: 10px);
+          padding: 15px;
+          color: $text-ternary;
+          .contact-info {
+            @include flex($align: center, $justify: space-between, $gap: 20px);
+            @include xxl-down {
+              gap: 10px;
+            }
+            .contact-avatar {
+              @include square(40px);
+              -ms-flex-negative: 0;
+                  flex-shrink: 0;
+              position: relative;
+              > img {
+                @include square(100%, $radius-rounded);
+                -o-object-fit: cover;
+                   object-fit: cover;
+              }
+              .online-status {
+                position: absolute;
+                inset-block-start: 0;
+                inset-inline-end: 0;
+                width: 10px;
+                height: 10px;
+                @include item-center;
+              }
+            }
+
+            h6 {
+              font-size: 14px;
+            }
+            p {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
