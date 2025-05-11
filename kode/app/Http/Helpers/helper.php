@@ -105,42 +105,7 @@ use Intervention\Image\Laravel\Facades\Image;
    
 
 
-   if (!function_exists('num_format')){
 
-
-      /**
-       * Summary of num_format
-       * @param int|float $number
-       * @param mixed $currency
-       * @param mixed $decimal
-       * @param mixed $calC
-       * @param mixed $symbol
-       * @return string|int
-       */
-      function num_format(int | float  $number , ?Setting $currency = null ,mixed $decimal  = null, $symbol = true) :string | int{
-
-         $decimal    =   $decimal ?? (int)site_settings(SettingKey::DECIMAL_DIGIT->value);
-   
-         $ds         =   site_settings(SettingKey::DECIMAL_SEPARATOR->value);
-         $ts         =   site_settings(SettingKey::THOUSAND_SEPARATOR->value);
-         $currencyAlignment =  site_settings(SettingKey::CURRENCY_ALIGNMENT->value);
-     
-         $currency   = $currency ?? get_default_currency();
-
-         $decodedCurrency = $currency->value 
-                              ? json_decode($currency->value, true) 
-                              : [];
-
-         $symbol  = Arr::get($decodedCurrency, "symbol");
-         $famount = (number_format($number,$decimal, $ds, $ts));
-         
-         if($currencyAlignment && $currency && $symbol){
-            $famount = str_replace(['[symbol]', '[amount]'], [$symbol, $famount],$currencyAlignment);
-         }
-
-        return $famount ;
-      }
-   }
 
 
 
@@ -329,24 +294,7 @@ if( !function_exists('getPaginationNumber') ){
    }
 
 
-   
-   if (!function_exists('currency_conversion')){
-      
-
-      /**
-       * Summary of currency_conversion
-       * @param int|float $number
-       * @param mixed $currency
-       * @return int
-       */
-      function currency_conversion(int | float  $number ,?Setting $currency = null ) : int{
-
-         // $number = floatval($number) * floatval($currency->exchange_rate);
-         // return round(  $number);
-      }
-
-   }
-
+  
 
    
 
@@ -756,31 +704,17 @@ if (!function_exists('t2k')){
 
 
 
-
-
-
-
-
-
-
-
-
-
 if (!function_exists('check_permission')){
 
-   function check_permission(Admin $user, string $accessPermission):bool {
 
-
-
-         $permissions            = (array)$user?->role?->permissions;
-         
-         $permission_values      = [];
-         foreach ($permissions as $permission) {
-            $permission_values   = array_merge($permission_values, $permission);
-         }
-         
-         return ((in_array($accessPermission, $permission_values)));
-
+   /**
+    * Summary of check_permission
+    * @param App\Models\User $user
+    * @param string $accessPermission
+    * @return bool
+    */
+   function check_permission(User $user, string $accessPermission) :bool{
+       return ((in_array($accessPermission, array_merge(...(array) $user?->role?->permissions))));
    }
 }
 

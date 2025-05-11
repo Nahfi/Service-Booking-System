@@ -18,19 +18,7 @@ class GeneralSettingSeeder extends Seeder
     public function run(): void
     {
       
-        // $settings =  collect(SiteSettingsEnum::getSettings())
-        //                     ->except(Setting::system()->default()->pluck('key')->toArray())
-        //                     ->map(fn(mixed $value , string $key): array =>
-        //                             array(
-        //                                 'group'  => SettingKey::DEFAULT->value,
-        //                                 'key'    => $key,
-        //                                 'value'  => $value)
-        //                         )->values()->all();
 
-
-        // Setting::insert($settings);
-    
-        // Cache::forget(CacheKey::DEFAULT_SETTINGS->value); 
 
     }
 }
