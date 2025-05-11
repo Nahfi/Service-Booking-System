@@ -20,9 +20,8 @@ class UserApiAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response{
 
-        $user = getAuthUser('user:api', ['role']);
+        $user = getAuthUser('user:api');
 
-        
         switch (true) {
             
             case $user && $user->status == Status::INACTIVE->value:
@@ -34,20 +33,6 @@ class UserApiAuthMiddleware
                 );
                 
 
-            case ($user?->role 
-                        && $user?->role->name === 'employee' 
-                        && !request()->is('*business/group-messages/*') 
-                        && !request()->is('*business/shifts/save-emergency')
-                        && !request()->is('*business/shifts/get-created-emergency')
-                      
-                      ):
-
-                $user->tokens()->delete();
-                throw new \Exception(
-                    message: translate('You are not allowed to access this module'),
-                    code: Response::HTTP_FORBIDDEN
-                );
-                
             case $user && $user->tokenCan('role:'.TokenKey::USER_AUTH_TOKEN_ABILITIES->value):
                 $this->updateLastLoginTime($user);
                 return $next($request);

@@ -19,35 +19,11 @@ class FileResource extends JsonResource
         self::$business = $business;
     }
     
-    public function __construct($resource, $business = null)
-    {
-        parent::__construct($resource);
-        self::$business = getResourceBusiness($business, self::$business );
-    }
-
+   
     public function toArray(Request $request): array
     {
-        $business   = self::$business; 
-        $timeZone   = $business?->time_zone;
-        $timeFormat = $business?->time_format;
-    
-        $folder = $this->folder;
-    
+
         $imgURL = get_default_img();
-        
-        if($folder){
-    
-            $baseLocation = @$folder->is_file 
-                                ? GlobalConfig::FILE_PATH_PREFIX 
-                                : GlobalConfig::IMAGE_PATH_PREFIX;
-
-            $fullPath = $baseLocation . '/' . $folder->name;
-
-            if($folder->is_default)   $fullPath = $baseLocation . '/' . self::getFullPath($folder);
-            
-            $imgURL = $this->getimageURL($this , $fullPath);
-        }
-        
         return [
             'id'           => $this->id,
             'url'          => $imgURL,
@@ -63,15 +39,4 @@ class FileResource extends JsonResource
     }
 
 
-    /**
-     * Summary of getFullPath
-     * @param \App\Models\Folder $folder
-     * @return string
-     */
-    private static function getFullPath(Folder $folder): string{
-
-        if (!$folder->parent) return $folder->name;
-
-        return self::getFullPath($folder->parent) . '/' . $folder->name;
-    }
 }

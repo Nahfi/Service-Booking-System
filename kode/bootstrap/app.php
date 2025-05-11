@@ -29,14 +29,12 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
       
             $middleware->alias([
-                'admin.api.token'    => AdminApiAuthMiddleware::class,
+    
                 'user.api.token'     => UserApiAuthMiddleware::class,
                 'sanitization'       => Sanitization::class,
                 'exception.handler'  => ExceptionHandlerMiddleware::class,
                 'cors'               => CorsMiddleware::class,
-                'app.verification'   => ApplicationVerification::class,
-                'email.verification'            => EmailVerificationMiddleware::class,
-                'admin.user.permissions'        => AdminUserPermissions::class,
+                'app.verification'   => ApplicationVerification::class
 
             ]);
         

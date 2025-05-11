@@ -51,6 +51,9 @@ enum SettingKey: string
     case PLAY_STORE_URL                 = "play_store_url";
     case APP_STORE_URL                  = "app_store_url";
 
+    case UNAUTHORIZED_REQUEST           = "unauthorized_request";
+
+
 
 
 

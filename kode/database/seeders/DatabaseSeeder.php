@@ -16,24 +16,7 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
-
-            // AdminSeeder::class,
-
-            // CurrencySeeder::class,
-
-            // LanguageSeeder::class,
-
-            // PaymentGatewaySeeder::class,
-            
-            // NotificationGatewaySeeder::class,
-
-            GeneralSettingSeeder::class,
-
-            // PlanSeeder::class,
-
-            // NotificationTemplateSeeder::class,
-
-            // BusinessRoleSeeder::class
+            UserSeeder::class,
         ]);
     }
 }
