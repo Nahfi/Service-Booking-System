@@ -1,30 +1,15 @@
 {
-    "name": "nwidart/user",
+    "name": "akaunting/user",
     "description": "",
     "authors": [
         {
-            "name": "Nicolas Widart",
-            "email": "n.widart@gmail.com"
+            "name": "Akaunting",
+            "email": "info@akaunting.com"
         }
     ],
-    "extra": {
-        "laravel": {
-            "providers": [],
-            "aliases": {
-
-            }
-        }
-    },
     "autoload": {
         "psr-4": {
-            "Modules\\User\\": "app/",
-            "Modules\\User\\Database\\Factories\\": "database/factories/",
-            "Modules\\User\\Database\\Seeders\\": "database/seeders/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\User\\Tests\\": "tests/"
+            "Modules\\User\\": ""
         }
     }
 }

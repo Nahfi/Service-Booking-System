@@ -26,25 +26,7 @@ class ApiBaseController extends Controller
         return $this->responseBuilder;
     }
 
-    /**
-     * Summary of cronRun
-     * @return void
-     */
-    public function cronRun(): void{
-
-        try {
-            
-            Artisan::call('backup:run');
-            Setting::updateOrInsert(
-                    ['key'    =>'last_system_backup' , 'group' => SettingKey::DEFAULT->value ] ,
-                    ['value'  => Carbon::now()]
-            );
-
-        } catch (\Throwable $th) {
-        
-        }
-
-    }
+    
 
     
 }

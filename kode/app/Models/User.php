@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use App\Models\Admin\Admin;
 use Illuminate\Support\Str;
 use App\Enums\Common\Status;
 use App\Traits\Common\Filterable;

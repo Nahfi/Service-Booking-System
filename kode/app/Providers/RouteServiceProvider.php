@@ -2,14 +2,14 @@
 
 namespace App\Providers;
 
+use App\Enums\Settings\GlobalConfig;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {
 
-    const  API_ROUTE_PREFIX  = 'routes/api/v1/';
-    const  GLOBAL_MIDDLEWARE = ['api','cors','app.verification'];
+
 
 
 
@@ -30,15 +30,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-
-
-
-
-        // User API routes
         Route::prefix('api/user')
-            ->middleware(SELF::GLOBAL_MIDDLEWARE)
-            ->group(base_path(SELF::API_ROUTE_PREFIX.'user/api.php'));
-
+            ->middleware(GlobalConfig::GLOBAL_MIDDLEWARE)
+            ->group(base_path('routes/api/v1/user/api.php'));
 
     }
 }

@@ -4,5 +4,7 @@ return [
     App\Providers\ApiResponseServiceProvider::class,
     App\Providers\AppServiceProvider::class,
     App\Providers\RouteServiceProvider::class,
-    Nwidart\Modules\LaravelModulesServiceProvider::class,
+
+    Akaunting\Module\Providers\Laravel::class
+    
 ];

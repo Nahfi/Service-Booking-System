@@ -1,5 +1,9 @@
-<x-contact::layouts.master>
+@extends('contact::layouts.master')
+
+@section('content')
     <h1>Hello World</h1>
 
-    <p>Module: {!! config('contact.name') !!}</p>
-</x-contact::layouts.master>
+    <p>
+        This view is loaded from module: {!! config('contact.name') !!}
+    </p>
+@endsection

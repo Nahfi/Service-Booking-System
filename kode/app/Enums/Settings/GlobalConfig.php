@@ -811,4 +811,8 @@ enum GlobalConfig {
     {
         return array_column(self::COUNTRIES, 'name');
     }
+
+
+    const  USER_API_ROUTE_PREFIX  = 'api/user/v1/';
+    const  GLOBAL_MIDDLEWARE = ['api','cors','app.verification'];
 }

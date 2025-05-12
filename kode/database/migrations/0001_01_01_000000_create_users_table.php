@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->string('uid',100)->index()->nullable();
             $table->unsignedBigInteger('parent_id')->nullable()->constrained(table: 'users');
+            $table->unsignedBigInteger('role_id')->nullable()->constrained(table: 'roles');
             $table->longText('fcm_token')->nullable();
             $table->string('name', 191);
             $table->string('email',191)->index();

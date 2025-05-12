@@ -279,19 +279,6 @@ if( !function_exists('getPaginationNumber') ){
 
   
 
-   if (!function_exists('round_amount')) {
-
-      /**
-       * Summary of round_amount
-       * @param int|float $amount
-       * @param int $precision
-       * @return int|float
-       */
-      function round_amount(int | float $amount, int $precision  = 0) :int|float
-      {
-         return round($amount,$precision);
-      }
-   }
 
 
   
