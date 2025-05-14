@@ -70,21 +70,6 @@ use Intervention\Image\Laravel\Facades\Image;
 
 
 
-   if (!function_exists('site_settings')) {
-      function site_settings(string  $key = null , mixed $default = null):string|array|null {
-
-         try {
-           
-
-
-
-         } catch (\Throwable $th) {
-
-         }
-
- 
-      }
-   }
 
    
    
@@ -355,9 +340,16 @@ if( !function_exists('getPaginationNumber') ){
        * @param mixed $format
        * @return string
        */
-		function get_date_time(string $date,?string $timeZone = null , ?string $format = null) :string
+		function get_date_time(string $date, ?string $timeZone = null , ?string $format = null) :string
 		{
 
+            $timeZone = site_settings(SettingKey::TIME_ZONE->value );
+
+            $format   =  site_settings(SettingKey::DATE_FORMAT->value)." ".site_settings(SettingKey::TIME_FORMAT->value); 
+            
+            return  Carbon::createFromFormat('Y-m-d H:i:s', $date, 'UTC')
+                              ->setTimezone($timeZone)
+                              ->format($format);
 
 		}
     }

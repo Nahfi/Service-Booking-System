@@ -1,86 +1,74 @@
 <?php
 
-namespace Modules\User\Http\Controllers\Api\v1;
+namespace Modules\User\Http\Controllers\Api\V1;
 
 use App\Builders\ApiResponseBuilder;
 use App\Enums\Settings\SettingKey;
 use App\Facades\ApiResponse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\AuthenticateRequest;
+use Modules\User\Http\Resources\UserResource;
 use Modules\User\Http\Services\AuthService;
 
 class AuthenticateController extends Controller
 {
-   
 
 
+    public function __construct(protected AuthService $authService){}
 
-    public function __construct(protected AuthService $authService) {}
-
-   
-
-
+    /**
+     * Summary of login
+     * @param \Modules\User\Http\Requests\AuthenticateRequest $request
+     * @return \App\Facades\ApiResponse|\App\Builders\ApiResponseBuilder|\Illuminate\Http\JsonResponse
+     */
     public function login(AuthenticateRequest $request): ApiResponse | ApiResponseBuilder | JsonResponse{
 
         $user = $this->authService->findActiveUser(attributes: ['email' => $request->input('email')]);
 
-         @dd($user );
+        $rememberMe  = $request->input('remember_me');
+        $deviceName  = $request->input('device_name');
+        
+
+        try {
+
+            switch (true) {
+                case $user && Hash::check($request->input("password"), $user->password):
+
+                    $accessToken = $this->authService->getAccessToken(
+                                                                        user       : $user,
+                                                                        deviceName : $deviceName,
+                                                                        rememberMe :  $rememberMe  
+                                                                     );
 
 
-
-        // try {
-        //     switch (true) {
-        //         case $user && Hash::check($request->input("password"), $user->password):
-        //             $data = [];
-                    
-        //             $this->generateActivity($user, [
-        //                 'ip_info' => get_ip_info(),
-        //                 'message' => translate('logged in to the system'),
-        //             ], $business);
-        //             $data['access_token'] = $this->authService->getAccessToken(
-        //                 user: $user,
-        //                 remember_me: true
-        //             );
-                    
-        //             $reponse = ApiResponse::asSuccess()
-        //                 ->withData($data)
-        //                 ->append( 'user', new UserResource( $user, $business));
+                    return ApiResponse::asSuccess()
+                                    ->withData(['access_token' => $accessToken])
+                                    ->append( 'user', new UserResource( $user))
+                                    ->build();
                         
-        //             if(business_site_settings($user?->business, SettingKey::KYC_VERIFICATION->value, Status::INACTIVE->value) == Status::ACTIVE->value
-        //                 && !$user->is_kyc_verified) $reponse->append('event', SettingKey::UNVERFIED_KYC->value);
-        //             return $reponse->build();
-                        
+   
+                default:
 
-        //         default:
+                    return ApiResponse::error(
+                        data: ['error' => translate('Invalid password!')],
+                        code: Response::HTTP_UNAUTHORIZED,
+                        appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+                    );
+            }
 
-        //             $this->generateActivity($user, [
-        //                 'ip_info' => get_ip_info(),
-        //                 'message' => translate('Failed Login Attempted'),
-        //             ],$business);
-        //             return ApiResponse::error(
-        //                 data: ['error' => translate('Credentail Mismatch !!')],
-        //                 code: Response::HTTP_UNAUTHORIZED,
-        //                 appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
-        //             );
-        //     }
-        // } catch (\Exception $ex) {
+        } catch (\Exception $ex) {
+            return ApiResponse::error(
+                data: ['error' => $ex->getMessage()],
+                code: Response::HTTP_UNAUTHORIZED,
+                appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+            );
+   
+        }
 
-        //     $this->generateActivity($user, [
-        //         'ip_info' => get_ip_info(),
-        //         'message' => translate('Failed Login Attempted'),
-        //     ], $business);
-
-        //     if ($user) $user->tokens()->delete();
-
-        //     return ApiResponse::error(
-        //         data: ['error' => $ex->getMessage()],
-        //         code: Response::HTTP_UNAUTHORIZED,
-        //         appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
-        //     );
-        // }
     }
 
     
@@ -93,27 +81,31 @@ class AuthenticateController extends Controller
     public function logout(): JsonResponse
     {
 
+        $logoutFromAllDevice = request()->boolean('all_device_logout');
         $user = getAuthUser('user:api');
         $user->fcm_token = null;
         $user->save();
-        $user->tokens()->delete();
+
+        if($logoutFromAllDevice) $user->tokens()->delete();
+
+        switch ($logoutFromAllDevice) {
+            case true:
+                $user->tokens()->delete();
+                break;
+
+            case false:
+            default:
+                $user->currentAccessToken()?->delete();
+                break;
+        }
+
+        #FORGET SETTINGS AND USER PARENT CACHE
+        $targetId = $user->parent_id ?: $user->id;
+        Cache::forget('user:settings:' . $targetId);
+        Cache::forget('user:parent:' . $targetId);
+
         return ApiResponse::asSuccess()
                          ->build();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

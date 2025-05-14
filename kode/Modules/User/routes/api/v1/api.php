@@ -2,7 +2,8 @@
 
 
 use Illuminate\Support\Facades\Route;
-use Modules\User\Http\Controllers\Api\v1\AuthenticateController;
+use Modules\User\Enums\RateLimit;
+use Modules\User\Http\Controllers\Api\V1\AuthenticateController;
 
 
 /*
@@ -18,7 +19,7 @@ use Modules\User\Http\Controllers\Api\v1\AuthenticateController;
 
 
 
-Route::group(['middleware' => ['sanitization', 'exception.handler']], function () {
+Route::group(['middleware' => ['sanitization', 'exception.handler','throttle:' .RateLimit::LOGIN->toThrottleString()]], function () {
 
     Route::post('/login', [AuthenticateController::class,'login']);
 

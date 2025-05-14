@@ -1,7 +1,7 @@
 <?php
 namespace Modules\User\Providers;
 
-
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 
 class UserContextServiceProvider extends ServiceProvider
@@ -17,25 +17,38 @@ class UserContextServiceProvider extends ServiceProvider
 
             if (!$user) return null;
 
-            $user->loadMissing('parent');
+            $targetId = $user->parent_id ?: $user->id;
+            $cacheKey = 'user:parent:' . $targetId;
 
-            return $user->parent ?? $user;
+             return Cache::rememberForever($cacheKey, function () use ($user) {
+                $user->loadMissing('parent');
+                return $user->parent ?? $user;
+            });
+
         });
 
 
 
-        $this->app->singleton('user.setting', function () {
+        $this->app->singleton('user.settings', function () {
             $user = getAuthUser('user:api');
 
             if (!$user) return null;
 
-            if ($user->parent_id) {
-                $user->loadMissing('parent.settings');
-                return $user->parent?->setting;
-            }
+            $targetId = $user->parent_id ?: $user->id;
+            $cacheKey = 'user:settings:' . $targetId;
 
-            $user->loadMissing('settings');
-            return $user->setting;
+
+             return Cache::rememberForever($cacheKey, function () use ($user) {
+                if ($user->parent_id) {
+                    $user->loadMissing('parent.setting');
+                    return $user->parent?->setting;
+                }
+
+                $user->loadMissing('setting');
+                return $user->setting;
+            });
+
+
         });
 
 

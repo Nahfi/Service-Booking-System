@@ -20,7 +20,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Modules\Setting\Models\Setting;
+use Modules\Settings\Models\File;
+use Modules\Settings\Models\Settings;
+use Modules\User\Models\Role;
 
 class User extends Authenticatable
 {
@@ -87,10 +89,45 @@ class User extends Authenticatable
 
     /**
      * Summary of settings
-     * @return HasMany<Setting, User>
+     * @return HasMany<Settings, User>
      */
     public function settings(): HasMany{
-         return $this->hasMany(Setting::class,'user_id'); 
+         return $this->hasMany(Settings::class,'user_id'); 
+    }
+
+    
+    /**
+     * Summary of file
+     * @return MorphOne<File, User>
+     */
+    public function file(): MorphOne{
+        return $this->morphOne(File::class, 'fileable');
+    }
+
+
+    /**
+     * Summary of role
+     * @return BelongsTo<Role, User>
+     */
+    public function role(): BelongsTo{
+        return $this->belongsTo(Role::class, 'role_id');
+
     }
     
+
+
+    /**
+     * Summary of scopeActive
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @return Builder
+     */
+    public function scopeActive(Builder $q): Builder{
+        return  $q->where('status',Status::ACTIVE);
+    }
+
+
+
+    
+
+
 }

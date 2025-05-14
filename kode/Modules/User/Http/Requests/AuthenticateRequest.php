@@ -15,9 +15,12 @@ class AuthenticateRequest extends BaseRequest
             'email'         => ['required', 'exists:users,email'],
             'password'      => ['required'],
             'remember_me'   => ['nullable','bool'],
+            'device_name'   => ['required'],
         ];
 
     }
+
+
 
     /**
      * Determine if the user is authorized to make this request.

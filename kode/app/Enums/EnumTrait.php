@@ -73,4 +73,8 @@ trait EnumTrait
         return $res;
     }
 
+
+
+    
+
 }

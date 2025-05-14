@@ -12,4 +12,9 @@
   'auth_driver_[sanctum]_for_guard_[user:api]_is_not_defined.' => 'Auth driver [sanctum] for guard [user:api] is not defined.',
   'the_post_method_is_not_supported_for_route_api/user/v1/login._supported_methods:_get__head.' => 'The POST method is not supported for route api/user/v1/login. Supported methods: GET  HEAD.',
   'method_modules\\user\\http\\controllers\\api\\v1\\authenticatecontroller::index_does_not_exist.' => 'Method Modules\\User\\Http\\Controllers\\Api\\v1\\AuthenticateController::index does not exist.',
+  'call_to_undefined_method_illuminate\\database\\eloquent\\builder::active()' => 'Call to undefined method Illuminate\\Database\\Eloquent\\Builder::active()',
+  'call_to_undefined_relationship_[file]_on_model_[app\\models\\user].' => 'Call to undefined relationship [file] on model [App\\Models\\User].',
+  'call_to_undefined_relationship_[role]_on_model_[app\\models\\user].' => 'Call to undefined relationship [role] on model [App\\Models\\User].',
+  'target_class_[5_1]_does_not_exist.' => 'Target class [5 1] does not exist.',
+  'too_many_attempts.' => 'Too Many Attempts.',
 );

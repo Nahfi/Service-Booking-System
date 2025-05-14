@@ -34,19 +34,31 @@ class AuthService extends Controller
 
      
      
+     
      /**
       * Summary of getAccessToken
       * @param \App\Models\User $user
+      * @param string $deviceName
       * @param bool|null $rememberMe
       * @return string
       */
-     public function getAccessToken(User $user, bool | null $rememberMe = false): string
+     public function getAccessToken(User $user, string $deviceName ,  bool | null $rememberMe = false): string
      {
+
+
+          $existingToken = $user->tokens()->where('name', $deviceName)->first();
+
+          if ($existingToken && (!$existingToken->expires_at && $existingToken->expires_at->isFuture())) {
+               return $existingToken->plainTextToken;
+          }
+
+          $existingToken?->delete();
+          
           return  $user->createToken(
-                              name: TokenKey::USER_AUTH_TOKEN->value,
-                              abilities: ['role:' . TokenKey::USER_AUTH_TOKEN_ABILITIES->value],
-                              expiresAt: $rememberMe ? now()->addYears(10) : now()->addDays()
-                         )->plainTextToken;
+                                        name: $deviceName,
+                                        abilities: ['role:' . TokenKey::USER_AUTH_TOKEN_ABILITIES->value],
+                                        expiresAt: $rememberMe ? now()->addYears(10) : now()->addDays()
+                                   )->plainTextToken;
      }
 
 
