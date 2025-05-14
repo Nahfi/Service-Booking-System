@@ -1,14 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use App\Enums\Common\Plan\PlanFeature;
-use App\Facades\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PricingPlanResource;
-use App\Models\PricingPlan;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -16,8 +9,6 @@ use Intervention\Image\Laravel\Facades\Image;
 class CoreController extends Controller
 {
     
-
-
 
      /**
       * create default image

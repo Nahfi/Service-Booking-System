@@ -735,6 +735,10 @@ enum GlobalConfig {
                 'size'        => '150x150',
             ]
         ],
+
+        'text_editor' => [
+           'path'        => self::IMAGE_PATH_PREFIX.'texteditor',
+        ],
         
         'site_logo' => [
             'user' => [
@@ -811,4 +815,11 @@ enum GlobalConfig {
     {
         return array_column(self::COUNTRIES, 'name');
     }
+
+
+    const  USER_API_ROUTE_PREFIX  = 'api/user/v1/';
+    const  GLOBAL_MIDDLEWARE = ['api','cors','app.verification'];
+
+
+    
 }

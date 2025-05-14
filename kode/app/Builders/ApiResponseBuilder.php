@@ -262,7 +262,8 @@ class ApiResponseBuilder
 
             ->when(request()->is('api/user/*') , function (ApiResponseBuilder $builder) use ($appends): ApiResponseBuilder {
                 $user = getAuthUser('user:api');
-                return $builder->append(key: 'is_user_authenticate', value: $user->status == Status::ACTIVE->value);
+        
+                return $builder->append(key: 'is_user_authenticate', value:     $user &&  $user->status == Status::ACTIVE->value);
 
              })
             ->build();

@@ -1,11 +1,13 @@
 {
-    "name": "Contact",
     "alias": "contact",
     "description": "",
     "keywords": [],
-    "priority": 0,
+    "active": true,
+    "order": 0,
     "providers": [
-        "Modules\\Contact\\app\\Providers\\ContactServiceProvider"
+        "Modules\\Contact\\Providers\\Main"
     ],
-    "files": []
+    "aliases": [],
+    "files": [],
+    "requires": []
 }

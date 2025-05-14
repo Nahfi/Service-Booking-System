@@ -2,22 +2,16 @@
 
 namespace App\Traits\Common;
 
-use App\Enums\Common\Status;
 use App\Enums\Settings\SettingKey;
 use App\Facades\ApiResponse;
-use App\Models\ActivityLog;
-use App\Models\Admin\Admin;
-use App\Models\File;
-use App\Models\Folder;
-use App\Models\Otp;
-use App\Models\User;
 use App\Traits\Common\Fileable as CommonFileable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Modules\Settings\Models\File as ModelsFile;
+use Modules\User\Models\VerificationCode;
 
 trait ModelAction
 {
@@ -92,24 +86,20 @@ trait ModelAction
     /**
      * Summary of saveFile
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param \App\Models\Folder $folder
      * @param mixed $response
      * @param mixed $type
-     * @param mixed $user
-     * @return mixed
+     * @return bool|ModelsFile
      */
-    private function saveFile(Model $model , 
-                              Folder $folder ,
+    private function saveFile(Model $model ,
                               ? array $response  = null , 
-                              ? string $type =  null,
-                              ? User $user = null
+                              ? string $type =  null
                               ):mixed
-                              {
+                            {
 
     
         if(is_array($response) && Arr::has($response,'status')){
             
-            $file = new File([
+            $file = new ModelsFile([
 
                 'display_name' => Arr::get($response, 'display_name'),
                 'name'         => Arr::get($response, 'name', 'default'),
@@ -139,9 +129,9 @@ trait ModelAction
      * @param \Illuminate\Database\Eloquent\Model $sendTo
      * @param string $template
      * @param bool $delete
-     * @return \App\Models\Otp
+     * @return VerificationCode
      */
-    public function saveOTP(Model $sendTo , string $template , bool $delete = false): Otp{
+    private function saveOTP(Model $sendTo , string $template , bool $delete = false): VerificationCode{
 
 
         $type =  strtolower($template);
@@ -154,7 +144,7 @@ trait ModelAction
 
         $expiredTime = (int) site_settings(SettingKey::OTP_EXPIRED_IN->value,20);
 
-        $otp               = new Otp();
+        $otp               = new VerificationCode();
         $otp->otp          = $code;
         $otp->type         = strtolower($template);
         $otp->expired_at   = Carbon::now()->addSeconds($expiredTime);

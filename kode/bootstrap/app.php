@@ -1,11 +1,8 @@
 <?php
 
 use App\Facades\ApiResponse;
-use App\Http\Middleware\AdminApiAuthMiddleware;
-use App\Http\Middleware\AdminUserPermissions;
 use App\Http\Middleware\ApplicationVerification;
 use App\Http\Middleware\CorsMiddleware;
-use App\Http\Middleware\EmailVerificationMiddleware;
 use App\Http\Middleware\ExceptionHandlerMiddleware;
 use App\Http\Middleware\Sanitization;
 use App\Http\Middleware\UserApiAuthMiddleware;
@@ -44,7 +41,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (Exception $e, Request $request) {
 
 
-
+      
             if (
                 $e instanceof \Illuminate\View\ViewException  &&
                 str_contains($e->getMessage(), 'Vite manifest not found')
