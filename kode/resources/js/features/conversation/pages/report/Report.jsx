@@ -3,7 +3,8 @@ import Tabs from "react-bootstrap/Tabs";
 
 import ReportOverview from "./ReportOverview";
 
-import PageHeader from "../../../../components/common/Page-header/PageHeader";
+
+import PageHeader from "@/components/common/Page-header/PageHeader";
 import "./report.scss";
 import SendLog from "./SendLog";
 

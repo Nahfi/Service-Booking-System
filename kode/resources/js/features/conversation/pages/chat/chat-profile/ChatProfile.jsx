@@ -10,10 +10,10 @@ import {
 import "./chat-profile.scss";
 
 import userOne from "@/assets/images/user/user-1.png";
-// import CollapseItem from "../../../../common/collapse/Collapse";
-// import ModalWrapper from "../../../../common/modal/ModalWrapper";
-import CollapseItem from "../../../../../components/common/collapse/CollapseItem";
-import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
+// import CollapseItem from "../../../../../components/common/collapse/CollapseItem";
+// import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
+import CollapseItem from "@/components/common/collapse/CollapseItem";
+import ModalWrapper from "@/components/common/modal";
 import AddNote from "./AddNote";
 
 const ChatProfile = ({ profileAction }) => {

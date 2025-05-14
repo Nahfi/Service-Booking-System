@@ -73,6 +73,14 @@
   --radius-36: 36px;
   --radius-pill: calc(infinity * 1px);
   --radius-rounded: 50%;
+
+  --header-h:80px;
+  @include xxl-down {
+    --header-h:70px; 
+  }
+  @include md-down {
+    --header-h:60px; 
+  }
 }
 
 [data-bs-theme="dark"] {
@@ -183,4 +191,4 @@ $radius-36: var(--radius-36);
 $radius-pill: var(--radius-pill);
 $radius-rounded: var(--radius-rounded);
 
-$header-h:80px;
+$header-h:var(--header-h);

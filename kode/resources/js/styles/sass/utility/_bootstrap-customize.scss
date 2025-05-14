@@ -222,8 +222,8 @@
 
   .dropdown-item {
     font-size: 14px;
-    padding: 10px 12px;
-    font-size: 14px;
+    padding: 8px 10px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-primary);
     @include flex($align: center, $gap: 10px);
@@ -240,7 +240,7 @@
       color: $color-primary-text;
     }
     &:has(svg) > svg {
-      font-size: 16px;
+      font-size: 14px;
     }
   }
 

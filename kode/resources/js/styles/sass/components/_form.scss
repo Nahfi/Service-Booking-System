@@ -37,6 +37,10 @@
     &::placeholder {
       color: $text-placeholder;
     }
+    &:disabled{
+      background-color: var(--bs-secondary-bg) !important;
+    }
+
   }
 
   .form-control[type="file"] {
