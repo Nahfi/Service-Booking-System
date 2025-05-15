@@ -2,16 +2,14 @@ import Button from "@/components/common/button/Button";
 import PageHeader from "@/components/common/Page-header/PageHeader";
 import MessagePreview from "@/features/campaign/components/campaign/MessagePreview";
 import { Tab, Tabs } from "react-bootstrap";
-import SmsTemplate from "./components/SmsTemplate";
-import WhatsappTemplate from "./components/WhatsappTemplate";
-
+import SmsTemplate from "./components/form/SmsTemplate";
+import WhatsappTemplate from "./components/form/WhatsappTemplate";
 
 const Template = () => {
 
-
   return (
     <div>
-      <div className="main-content-body py-0">
+      <div className="conversation-content-body">
         <div className="row h-100 g-0">
           <div className="col-xxl-8 col-xl-7 col-lg-6 border-lg-end py-30 pe-lg-30">
             <div className="mb-4">

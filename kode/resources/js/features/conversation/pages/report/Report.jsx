@@ -10,7 +10,7 @@ import SendLog from "./SendLog";
 
 const Report = () => {
   return (
-    <div className="main-content-body">
+    <div className="conversation-content-body">
       <div className="campaign-report">
         <div className="mb-4">
           <PageHeader title="Reports" description="Manage your Reports" />

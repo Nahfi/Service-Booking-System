@@ -6,11 +6,11 @@ import { useContext, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { BsMoon, BsSunFill, BsViewList } from "react-icons/bs";
 import {
-  LuLogOut,
-  LuMenu,
-  LuSettings,
-  LuUser,
-  LuX
+    LuLogOut,
+    LuMenu,
+    LuSettings,
+    LuUser,
+    LuX
 } from "react-icons/lu";
 
 import { Link, NavLink } from "react-router-dom";

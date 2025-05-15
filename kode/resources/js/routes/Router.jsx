@@ -1,4 +1,6 @@
+import CreateTemplate from "@/features/conversation/pages/template/pages/CreateTemplate";
 import Templates from "@/features/conversation/pages/template/Templates";
+import WhatsappChat from "@/features/conversation/pages/whatsapp-chat/WhatsappChat";
 import Gateways from "@/features/settings/pages/gateways/Gateways";
 import General from "@/features/settings/pages/general/General";
 import WhatsappSetting from "@/features/settings/pages/whatsapp/WhatsappSetting";
@@ -16,7 +18,6 @@ import ChatWrapper from "../features/conversation/pages/chat/ChatWrapper";
 import Contact from "../features/conversation/pages/contact/Contact";
 import Report from "../features/conversation/pages/report/Report";
 import Subscription from "../features/conversation/pages/subscription/Subscription";
-import Template from "../features/conversation/pages/template/Template";
 import Dashboard from "../features/dashboard/Dashboard";
 import Error from "../features/error/Error";
 import PricingPlan from "../features/plans/PricingPlan";
@@ -59,7 +60,7 @@ const router = createBrowserRouter(
                         },
                         {
                             path: "whatsapp",
-                            element: <ChatWrapper />,
+                            element: <WhatsappChat />,
                         },
                         {
                             path: "subscriptions",
@@ -73,13 +74,14 @@ const router = createBrowserRouter(
                             path: "report",
                             element: <Report />,
                         },
-                        {
-                            path: "template",
-                            element: <Template />,
-                        },
+
                         {
                             path: "templates",
                             element: <Templates />,
+                        },
+                        {
+                            path: "templates/create",
+                            element: <CreateTemplate />,
                         },
                     ],
                 },

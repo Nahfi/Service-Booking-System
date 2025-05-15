@@ -48,8 +48,15 @@
     --scroll-thumb-color: #b8b8b8;
   }
 
-  // Ejemplo 4
   &-4 {
+    --scroll-size: 5px;
+    --scroll-radius: 10px;
+    --scroll-track: rgb(255 255 255 / 10%);
+    --scroll-thumb-color: #818181;
+  }
+
+  // Ejemplo 4
+  &-5 {
     $bg-mask: rgb(255 255 255 / 25%);
     --scroll-size: 12px;
     --scroll-radius: 20px;
@@ -69,7 +76,7 @@
   }
 
   // Ejemplo 5
-  &-5 {
+  &-6 {
     --scroll-size: 15px;
     --scroll-radius: 20px;
     --scroll-track: rgb(255 255 255 / 10%);
@@ -77,7 +84,7 @@
   }
 
   // Ejemplo 6
-  &-6 {
+  &-7 {
     $bg-mask: rgb(255 255 255 / 30%);
     --scroll-size: 12px;
     --scroll-radius: 20px;

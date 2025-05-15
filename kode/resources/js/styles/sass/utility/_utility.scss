@@ -17,6 +17,11 @@
   }
 }
 
+.main-body-scroll{
+  max-height: calc(100dvh - calc($header-h + 0px));
+  height: 100%;
+  overflow-y: auto;
+}
 .container-wrapper {
   max-width: 100%;
   width: 100%;
@@ -768,4 +773,11 @@
       transform: rotate(360deg);
     }
   }
+}
+
+
+
+.filter-form{
+  margin-bottom: 24px;
+  max-width: fit-content;
 }

@@ -2,11 +2,12 @@ import PageHeader from "@/components/common/Page-header/PageHeader";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import Sms from "./components/Sms";
+import Whatsapp from "./components/Whatsapp";
 
 
 const Templates = () => {
     return (
-        <div className="main-content-body">
+        <div className="conversation-content-body">
             <div className="campaign-report">
                 <div className="mb-4">
                     <PageHeader
@@ -25,7 +26,7 @@ const Templates = () => {
                     </Tab>
 
                     <Tab eventKey="whatsapp" title="Whatsapp">
-                        <h3>Whatsapp Tab</h3>
+                        <Whatsapp/>
                     </Tab>
                 </Tabs>
             </div>

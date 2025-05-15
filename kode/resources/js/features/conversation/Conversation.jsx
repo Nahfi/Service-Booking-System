@@ -5,25 +5,24 @@ import "./conversation-root.scss";
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import BaseLayout from "../../components/layouts/BaseLayout";
-import Sidebar from "./components/sidebar/Sidebar";
+import ConversationSidebar from "./components/sidebar/ConversationSidebar";
 
 
 const Conversation = () => {
   return (
-    <BaseLayout className="p-0">
-      <section className="conversation">
-        <div className="row g-0">
-          <Sidebar />
-
-          <div className="col main-content">
-            <Suspense fallback={"Loading..."}>
-              <Outlet />
-            </Suspense>
-          </div>
-        </div>
-      </section>
-    </BaseLayout>
-
+      <BaseLayout className="p-0">
+          <section className="conversation">
+              <div className="row g-0">
+                 <ConversationSidebar />
+          
+                  <div className="col conversation-content">
+                      <Suspense fallback={"Loading..."}>
+                          <Outlet />
+                      </Suspense>
+                  </div>
+              </div>
+          </section>
+      </BaseLayout>
   );
 };
 

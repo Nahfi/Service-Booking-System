@@ -22,6 +22,8 @@
         .campaign-sidebar-body {
             @include flex($direction:column,
                 $gap:30px);
+                position: sticky;
+                top: 20px;
 
             .step-item {
                 @include flex($align: flex-start,
