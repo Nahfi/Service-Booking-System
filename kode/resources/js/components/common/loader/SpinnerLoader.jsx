@@ -1,8 +1,11 @@
-const SpinnerLoader = ({ bg = "text-primary" }) => {
+const SpinnerLoader = ({ bg = "text-primary",size="md" }) => {
   return (
-    <div className={`spinner-border spinner-border-sm ${bg}`} role="status">
-      <span className="visually-hidden"></span>
-    </div>
+      <div
+          className={`spinner-border spinner-border-${size} ${bg}`}
+          role="status"
+      >
+          <span className="visually-hidden"></span>
+      </div>
   );
 };
 

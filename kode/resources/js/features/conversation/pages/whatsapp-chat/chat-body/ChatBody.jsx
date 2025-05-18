@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
-  BsArrowLeft,
-  BsBan,
-  BsThreeDotsVertical,
-  BsTrash3,
-  BsVolumeMute,
+    BsArrowLeft,
+    BsBan,
+    BsThreeDotsVertical,
+    BsTrash3,
+    BsVolumeMute,
 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
 import { ThemeContext } from "../../../../../context";
@@ -14,6 +14,7 @@ import ChatComposer from "./ChatComposer";
 import Message from "./Message";
 
 import whatsappBackground from "@/assets/images/bg/whatsapp-bg.webp";
+import Button from "@/components/common/button/Button";
 
 const ChatBody = ({ onHandle }) => {
   const { handleShowContact, handleShowProfile } = onHandle;
@@ -27,12 +28,12 @@ const ChatBody = ({ onHandle }) => {
       
           <div className="chat-header chat-body-header">
               <div className="d-flex align-items-center gap-2">
-                  <button
-                      className="icon-btn dark-soft btn-md bg--transparent circle fs-20 d-md-none flex-shrink-0"
+                  <Button
+                      className="dark-soft btn-md bg--transparent circle fs-20 d-md-none flex-shrink-0"
                       onClick={handleShowContact}
                   >
                       <BsArrowLeft />
-                  </button>
+                  </Button>
 
                   <h6 role="button" onClick={handleShowProfile}>
                       Jane Doe

@@ -11,10 +11,10 @@ const WhatsappChat = () => {
     const isXXLDown = useMediaQuery({ query: "(max-width: 1399.98px)" });
 
     const handleShowContact = () => {
-        setShowContact((show) => !show);
+        setShowContact((prev) => prev = true);
     };
     const handleHideContact = () => {
-        setShowContact(false);
+        setShowContact((prev) => prev = false);
     };
 
     const handleShowProfile = () => {
@@ -30,8 +30,15 @@ const WhatsappChat = () => {
     return (
         <div className="whatsapp-chat-wrapper">
             <div className="row g-0">
-                <ChatContacts contactAction={{ handleHideContact }} />
-                <ChatBody onHandle={{ handleShowContact, handleShowProfile }} />
+                <ChatContacts
+                    contactAction={{ handleHideContact, showContact }}
+                />
+                <ChatBody
+                    onHandle={{
+                        handleShowContact,
+                        handleShowProfile,
+                    }}
+                />
                 <ChatProfile
                     profileAction={{ handleHideProfile, showProfile }}
                 />

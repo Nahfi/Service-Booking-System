@@ -1,6 +1,6 @@
-@use "@/styles/sass/abstracts/" as *;
+@use "@/styles/sass/abstracts/"as *;
 
-.whatsapp-chat-wrapper{
+.whatsapp-chat-wrapper {
   --contact-sidebar: 345px;
   --profile-sidebar: 270px;
   --chat-header: 62px;
@@ -10,12 +10,15 @@
   $contact-sidebar: var(--contact-sidebar);
   $profile-sidebar: var(--profile-sidebar);
   $chat-header: var(--chat-header);
+
   @include xxl-down {
     --chat-header: 52px;
   }
+
   @include xl-down {
     --contact-sidebar: 300px;
   }
+
   @include md-down {
     --contact-sidebar: 100%;
   }
@@ -24,12 +27,13 @@
     max-width: $contact-sidebar;
     width: 100%;
     -webkit-border-end: 1px solid $border-primary;
-            border-inline-end: 1px solid $border-primary;
+    border-inline-end: 1px solid $border-primary;
     max-height: calc(100dvh - $header-h);
     min-height: calc(100dvh - $header-h);
     height: 100%;
     overflow: hidden;
     background-color: $color-white;
+
     @include lg-down {
       max-height: calc(100dvh - calc($header-h + $sidebar-height));
       min-height: calc(100dvh - calc($header-h + $sidebar-height));
@@ -40,16 +44,30 @@
       inset-inline-start: 0;
       inset-block-start: 0;
       -webkit-border-end: none;
-              border-inline-end: none;
+      border-inline-end: none;
       -webkit-transform: translateX(-105%);
-          -ms-transform: translateX(-105%);
-              transform: translateX(-105%);
+      -ms-transform: translateX(-105%);
+      transform: translateX(-105%);
       -webkit-transition: 0.2s ease-out;
       -o-transition: 0.2s ease-out;
       transition: 0.2s ease-out;
       z-index: 8;
       max-height: 100dvh;
       min-height: 100dvh;
+
+      &.show {
+        -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+        transform: translateX(0);
+      }
+
+      [dir="rtl"] & {
+        transform: translateX(105%);
+
+        &.show {
+          transform: translateX(0);
+        }
+      }
     }
 
     // .contact-tab-content {
@@ -67,26 +85,35 @@
     //   }
     // }
 
-    .contact-wrapper{
+    .contact-wrapper {
       width: 100%;
       max-height: calc(100dvh - calc($header-h + $chat-header + 85px));
       overflow-y: auto;
       overflow-x: hidden;
+
+      @include lg-down {
+        max-height: calc(100dvh - calc($header-h + $chat-header + $sidebar-height + 85px));
+      }
+
+      @include md-down {
+        max-height: calc(100dvh - calc($chat-header + 85px));
+      }
     }
   }
 
   .chat-body {
     max-width: calc(100% - calc($contact-sidebar + $profile-sidebar));
     width: 100%;
+
     @include xxl-down {
       max-width: calc(100% - $contact-sidebar);
     }
 
-    @include lg-down {
-      max-height: calc(
-        100dvh - calc($contact-sidebar + $profile-sidebar + $sidebar-height)
-      );
-    }
+    // @include lg-down {
+    //   max-height: calc(
+    //     100dvh - calc($contact-sidebar + $profile-sidebar + $sidebar-height)
+    //   );
+    // }
 
     @include md-down {
       max-width: calc(100% - 0px);
@@ -98,15 +125,10 @@
       height: 100%;
       overflow-y: auto;
       overflow-x: hidden;
+
       @include lg-down {
-        max-height: calc(
-          100dvh -
-            calc($chat-header + $header-h + $sidebar-height + 80px + 10px)
-        );
-        min-height: calc(
-          100dvh -
-            calc($chat-header + $header-h + $sidebar-height + 80px + 10px)
-        );
+        max-height: calc(100dvh - calc($chat-header + $header-h + $sidebar-height + 80px + 10px));
+        min-height: calc(100dvh - calc($chat-header + $header-h + $sidebar-height + 80px + 10px));
       }
     }
   }
@@ -119,8 +141,9 @@
     height: 100%;
     overflow: hidden;
     -webkit-border-start: 1px solid var(--border-primary);
-            border-inline-start: 1px solid var(--border-primary);
+    border-inline-start: 1px solid var(--border-primary);
     background-color: $color-white;
+
     @include xxl-down {
       position: fixed;
       inset-inline-end: 0;
@@ -128,15 +151,17 @@
       -o-transition: 0.3s ease-out;
       transition: 0.3s ease-out;
       -webkit-transform: translateX(105%);
-          -ms-transform: translateX(105%);
-              transform: translateX(105%);
+      -ms-transform: translateX(105%);
+      transform: translateX(105%);
       z-index: 5;
+
       [dir="rtl"] & {
         -webkit-transform: translateX(-105%);
-            -ms-transform: translateX(-105%);
-                transform: translateX(-105%);
+        -ms-transform: translateX(-105%);
+        transform: translateX(-105%);
       }
     }
+
     @include lg-down {
       max-height: calc(100dvh - calc($header-h + $sidebar-height));
       min-height: calc(100dvh - calc($header-h + $sidebar-height));
@@ -153,11 +178,11 @@
       max-height: calc(100dvh - calc($header-h + $chat-header));
       overflow-y: auto;
       overflow-x: hidden;
+
       @include lg-down {
-        max-height: calc(
-          100dvh - calc($header-h + $chat-header + $sidebar-height)
-        );
+        max-height: calc(100dvh - calc($header-h + $chat-header + $sidebar-height));
       }
+
       @include md-down {
         max-height: calc(100dvh - $chat-header);
       }
@@ -180,6 +205,7 @@
       inset-inline: 0;
       z-index: 4;
     }
+
     @include md-down {
       position: fixed;
       width: 100%;
