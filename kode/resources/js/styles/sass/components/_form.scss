@@ -214,3 +214,11 @@ input[type="checkbox"] {
             padding-block-start: 0;
   }
 }
+
+
+.date-range-wrapper{
+  width: 240px;
+  .react-datepicker-wrapper{
+    width: 100%;
+  }
+}

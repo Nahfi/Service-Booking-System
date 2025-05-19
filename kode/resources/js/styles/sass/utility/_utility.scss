@@ -159,12 +159,6 @@
   white-space: nowrap;
 }
 
-.w-max-content {
-  width: -webkit-max-content !important;
-  width: -moz-max-content !important;
-  width: max-content !important;
-}
-
 .apex-charts {
   min-height: 100px !important;
 }
@@ -766,7 +760,7 @@
 }
 
 .animate-spin {
-  animation: var(--animate-spin);
+  animation: spin 1s linear infinite;
 
   @keyframes spin {
     to {

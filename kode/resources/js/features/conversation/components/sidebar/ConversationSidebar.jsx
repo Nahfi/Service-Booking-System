@@ -1,17 +1,16 @@
 import { useMediaQuery } from "react-responsive";
 
 import {
-  BsChatDots,
-  BsInbox,
-  BsPlusLg,
-  BsWhatsapp
+    BsChatDots,
+    BsInbox,
+    BsPlusLg,
+    BsWhatsapp
 } from "react-icons/bs";
 import {
-  LuCalendarRange,
-  LuChartArea,
-  LuContact,
-  LuLayoutTemplate,
-  LuMessageSquareDot,
+    LuChartArea,
+    LuContact,
+    LuLayoutTemplate,
+    LuMessageSquareDot
 } from "react-icons/lu";
 import { Link, NavLink } from "react-router-dom";
 
@@ -42,8 +41,7 @@ const menuList = [
         icon: <LuContact />,
         to: "/conversation/contact",
         label: "Contact",
-        recent: 5,
-        allCount: "50k",
+        recent: null,
     },
     {
         icon: <LuLayoutTemplate />,
@@ -51,13 +49,13 @@ const menuList = [
         label: "Templates",
         recent: null,
     },
-    {
-        icon: <LuCalendarRange />,
-        to: "/conversation/subscriptions",
-        label: "Subscription",
-        recent: 5,
-        allCount: "50k",
-    },
+    // {
+    //     icon: <LuCalendarRange />,
+    //     to: "/conversation/subscriptions",
+    //     label: "Subscription",
+    //     recent: 5,
+    //     allCount: "50k",
+    // },
     {
         icon: <LuChartArea />,
         to: "/conversation/report",

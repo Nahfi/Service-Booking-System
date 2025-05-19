@@ -87,9 +87,9 @@ header.style-1 .header-left .header-logo img {
 }
 
 header.style-1 .nav-right {
-  @include flex($align:center,$gap:20px);
+  @include flex($align:center,$gap:15px);
   @include md-down {
-    gap: 15px;
+    gap: 10px;
   }
 }
 

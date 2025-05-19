@@ -1,6 +1,6 @@
-// @use "../../../../src/styles/sass/abstracts/" as *;
 
-@use "../../../styles/sass/abstracts/" as *;
+
+@use "@/styles/sass/abstracts/" as *;
 
 .modal {
   .modal-content {
@@ -36,12 +36,25 @@
     }
 
     .modal-body {
+      scroll-padding: 30px;
       padding: 25px;
       @include md {
         padding: 20px;
       }
       @include md-down {
         padding: 15px;
+      }
+      .modal-custom-footer{
+        @include flex($align:center,$justify:end,$gap:10px);
+        background-color: $card-bg;
+        border-block-start: 1px solid $border-secondary;
+        position: sticky;
+        width: 100%;
+        inset-inline: 0;
+        inset-block-end: -25px;
+        padding-block: 15px;
+        margin-inline: -5px;
+        margin-block: -15px;
       }
     }
 

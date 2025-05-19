@@ -20,12 +20,12 @@ import Report from "../features/conversation/pages/report/Report";
 import Subscription from "../features/conversation/pages/subscription/Subscription";
 import Dashboard from "../features/dashboard/Dashboard";
 import Error from "../features/error/Error";
+import Users from "../features/manage-user/Users";
 import PricingPlan from "../features/plans/PricingPlan";
 import Profile from "../features/profile/Profile";
 import Reports from "../features/reports/Reports";
 import CreateRole from "../features/role-permission/CreateRole";
 import ManageRole from "../features/role-permission/ManageRole";
-import ManageStaffs from "../features/role-permission/ManageStaffs";
 import Root from "./Root";
 
 
@@ -127,8 +127,8 @@ const router = createBrowserRouter(
                     element: <CreateRole />,
                 },
                 {
-                    path: "/roles/staff",
-                    element: <ManageStaffs />,
+                    path: "/users",
+                    element: <Users />,
                 },
                 {
                     path: "/setting",
