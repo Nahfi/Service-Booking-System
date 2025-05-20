@@ -3,6 +3,8 @@ import Templates from "@/features/conversation/pages/template/Templates";
 import WhatsappChat from "@/features/conversation/pages/whatsapp-chat/WhatsappChat";
 import Gateways from "@/features/settings/pages/gateways/Gateways";
 import General from "@/features/settings/pages/general/General";
+import NotificationTemplates from "@/features/settings/pages/notifications/NotificationTemplates";
+import SaveNotificationTemplates from "@/features/settings/pages/notifications/SaveNotificationTemplates";
 import WhatsappSetting from "@/features/settings/pages/whatsapp/WhatsappSetting";
 import Settings from "@/features/settings/Settings";
 import { createBrowserRouter } from "react-router-dom";
@@ -144,8 +146,16 @@ const router = createBrowserRouter(
                             element: <WhatsappSetting />,
                         },
                         {
-                            path: "/setting/gateway",
+                            path: "/setting/gateways",
                             element: <Gateways />,
+                        },
+                        {
+                            path: "/setting/notification-templates",
+                            element: <NotificationTemplates />,
+                        },
+                        {
+                            path: "/setting/notification-templates/create",
+                            element: <SaveNotificationTemplates />,
                         },
                     ],
                 },

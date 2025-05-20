@@ -7,12 +7,12 @@ import {
   BsTrash3,
   BsVolumeMute,
 } from "react-icons/bs";
-import Filter from "../../../../components/common/filter/Filter";
-import Field from "../../../../components/common/from/Field";
-import SelectBox from "../../../../components/common/from/SelectBox";
-import ModalWrapper from "../../../../components/common/modal/ModalWrapper";
-import PaginationWrapper from "../../../../components/common/pagination/PaginationWrapper";
-import Table from "../../../../components/common/table/Table";
+import Filter from "../../../../../components/common/filter/Filter";
+import Field from "../../../../../components/common/from/Field";
+import SelectBox from "../../../../../components/common/from/SelectBox";
+import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
+import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
+import Table from "../../../../../components/common/table/Table";
 
 
 const Attribute = () => {

@@ -1,4 +1,4 @@
-import { LuBell, LuLock, LuSettings } from "react-icons/lu";
+import { LuBell, LuLanguages, LuSettings, LuWebhook } from "react-icons/lu";
 import { NavLink, Outlet } from "react-router-dom";
 import BaseLayout from "../../components/layouts/BaseLayout";
 
@@ -14,24 +14,29 @@ const settingsMenu = [
         path: "/setting/general",
     },
     {
-        label: "Whatsapp",
+        label: "Whatsapp setup",
         icon: <FaWhatsapp />,
         path: "/setting/whatsapp",
     },
     {
-        label: "Gateway",
+        label: "Gateways configurations",
         icon: <LuSettings />,
-        path: "/setting/gateway",
+        path: "/setting/gateways",
     },
     {
-        label: "Notification",
+        label: "Language",
+        icon: <LuLanguages />,
+        path: "/setting/language",
+    },
+    {
+        label: "Notification Templates",
         icon: <LuBell />,
-        path: "/setting/notification",
+        path: "/setting/notification-templates",
     },
     {
-        label: "Security",
-        icon: <LuLock />,
-        path: "/setting/security",
+        label: "Web hooks setup",
+        icon: <LuWebhook />,
+        path: "/setting/web-hook",
     },
 ];
 
@@ -42,12 +47,6 @@ const Settings = () => {
 
     return (
         <BaseLayout className="p-0">
-            <>
-                {/* <PageHeader
-                    title={"Settings"}
-                    shortTitle={"Manage your roles"}
-                /> */}
-
                 <div className="row g-0 setting-wrapper">
                     <div className="col-auto setting-sidebar">
                         <div className="setting-sidebar-body">
@@ -82,7 +81,6 @@ const Settings = () => {
                         </Suspense>
                     </div>
                 </div>
-            </>
         </BaseLayout>
     );
 };

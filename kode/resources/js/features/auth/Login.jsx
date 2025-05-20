@@ -1,5 +1,4 @@
 
-import AuthFooter from "./components/AuthFooter";
 import AuthHeader from "./components/AuthHeader";
 import AuthLayout from "./components/AuthLayout";
 import LoginForm from "./components/LoginForm";
@@ -13,7 +12,7 @@ const Login = () => {
             description={"Sign in your account"}
           />
           <LoginForm />
-          <AuthFooter />
+          {/* <AuthFooter /> */}
         </>
       </AuthLayout>
     );

@@ -1,3 +1,4 @@
+import Button from "@/components/common/button/Button";
 import Field from "@/components/common/from/Field";
 import PageHeader from "@/components/common/Page-header/PageHeader";
 
@@ -6,10 +7,12 @@ const General = () => {
       <>
           <PageHeader
               title={"General"}
-              shortTitle={"You can manage your general settings here."}
+              breadcrumbs={[
+                  { title: "Settings" },
+              ]}
           />
 
-          <div>
+          <form>
               <div className="row g-4">
                   <div className="col-12">
                       <Field label="Campaign name">
@@ -21,7 +24,7 @@ const General = () => {
                           />
                       </Field>
                   </div>
-          
+
                   <div className="col-md-6">
                       <Field label="Sender name">
                           <input
@@ -32,7 +35,7 @@ const General = () => {
                           />
                       </Field>
                   </div>
-          
+
                   <div className="col-md-6">
                       <Field label="Choose Gateway">
                           <select
@@ -48,7 +51,7 @@ const General = () => {
                           </select>
                       </Field>
                   </div>
-          
+
                   <div className="col-12">
                       <Field label="Phone Number" required>
                           <div className="row g-1">
@@ -79,7 +82,16 @@ const General = () => {
                       </Field>
                   </div>
               </div>
-          </div>
+
+              <div className="d-flex align-items-center justify-content-end mt-4">
+                  <Button
+                      type="submit"
+                      className="i-btn btn--primary btn--lg rounded-3"
+                  >
+                      Save
+                  </Button>
+              </div>
+          </form>
       </>
   );
 }

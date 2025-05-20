@@ -5,7 +5,7 @@ import "./pagination.scss";
 const PaginationWrapper = () => {
   return (
     <div className="pagination-wrapper">
-      <Button className="i-btn btn--dark btn--md outline rounded-3">
+      <Button className="btn--dark btn--md outline rounded-pill">
         <BsChevronLeft /> Previous
       </Button>
 
@@ -27,7 +27,7 @@ const PaginationWrapper = () => {
         </Link>
       </nav>
 
-      <Button className="i-btn btn--dark btn--md outline rounded-3">
+      <Button className="btn--dark btn--md outline rounded-pill">
         Next <BsChevronRight />
       </Button>
     </div>

@@ -164,6 +164,10 @@ input[type="checkbox"] {
   
 }
 
+.input-group-select{
+  border: none;
+  background-color: $light-bg !important;
+}
 
 .input-clearable-wrapper {
   position: relative;
@@ -222,3 +226,4 @@ input[type="checkbox"] {
     width: 100%;
   }
 }
+
