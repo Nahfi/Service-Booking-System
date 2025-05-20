@@ -15,7 +15,6 @@ use Illuminate\Support\Arr;
 use Modules\Settings\Models\File;
 use Throwable;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -56,12 +55,10 @@ trait Fileable
                     mkdir($location, 0755, true);
                 switch (substr($file->getMimeType(), 0, 5)) {
                     case 'image':
-                        $image = Image::make(file_get_contents($file));
+                        $image = Image::read(file_get_contents($file));
                         if (isset($size)) {
                             list($width, $height) = explode('x', strtolower($size));
-                            $image->resize($width, $height, function ($constraint): void {
-                                $constraint->aspectRatio();
-                            });
+                            $image->resize($width, $height);
                         }
                         $image->save($imagePath);
                         break;

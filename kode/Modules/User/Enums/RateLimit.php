@@ -4,8 +4,11 @@ namespace Modules\User\Enums;
 enum RateLimit: string
 {
     case LOGIN = '5,1'; 
+    case LOGOUT = '4,1'; 
     case REGISTER = '3,1'; 
     case PASSWORD_RESET = '3,5'; 
+    case USER = '15,2'; 
+    case SETTINGS = '10,2'; 
 
     public function attempts(): int
     {

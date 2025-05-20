@@ -21,8 +21,7 @@ enum SettingKey: string
     case DEFAULT_MAIL_TEMPLATE          = "default_mail_template";
     case DEFAULT_PUSH_TEMPLATE          = "default_push_template";
 
-    #Super Admin / Affiliate
-    
+
     case LANGUAGES                      = "languages";
     case NOTIFICATION_GATEWAY           = "notification_gateway";
 
@@ -30,6 +29,7 @@ enum SettingKey: string
     case SMS_GATEWAY                    = "sms_gateway";
     case FIREBASE_GATEWAY               = "firebase_gateway";
     case DEFAULT                        = "default";
+    case GENERAL                        = "general";
     case SIGN_IN_TITLE                  = "sign_in_title";
     case SIGN_UP_TITLE                  = "sign_up_title";
     case COPY_RIGHT_TEXT                = "copy_right_text";
@@ -46,6 +46,8 @@ enum SettingKey: string
     case STORAGE                        = "storage";
     case TIME_ZONE                      = "time_zone";
     case LOGO                           = "logo";
+    case FAVICON                         = "favicon";
+    case META_IMAGE                     = "meta_image";
     case SITE_LOGO                      = "site_logo";
 
     case PLAY_STORE_URL                 = "play_store_url";

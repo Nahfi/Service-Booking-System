@@ -1,5 +1,6 @@
 {
     "user": true,
     "settings": true,
-    "contact": true
+    "contact": true,
+    "controller": true
 }

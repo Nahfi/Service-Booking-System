@@ -12,12 +12,12 @@ use Spatie\RobotsMiddleware\RobotsMiddleware;
 
 Route::get('/{any?}', function () {
 
-    if (request()->server('HTTP_USER_AGENT') && str_contains(request()->server('HTTP_USER_AGENT'), 'bot')) {
-        $path = public_path('build' . request()->path() . '/index.html');
-        if (file_exists($path)) {
-            return response()->file($path);
-        }
-    }
+    // if (request()->server('HTTP_USER_AGENT') && str_contains(request()->server('HTTP_USER_AGENT'), 'bot')) {
+    //     $path = public_path('build' . request()->path() . '/index.html');
+    //     if (file_exists($path)) {
+    //         return response()->file($path);
+    //     }
+    // }
     return view('app');
     
 })->middleware(RobotsMiddleware::class)->where('any',  '^(?!api).*$');

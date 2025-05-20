@@ -137,7 +137,6 @@ class Main extends Provider
 
         
         #REGISTER CUSTOM API ROUTE
-
         Route::prefix(GlobalConfig::USER_API_ROUTE_PREFIX)
                     ->middleware(GlobalConfig::GLOBAL_MIDDLEWARE) 
                     ->group(__DIR__ . '/../Routes/api/v1/api.php');
