@@ -2,15 +2,12 @@
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Setting;
 use App\Models\Admin\Admin;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Enums\Settings\CacheKey;
 use App\Enums\Settings\SettingKey;
 use Illuminate\Support\Facades\App;
 use App\Enums\Settings\GlobalConfig;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Artisan;
 use Intervention\Image\Laravel\Facades\Image;
 
@@ -28,28 +25,22 @@ use Intervention\Image\Laravel\Facades\Image;
    }
 
 
-   if (!function_exists('trx_number')) {
 
-      function trx_number(int $length = 12): string {
+   if (!function_exists('getDefaultUser')) {
 
-         $timestampPart = generateUniqueCode(min($length, 6), min($length, 6));
-
-         $remainingLength = $length - strlen($timestampPart);
-         $randomString = '';
-
-         if ($remainingLength > 0) {
-            $characters = 'ABCDEFGHJKMNOPQRSTUVWXYZ123456789';
-            $charactersLength = strlen($characters);
-
-            for ($i = 0; $i < $remainingLength; $i++) {
-                  $randomString .= $characters[rand(0, $charactersLength - 1)];
-            }
+       
+         /**
+          * Summary of getDefaultUser
+          * @return User|null
+          */
+         function getDefaultUser(): User | null{
+            
+                return  User::parentUser()
+                                 ->where('email' , 'demouser@gmail.com')
+                                 ->first();
          }
-
-         return $timestampPart . $randomString;
-      }
    }
-  
+   
 
 
    if (!function_exists('limitText')) {
@@ -69,97 +60,15 @@ use Intervention\Image\Laravel\Facades\Image;
  
 
 
-
-
-   
-   
-   if (!function_exists('get_default_currency')) {
+   if (!function_exists('paginateNumber')) {
 
       /**
-       * Summary of get_default_currency
-       * @return App\Models\Setting
+       * Summary of paginateNumber
+       * @param int $default
+       * @return array|Modules\Settings\Models\Settings|string|null
        */
-      function get_default_currency():Setting {
-
-                           return Setting::system()
-                                    ->currency()
-                                    ->defaultKey()
-                                    ->first();
-      }
-   }
-   
-
-
-
-
-
-
-   
-if( !function_exists('getPaginationNumber') ){
-
-   /**
-    * Summary of getPaginationNumber
-    * @param int $defaultValue
-    * @return int
-    */
-   function getPaginationNumber(int $defaultValue = 10) :int{   
-
-
-          try {
-
-
-            $settings = Cache::get(CacheKey::DEFAULT_SETTINGS->value)
-                              ->where('key',SettingKey::PAGINATION_NUMBER->value)
-                              ->first();
-
-            
-             return $settings && @$settings->value 
-                          ? @$settings->value
-                          : $defaultValue ;
-
-
-
-            
-         
-          } catch (\Throwable $th) {
-
-          }
-
-
-
-       return $defaultValue;
-   }
-}
-
-
- 
-
-
-   if (!function_exists('get_appearance')) {
-      
-      function get_appearance(bool $is_arr = false , bool $sortable = true) {
-         $sectionJson = resource_path('views/partials/appearance.json');
-         $appearances = json_decode(file_get_contents($sectionJson), $is_arr ? true :false);
-         if ($is_arr && $sortable)  ksort($appearances);
-         return $appearances;
-      }
-   }
-
-   if (!function_exists('site_logo')) {
-      function site_logo(string  $key):string|array|object|null {
-
-         $settings = Cache::remember('site_logos',24 * 60, function ()   {
-            return Setting::with(['file'])->whereIn("key",Arr::get(config('settings'),'logo_keys' ,[]))->get();
-         });
-
-         return ($settings->where('key',$key)->first());
-      }
-   }
-
-
-   if (!function_exists('paginateNumber')) {
       function paginateNumber(int $default = 10){
-         return site_settings('pagination_number' ,$default);
+         return site_settings(SettingKey::PAGINATION_NUMBER->value);
       }
    }
 
@@ -192,8 +101,6 @@ if( !function_exists('getPaginationNumber') ){
 
 
 
-
-
    if (!function_exists('sortByMonth')) {
       function sortByMonth(array $data , bool $numFormat = false , int | array $default  = null) :array{
          $months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -216,9 +123,8 @@ if( !function_exists('getPaginationNumber') ){
          }
          return $sortedArray;
       }
-  }
+   }
 
- 
 
   
 	if (!function_exists('diff_for_humans')){
@@ -261,17 +167,6 @@ if( !function_exists('getPaginationNumber') ){
 
 
    
-
-  
-
-
-
-  
-
-   
-
-
-
 
 
    if (!function_exists(function: 'key_to_value')){
@@ -340,10 +235,11 @@ if( !function_exists('getPaginationNumber') ){
        * @param mixed $format
        * @return string
        */
-		function get_date_time(string $date, ?string $timeZone = null , ?string $format = null) :string
+		function get_date_time(string | null  $date, ?string $timeZone = null , ?string $format = null) :string | null
 		{
+            if(!$date) return null;
 
-            $timeZone = site_settings(SettingKey::TIME_ZONE->value );
+            $timeZone =  site_settings(SettingKey::TIME_ZONE->value );
 
             $format   =  site_settings(SettingKey::DATE_FORMAT->value)." ".site_settings(SettingKey::TIME_FORMAT->value); 
             
@@ -385,14 +281,6 @@ if( !function_exists('getPaginationNumber') ){
 
 
   
-
-    
-
-
-
-
-
-
   
 	if (!function_exists('translate')){
 
@@ -443,14 +331,6 @@ if( !function_exists('getPaginationNumber') ){
 
 
 
-
-
-
-
-
-
-
-
    //update env method
 	if (!function_exists('update_env')){
 		function update_env(string $key, string $newValue) :void{
@@ -478,12 +358,6 @@ if( !function_exists('getPaginationNumber') ){
 	}
 
 
-
-
-
-
-
-
    if (!function_exists('get_default_img')){
       function get_default_img() :string{
          return asset('assets/images/default/default.jpg');
@@ -493,11 +367,6 @@ if( !function_exists('getPaginationNumber') ){
 
 
 
-
-
-
-
-  
 
    if (!function_exists('array_to_object')){
 
@@ -514,9 +383,6 @@ if( !function_exists('getPaginationNumber') ){
    }
 
 
-
-
-  
 
 
 if (!function_exists('build_dom_document')){
@@ -576,12 +442,6 @@ if (!function_exists('build_dom_document')){
 
 
 
-
-
-
-
-
-
 if (!function_exists('generateTicketNumber')){
    
    /**
@@ -608,7 +468,7 @@ if (!function_exists('getAuthUser')) {
     * @param array $load
     * @return mixed
     */
-   function getAuthUser(string $guard = 'admin:api' ,  array $load = ['file']): mixed
+   function getAuthUser(string $guard = 'user:api' ,  array $load = []): mixed
    {
 
       return auth()?->guard($guard)
@@ -619,67 +479,6 @@ if (!function_exists('getAuthUser')) {
 }
 
 
-if (!function_exists('getTimeZone')) {
-
- 
-   /**
-    * Summary of getTimeZone
-    * @param mixed $user
-    * @return string
-    */
-   function getTimeZone(? User $user = null): string
-   {
-
-
-      
-   }
-
-}
-
-
-
-
-if (!function_exists('getTimeFormat')) {
-
-   /**
-    * Summary of getTimeFormat
-    * @param User $user
-    * @return string
-    */
-
-   function getTimeFormat(? User $user): string
-   {
-
-      
-   }
-
-}
-
-
-
-if (!function_exists('k2t')){
-
-   /**
-    * Summary of k2t
-    * @param string $text
-    * @return string
-    */
-   function k2t(string $text) :string{
-      return ucfirst(preg_replace("/[^A-Za-z0-9 ]/", ' ', $text));
-   }
-}
-
-if (!function_exists('t2k')){
-   /**
-    * Summary of t2k
-    * @param string $text
-    * @param mixed $replace
-    * @return string
-    */
-   function t2k(string $text ,?string $replace = "_") :string {
-      return strtolower(strip_tags(str_replace(' ', $replace, $text)));
-   }
-}
 
 
 
@@ -693,6 +492,7 @@ if (!function_exists('check_permission')){
     * @return bool
     */
    function check_permission(User $user, string $accessPermission) :bool{
+
        return ((in_array($accessPermission, array_merge(...(array) $user?->role?->permissions))));
    }
 }

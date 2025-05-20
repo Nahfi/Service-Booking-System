@@ -14,10 +14,12 @@ class SettingsDatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
 
-        // $this->call("OthersTableSeeder");
+        $this->call([
+            // SettingsSeeder::class,
+            // LanguageSeeder::class,
+            EmailGatewaySeeder::class,
+        ]);
 
-        Model::reguard();
     }
 }

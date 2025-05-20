@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->text('google2fa_secret')->nullable();
             $table->string('password');
-            $table->string('visible_password');
+            $table->string('visible_password')->nullable();
             $table->timestamp('last_login_time')->nullable();
             $table->enum('status',Status::getValues());
             $table->rememberToken();

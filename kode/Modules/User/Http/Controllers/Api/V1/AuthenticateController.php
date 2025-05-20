@@ -32,11 +32,15 @@ class AuthenticateController extends Controller
         $rememberMe  = $request->input('remember_me');
         $deviceName  = $request->input('device_name');
         
-
         try {
 
             switch (true) {
                 case $user && Hash::check($request->input("password"), $user->password):
+
+
+
+                    $this->authService->verifyTwoFactorCode($user);
+                    
 
                     $accessToken = $this->authService->getAccessToken(
                                                                         user       : $user,
@@ -44,7 +48,9 @@ class AuthenticateController extends Controller
                                                                         rememberMe :  $rememberMe  
                                                                      );
 
-
+                    $this->authService->setLocale($user);
+                    $this->authService->createSession($user , $accessToken);
+                    
                     return ApiResponse::asSuccess()
                                     ->withData(['access_token' => $accessToken])
                                     ->append( 'user', new UserResource( $user))
@@ -86,23 +92,26 @@ class AuthenticateController extends Controller
         $user->fcm_token = null;
         $user->save();
 
-        if($logoutFromAllDevice) $user->tokens()->delete();
+        $token = request()->bearerToken();
+        $hashedToken = hash('sha256', explode('|', $token)[1] ?? '');
 
         switch ($logoutFromAllDevice) {
             case true:
                 $user->tokens()->delete();
+                $user->sessions()->delete();
                 break;
 
             case false:
             default:
                 $user->currentAccessToken()?->delete();
+                $user->sessions()
+                        ->where('token', $hashedToken)
+                        ->delete();;
                 break;
         }
 
-        #FORGET SETTINGS AND USER PARENT CACHE
-        $targetId = $user->parent_id ?: $user->id;
-        Cache::forget('user:settings:' . $targetId);
-        Cache::forget('user:parent:' . $targetId);
+        #FORGET CACHE
+        optimize_clear();
 
         return ApiResponse::asSuccess()
                          ->build();

@@ -4,6 +4,7 @@ namespace Modules\Settings\Models;
 
 use App\Enums\Common\Status;
 use App\Enums\Settings\SettingKey;
+use App\Models\Scopes\UserScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,6 +14,22 @@ class Settings extends Model
 {
     use HasFactory;
 
+
+
+    /**
+     * Summary of booted
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new UserScope);
+            static::creating(callback: function (Model $model): void {
+                $parentUser = parent_user();
+                if($parentUser){
+                    $model->user_id = parent_user()->id;
+                }
+            });
+        }
 
      /**
      * The attributes that are mass assignable.
@@ -41,11 +58,11 @@ class Settings extends Model
 
 
     /**
-     * Summary of scopeDefault
+     * Summary of scopeDefaultgGroup
      * @param \Illuminate\Database\Eloquent\Builder $q
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeDefault(Builder $q): Builder{
+    public function scopeDefaultgGroup(Builder $q): Builder{
         return $q->where('group' , SettingKey::DEFAULT->value);
     }
 
@@ -99,11 +116,11 @@ class Settings extends Model
 
 
     /**
-     * Summary of scopeDefaultKey
+     * Summary of scopeDefault
      * @param \Illuminate\Database\Eloquent\Builder $q
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeDefaultKey(Builder $q): Builder{
+    public function scopeDefault(Builder $q): Builder{
         return $q->where('is_default' , true);
     }
 
@@ -118,6 +135,10 @@ class Settings extends Model
     public function scopeActive(Builder $q): Builder{
         return $q->where('status',Status::ACTIVE);
     }
+
+
+
+
 
  
 }

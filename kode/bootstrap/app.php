@@ -6,6 +6,7 @@ use App\Http\Middleware\CorsMiddleware;
 use App\Http\Middleware\ExceptionHandlerMiddleware;
 use App\Http\Middleware\Sanitization;
 use App\Http\Middleware\UserApiAuthMiddleware;
+use App\Http\Middleware\UserPermissions;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -27,11 +28,12 @@ return Application::configure(basePath: dirname(__DIR__))
       
             $middleware->alias([
     
-                'user.api.token'     => UserApiAuthMiddleware::class,
-                'sanitization'       => Sanitization::class,
-                'exception.handler'  => ExceptionHandlerMiddleware::class,
-                'cors'               => CorsMiddleware::class,
-                'app.verification'   => ApplicationVerification::class
+                'user.api.token'            => UserApiAuthMiddleware::class,
+                'user.permission.check'     => UserPermissions::class,
+                'sanitization'              => Sanitization::class,
+                'exception.handler'         => ExceptionHandlerMiddleware::class,
+                'cors'                      => CorsMiddleware::class,
+                'app.verification'          => ApplicationVerification::class
 
             ]);
         
@@ -40,9 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
    
         $exceptions->render(function (Exception $e, Request $request) {
 
-
-      
-            if (
+             if (
                 $e instanceof \Illuminate\View\ViewException  &&
                 str_contains($e->getMessage(), 'Vite manifest not found')
             ) {

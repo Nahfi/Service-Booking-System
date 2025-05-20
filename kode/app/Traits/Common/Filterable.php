@@ -16,7 +16,7 @@ trait Filterable
      * @return Builder
      */
     public function scopeRecycle(Builder $q): Builder{
-        return $q->when(value: request()->routeIs(patterns: 'admin.*.recycle.list'),
+        return $q->when(value: request()->has('is_trash'),
                       callback: fn(Builder $query): Builder => $query->onlyTrashed());
     }
 

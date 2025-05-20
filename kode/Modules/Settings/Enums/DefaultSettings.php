@@ -4,13 +4,26 @@ namespace Modules\Settings\Enums;
 
 
 use App\Enums\Common\Status;
+use App\Enums\Settings\GlobalConfig;
 use App\Enums\Settings\SettingKey;
 use App\Enums\Settings\StorageKey;
 use Illuminate\Support\Arr;
 
-enum DefaultSettings: string
+enum DefaultSettings
 {
 
+     CONST NUMERIC_KYES = [
+                              SettingKey::PAGINATION_NUMBER->value,
+                              SettingKey::MAX_FILE_SIZE->value,
+                              SettingKey::MAX_FILE_UPLOAD->value
+                         ];
+
+
+     const LOGO_KEYS =  [
+          SettingKey::SITE_LOGO->value,
+          SettingKey::FAVICON->value,
+          SettingKey::META_IMAGE->value,
+     ];
 
 
 
@@ -56,6 +69,12 @@ enum DefaultSettings: string
                          'password'  => '@@',
                          'root'      => '/'
                     ]),
+                    SettingKey::DEFAULT_MAIL_TEMPLATE->value  => "{{message}}",
+                    SettingKey::DEFAULT_SMS_TEMPLATE->value   => "{{message}}",
+                    SettingKey::DEFAULT_PUSH_TEMPLATE->value  => "{{message}}",
+
+
+
 
                ];
 
@@ -65,6 +84,17 @@ enum DefaultSettings: string
      }
 
 
+
+
+
+     /**
+      * Summary of isKeyContainsJsonValue
+      * @param mixed $key
+      * @return bool
+      */
+     public static function isKeyContainsJsonValue(string $key): bool{
+          return in_array($key,GlobalConfig::SETTINGS_JSON_KEYS);
+     }
 
 
 

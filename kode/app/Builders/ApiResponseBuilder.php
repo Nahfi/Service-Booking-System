@@ -32,7 +32,10 @@ class ApiResponseBuilder
   private array $appends = [];
 
   private  ? object $business =   null;
-  
+
+
+
+
 
   public function __construct(bool $success = true, int $code = Response::HTTP_OK, string $message = 'OK')
   {
@@ -137,12 +140,9 @@ class ApiResponseBuilder
      */
     private function formatResource(mixed $resource, mixed $resourceNamespace): mixed
     {
-        $business = $this?->business;
 
         if (!empty($resourceNamespace)) {
 
-            if ($business && method_exists($resourceNamespace, 'setBusiness'))   
-                            $resourceNamespace::setBusiness($business);
 
             if ($resource instanceof LengthAwarePaginator || $resource instanceof Collection) {
                 $resourceCollection = $resourceNamespace::collection($resource);

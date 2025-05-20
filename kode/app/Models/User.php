@@ -5,10 +5,9 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Enums\Common\Status;
+use App\Models\Scopes\UserScope;
 use App\Traits\Common\Filterable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Enums\Settings\SettingKey;
-use App\Traits\Subscriptionable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,6 +22,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Modules\Settings\Models\File;
 use Modules\Settings\Models\Settings;
 use Modules\User\Models\Role;
+use Modules\User\Models\UserSession;
 
 class User extends Authenticatable
 {
@@ -56,10 +56,24 @@ class User extends Authenticatable
         return [
             'password'          => 'hashed',
             'address'           => 'object',
+            'recovery_codes'    => 'object',
             'meta_data'         => 'object',
             'last_login_time'   => 'datetime',
             'email_verified_at' => 'datetime'
         
+        ];
+    }
+
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function hidden(): array
+    {
+        return [
+            'password'        
         ];
     }
 
@@ -69,7 +83,7 @@ class User extends Authenticatable
      */
     protected static function booted(): void
     {
- 
+
         static::creating(callback: function (Model $model): void {
             $model->uid = Str::uuid();
         });
@@ -113,6 +127,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id');
 
     }
+
+
+    /**
+     * Summary of sessions
+     * @return HasMany<UserSession, User>
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(UserSession::class);
+    }
     
 
 
@@ -124,7 +148,56 @@ class User extends Authenticatable
     public function scopeActive(Builder $q): Builder{
         return  $q->where('status',Status::ACTIVE);
     }
+    
 
+
+  
+    /**
+     * Summary of scopeChild
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @return Builder
+     */
+    public function scopeChild(Builder $q): Builder{
+        return  $q->whereNotNull('parent_id');
+    }
+
+
+
+
+
+    /**
+     * Summary of scopeParent
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @return Builder
+     */
+    public function scopeParentUser(Builder $q): Builder{
+        return  $q->whereNull('parent_id');
+    }
+
+
+
+    /**
+     * Summary of isParent
+     * @return bool
+     */
+    public function isParent(): bool{
+        return is_null($this->parent_id);
+    }
+
+
+
+    /**
+     * Summary of scopeExcludeSelfIfNotParent
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Models\User $user
+     * @return Builder
+     */
+    public function scopeExcludeSelfIfNotParent(Builder $query, User $user): Builder
+    {
+        return $user->isParent()
+                    ? $query
+                    : $query->where('id', '!=', $user->id);
+    }
 
 
     

@@ -250,8 +250,6 @@ enum GlobalConfig {
         ["name" => 'Zimbabwe', "code" => 'ZW']
     ];
 
-
-
     const LANG_CODES = [
         ['name' => 'Afghanistan', 'lang_code' => 'ps'],
         ['name' => 'Albania', 'lang_code' => 'sq'],
@@ -670,8 +668,9 @@ enum GlobalConfig {
     
 
     CONST SETTINGS_JSON_KEYS = [
-        "google_recaptcha",
-        'site_meta_keywords'
+        SettingKey::S3_CONFIGURATION->value,
+        SettingKey::FTP_CONFIGURATION->value,
+        SettingKey::MIME_TYPES->value,
     ];
 
 
@@ -715,12 +714,6 @@ enum GlobalConfig {
     ];
 
 
-    const LOGO_KEYS =  [
-        "site_logo",
-        "favicon",
-        "meta_image",
-        "auth_image",
-    ];
 
 
     const FILE_PATH_PREFIX   = 'assets/FileManager/files/';
@@ -746,14 +739,7 @@ enum GlobalConfig {
                 'size' => '150x150',
             ]
         ],
-        
-        'auth_image' => [
-            'user' => [
-                'path' => self::IMAGE_PATH_PREFIX.'user/auth_image',
-                'size' => '150x150',
-            ]
-        ],
-
+    
        
         'meta_image' => [
             'user' => [
@@ -781,29 +767,38 @@ enum GlobalConfig {
 
     const PERMISSIONS = [
 
-        "role_permission" => [ 
-            "view_roles",
-            "save_role",
-            "delete_role",
+
+        "user" => [ //checked
+            "view_user",
+            "save_user",
+            "destroy_user",
         ],
+
+        "role_permission" => [ // checked
+            "view_role",
+            "save_role",
+            "destroy_role",
+        ],
+
+
 
         "gateway_management" => [ 
             "view_gateway",
             "save_gateway",
-            "delete_gateway",
+            "destroy_gateway",
         ],
 
-        "language_management" => [ 
+        "language_management" => [ //checked
             "view_language",
             "save_language",
-            "delete_language",
+            "destroy_language",
         ],
 
 
-        "settings" => [ 
-            "view_settings",
-            "save_settings",
-            "delete_settings"
+        "settings" => [ //checked
+            "view_setting",
+            "save_setting",
+            "destroy_setting"
         ],
     ];
 

@@ -15,6 +15,8 @@ class CreateRolesTable extends Migration
     public function up()
     {
         Schema::create('roles', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id')->index()->nullable()->constrained(table: 'users');
             $table->string('name');
             $table->longText('permissions');
             $table->enum('status',Status::getValues());
