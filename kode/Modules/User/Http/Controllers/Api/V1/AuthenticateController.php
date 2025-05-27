@@ -8,7 +8,6 @@ use App\Facades\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\AuthenticateRequest;
 use Modules\User\Http\Resources\UserResource;
@@ -37,11 +36,8 @@ class AuthenticateController extends Controller
             switch (true) {
                 case $user && Hash::check($request->input("password"), $user->password):
 
-
-
                     $this->authService->verifyTwoFactorCode($user);
-                    
-
+                
                     $accessToken = $this->authService->getAccessToken(
                                                                         user       : $user,
                                                                         deviceName : $deviceName,
@@ -106,7 +102,7 @@ class AuthenticateController extends Controller
                 $user->currentAccessToken()?->delete();
                 $user->sessions()
                         ->where('token', $hashedToken)
-                        ->delete();;
+                        ->delete();
                 break;
         }
 

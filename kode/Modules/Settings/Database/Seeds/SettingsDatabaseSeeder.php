@@ -18,7 +18,8 @@ class SettingsDatabaseSeeder extends Seeder
         $this->call([
             // SettingsSeeder::class,
             // LanguageSeeder::class,
-            EmailGatewaySeeder::class,
+            // EmailGatewaySeeder::class,
+            NotificationTemplateSeeder::class
         ]);
 
     }

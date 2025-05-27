@@ -2,7 +2,9 @@
 
 
 use Illuminate\Support\Facades\Route;
+use Modules\Settings\Http\Controllers\Api\V1\EmailGatewayController;
 use Modules\Settings\Http\Controllers\Api\V1\LanguageController;
+use Modules\Settings\Http\Controllers\Api\V1\NotificationTemplateController;
 use Modules\Settings\Http\Controllers\Api\V1\SettingsController;
 use Modules\User\Enums\RateLimit;
 
@@ -25,9 +27,15 @@ use Modules\User\Enums\RateLimit;
         Route::group(['middleware' => ['throttle:' .RateLimit::SETTINGS->toThrottleString()]], function () {
 
             Route::apiResources(resources: [
-                'settings'    => SettingsController::class,
-                'languages'   => LanguageController::class,
+                'settings'                 => SettingsController::class,
+                'languages'                => LanguageController::class,
+                'email-gateways'           => EmailGatewayController::class,
+                'notification-templates'   => NotificationTemplateController::class,
             ]);
+
+
+            Route::post('/email-gateways/test',[EmailGatewayController::class ,'testGateway']);
+            Route::post('/email-gateways/make-default',[EmailGatewayController::class ,'makeDefault']);
 
             #CUSTOM LANGUAGE ROUTE
             Route::controller(LanguageController::class)->prefix('languages/')->group(function () {
@@ -38,10 +46,6 @@ use Modules\User\Enums\RateLimit;
                 Route::post('translate', 'translate');
 
             });
-
-
-            Route::apiResource('notification-templates', SettingsController::class);
-
 
 
         });

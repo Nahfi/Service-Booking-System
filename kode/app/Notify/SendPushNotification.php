@@ -3,16 +3,19 @@
 namespace App\Notify;
 
 use App\Enums\Settings\NotificationLogStatus;
-use App\Models\NotificationLog;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
+use Modules\Settings\Models\NotificationLog as ModelsNotificationLog;
 
 class SendPushNotification{
 
 
 
 
-    public static function generateOAuthToken($firebaseConfiguration) {
+    /**
+     * Summary of generateOAuthToken
+     * @param mixed $firebaseConfiguration
+     * @return mixed
+     */
+    public static function generateOAuthToken($firebaseConfiguration): mixed {
   
         $url = "https://www.googleapis.com/oauth2/v4/token";
     
@@ -37,6 +40,12 @@ class SendPushNotification{
         return isset($data['access_token']) ? $data['access_token'] : null;
     }
     
+
+    /**
+     * Summary of generateJWT
+     * @param mixed $firebaseConfiguration
+     * @return string
+     */
     public static function generateJWT($firebaseConfiguration) {
 
 
@@ -62,37 +71,32 @@ class SendPushNotification{
     }
 
 
+    
     /**
      * Summary of send
-     * @param \App\Models\NotificationLog $log
+     * @param \Modules\Settings\Models\NotificationLog $log
      * @param mixed $receiverInstance
+     * @param bool $broadcast
+     * @param bool $isEmployee
      * @return void
      */
-	public static function send(NotificationLog $log , mixed $receiverInstance, bool $broadcast, bool $isEmployee): void
+	public static function send(ModelsNotificationLog $log , mixed $receiverInstance): void
     {
         
         $status           = true;
         $responseMessage  = translate("Notification Send Successfully");
-        $payload = @$log?->custom_data?->push_notification?->payload;
+        $payload = $log?->custom_data?->push_notification?->payload;
 
 
         $data = [
-            "title"            => @$log->custom_data->subject,
-            "body"             => @$log->message,
-            "image"            => @$payload->image,
-            "type"             => (string)@$payload->type,
-            "payload_model_id" => (string)@$payload->payload_model_id,
+            "title"            => $log?->custom_data?->subject,
+            "body"             => $log->message,
+            "image"            => $payload?->image ?? null,
+            "type"             => (string) $payload->type,
+            "payload_model_id" => (string) $payload->payload_model_id,
         ];
-        if(@$payload->sender_model_id) $data['sender_model_id'] = (string)@$payload->sender_model_id;
-        // if(@$payload->shift_status) $data['shift_status'] = (string)@$payload->shift_status;
-
-        if(@$payload?->birthday_user) $data['birthday_user_id'] = (string)$payload->birthday_user->id;
-        
-        if ($receiverInstance instanceof \App\Models\Admin\Admin) {
-            $data['is_admin'] = !$receiverInstance?->is_affiliate_user ? 'yes' : 'no';
-        }
-
-
+        if($payload?->sender_model_id) $data['sender_model_id'] = (string)$payload->sender_model_id;
+       
       
         try {
 
@@ -111,29 +115,13 @@ class SendPushNotification{
             ];
 
 
-            $postData = $isEmployee 
-                            ? [
-                               "message" => [
-                                    "data" => $data,
-                               ]
-                            ] : [
-                                "message" => [
-                                    "data" => $data,
-                                    // "notification" => [
-                                    //     "title" => (string)@$log->custom_data->subject,
-                                    //     "body"  => (string)@$log->message,
-                                    //     "image" => (string)@$payload->image,
-                                    // ]
-                                ]
-                            ];
+            $postData = [
+                            "message" => [
+                                "data" => $data,
+                            ]
+                        ];
 
-            if ($broadcast) {
-                $postData['message']['topic'] = @$payload->type;
-                
-            } else {
-                $postData['message']['token'] = $receiverInstance->fcm_token;
-            }
-
+           $postData['message']['token'] = $receiverInstance->fcm_token;
             
 
             $postData = json_encode($postData);
@@ -147,11 +135,6 @@ class SendPushNotification{
             curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
             $result = curl_exec($ch);
-
-
-
-
-
 
             curl_close($ch);
 
@@ -176,7 +159,6 @@ class SendPushNotification{
         $log->save();
 
 
-		
     }
 
 

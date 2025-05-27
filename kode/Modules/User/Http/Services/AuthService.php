@@ -3,16 +3,23 @@
 
 namespace Modules\User\Http\Services;
 
+use App\Traits\Common\ModelAction;
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Response;
 use App\Enums\Settings\TokenKey;
+use App\Facades\ApiResponse;
+use App\Traits\Common\Notify;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Modules\Settings\Models\Settings;
 use PragmaRX\Google2FA\Google2FA;
 
 class AuthService 
 {
+
+     use ModelAction , Notify;
 
     /**
      * Summary of findActiveUser
@@ -27,7 +34,7 @@ class AuthService
                             ->first();
       
           if (!$user) 
-              throw new Exception(translate("Invalid User"), Response::HTTP_NOT_FOUND);
+              throw new Exception(translate("User not found"), Response::HTTP_NOT_FOUND);
         
           return $user;
      }
@@ -41,7 +48,7 @@ class AuthService
       */
      public function verifyTwoFactorCode(User $user): void{
 
-          if ($user->two_factor_enabled) {
+          if($user->two_factor_enabled) {
                
                if (!request()->has('code')) 
                     throw new Exception(translate("2FA code required"), Response::HTTP_NOT_FOUND);
@@ -83,40 +90,77 @@ class AuthService
   
 
      
-     
      /**
-      * sendEmailVerificationCode
-      *
-      * @param User $user
-      * 
+      * Summary of sendEmailVerificationCode
+      * @param string $email
+      * @param string $templateKey
       * @return JsonResponse
       */
-     public function sendEmailVerificationCode(User $user): JsonResponse
-     {
-        //   $templateKey = NotificationTemplateEnum::REGISTRATION_VERIFY->value;
+     public function sendEmailVerificationCode(string $email ,  string $templateKey): JsonResponse{
+     
+          $user    = $this->findActiveUser(['email' => $email]);
 
-        //   $otp         = $this->saveOTP($user, $templateKey, true);
-        //   $ipInfo      = get_ip_info();
+          $this->verifyTwoFactorCode($user);
 
-        //   $this->sendNotification(templateKey: NotificationTemplateEnum::REGISTRATION_VERIFY->value, data: [
-        //        'template_code' => [
-        //             "otp_code"          => $otp->otp,
-        //             "ip"                => $ipInfo['ip'],
-        //             "time"              => Carbon::now(),
-        //             "operating_system"  => $ipInfo['os_platform'],
-        //        ],
-        //        'receiver_model' => $user
-        //   ]);
+          $parentUser =     !$user->parent_id 
+                                ? $user 
+                                : $this->findActiveUser(['parent_id' => $user->id]);
+          
+          $otp         = $this->saveOTP($user, $templateKey, true);
 
-        //   return ApiResponse::asSuccess()
-        //                            ->withMessage(translate('Check your email an email verification code sent successfully'))
-        //                            ->setBusiness($user)
-        //                            ->withData($user , UserResource::class)
-        //                            ->append('email', $user->email)
-        //                            ->append('token',$this->getAccessToken($user))
-        //                            ->append('response_identification', NotificationKey::EMAIL_UNVERIFIED->value)
-        //                            ->build();
+          $ipInfo      = getIpInfo();
+
+          $this->sendNotification(templateKey:$templateKey, data: [
+               'template_code' => [
+                    "otp_code"          => $otp->otp,
+                    "ip"                => $ipInfo['ip'],
+                    "time"              => Carbon::now(),
+                    "operating_system"  => $ipInfo['os'],
+               ],
+               'receiver_model' => $user
+          ] , parentUser: $parentUser);
+
+          return ApiResponse::asSuccess()
+                                   ->withMessage(translate('Check your email an email verification code sent successfully'))
+                                   ->build();
      }
+
+
+     /**
+      * Summary of verifyAndUpdatePassword
+      * @param \Illuminate\Http\Request $request
+      * @throws \Exception
+      * @return JsonResponse
+      */
+     public function verifyAndUpdatePassword(Request $request): JsonResponse{
+
+
+        $user    = $this->findActiveUser(['email' => $request->input('email')]);
+
+        $password = $request->input('password');
+
+        $otp = $user->otp()
+                         ->where('otp', $request->input('verification_code'))
+                         ->first();
+
+        if (!$otp)
+            throw new \Exception(
+                translate('Invalid verification code'),
+                Response::HTTP_UNPROCESSABLE_ENTITY
+            );
+
+        $user->password         = $password;
+        $user->visible_password = $password;
+        $user->save();
+
+        $otp->delete();
+
+        return ApiResponse::asSuccess()
+            ->withMessage(translate('Password Updated'))
+            ->build();
+     }
+
+     
 
 
           

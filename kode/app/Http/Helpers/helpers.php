@@ -2,7 +2,6 @@
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Admin\Admin;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use App\Enums\Settings\SettingKey;
@@ -10,6 +9,8 @@ use Illuminate\Support\Facades\App;
 use App\Enums\Settings\GlobalConfig;
 use Illuminate\Support\Facades\Artisan;
 use Intervention\Image\Laravel\Facades\Image;
+use Stevebauman\Location\Facades\Location;
+use Jenssegers\Agent\Agent;
 
 
    if(!function_exists('optimize_clear')){
@@ -211,6 +212,46 @@ use Intervention\Image\Laravel\Facades\Image;
       }
   }
 
+
+
+   if (!function_exists('getIpInfo')) {
+
+         /**
+          * Summary of getIpInfo
+          * @param mixed $ip
+          * @return array{browser: bool|string, city: string|null, country: string|null, country_code: string|null, device: bool|string, ip: mixed, latitude: string|null, longitude: string|null, os: bool|string, region: string|null, timezone: string|null}
+          */
+         function getIpInfo(mixed  $ip = null): array{
+
+               $ip =  $ip  ?? request()->ip();
+               $location = Location::get('45.248.150.194');
+
+          
+               $agent = new Agent();
+               $os = $agent->platform();
+               $browser = $agent->browser();
+               $device = $agent->device();
+               
+
+               return [
+                     'ip'           => $ip,
+                     'country'      => is_object($location) ? $location->countryName ?? 'Unknown' : 'Unknown',
+                     'country_code' => is_object($location) ? $location->countryCode ?? null : null,
+                     'region'       => is_object($location) ? $location->regionName ?? 'Unknown' : 'Unknown',
+                     'city'         => is_object($location) ? $location->cityName ?? 'Unknown' : 'Unknown',
+                     'latitude'     => is_object($location) ? $location->latitude ?? null : null,
+                     'longitude'    => is_object($location) ? $location->longitude ?? null : null,
+                     'timezone'     => is_object($location) ? $location->timezone ?? null : null,
+                     'os'           => $os ?? 'Unknown',
+                     'browser'      => $browser ?? 'Unknown',
+                     'device'       => $device ?? 'Unknown',
+                  ];
+
+
+               
+         }
+
+   }
 
 
    if (!function_exists('generateTicketNumber')){

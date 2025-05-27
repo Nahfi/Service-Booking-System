@@ -3,9 +3,7 @@ namespace App\Notify;
 
 use App\Enums\Settings\NotificationLogStatus;
 use App\Enums\Settings\SettingKey;
-
-use App\Models\NotificationLog;
-
+use Modules\Settings\Models\NotificationLog;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Mailer;
@@ -14,13 +12,11 @@ class SendMail
 {
 
 
-
-
-
     /**
      * Summary of send
-     * @param \App\Models\NotificationLog $log
+     * @param \Modules\Settings\Models\NotificationLog $log
      * @param mixed $receiverInstance
+     * @return void
      */
     public static function send(NotificationLog $log , mixed $receiverInstance) :void
     {
@@ -31,38 +27,23 @@ class SendMail
             "102SENDGRID"   => "sendGrid",
         ];
 
-
         self::{$gatewayCode[$log->gateway->key]}($log ,  $receiverInstance );
 
 
     }
 
-    
-
+   
     /**
      * Summary of sendPhpMail
-     * @param \App\Models\NotificationLog $log
+     * @param \Modules\Settings\Models\NotificationLog $log
      * @param mixed $receiverInstance
      * @return void
      */
     public static function sendPhpMail(NotificationLog $log , mixed $receiverInstance) :void
     {
        
-        $emailFrom  = site_settings(SettingKey::EMAIL->value);   
+        $emailFrom  = site_settings(SettingKey::SITE_EMAIL->value);   
         $sitename   = site_settings(SettingKey::SITE_NAME->value);
-
-
-        if($log?->sender_model && $log?->sender_id){
-
-             $user = @(new $log->sender_model)->find($log?->sender_id);
-
-             if($user){
-
-                $emailFrom  = business_site_settings($user , SettingKey::EMAIL->value);   
-                $sitename   = business_site_settings($user , SettingKey::SITE_NAME->value);
-             }
-
-        }
 
          
         $status = true;
@@ -95,10 +76,9 @@ class SendMail
     }
 
     
-  
     /**
      * Summary of sendSMTPMail
-     * @param \App\Models\NotificationLog $log
+     * @param \Modules\Settings\Models\NotificationLog $log
      * @param mixed $receiverInstance
      * @return void
      */
@@ -162,11 +142,9 @@ class SendMail
      
     }
 
-
-   
     /**
      * Summary of sendGrid
-     * @param \App\Models\NotificationLog $log
+     * @param \Modules\Settings\Models\NotificationLog $log
      * @param mixed $receiverInstance
      * @return void
      */

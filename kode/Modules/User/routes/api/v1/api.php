@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\User\Enums\RateLimit;
 use Modules\User\Http\Controllers\Api\V1\AuthenticateController;
+use Modules\User\Http\Controllers\Api\V1\PasswordResetController;
 use Modules\User\Http\Controllers\Api\V1\ProfileController;
 use Modules\User\Http\Controllers\Api\V1\RoleController;
 use Modules\User\Http\Controllers\Api\V1\TwoFactorController;
@@ -27,6 +28,13 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
     
     #AUTH ROUTE
     Route::post('/login', [AuthenticateController::class,'login'])->middleware(['throttle:' .RateLimit::LOGIN->toThrottleString()]);
+
+    Route::middleware(['throttle:' .RateLimit::PASSWORD_RESET->toThrottleString()])->prefix('password')->controller(PasswordResetController::class)->group(function () {
+
+        Route::post('/verify-email', 'verifyEmail');
+        Route::post('/update', 'passwordUpdate');
+    });
+
 
     #USER ROUTE
     Route::group(['middleware' => ['auth:sanctum', 'user.api.token']], function () {
@@ -58,11 +66,8 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
                 Route::post('verify', 'verify');
                 Route::post('disable', 'disable');
                 Route::post('recovery-code/regenerate', 'regenerateRecoveryCodes');
-
             });
 
-
-          
             Route::post('roles/update-status', [RoleController::class, 'updateStatus']);
             Route::post('sessions/logout-others', [UserSessionController::class, 'logoutOtherSessions']);
 

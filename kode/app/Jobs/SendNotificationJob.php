@@ -4,12 +4,11 @@ namespace App\Jobs;
 
 use App\Enums\Settings\SettingKey;
 
-use App\Models\NotificationLog;
 use App\Notify\SendMail;
 use App\Notify\SendPushNotification;
-use App\Notify\SendSMS;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Modules\Settings\Models\NotificationLog as ModelsNotificationLog;
 
 class SendNotificationJob implements ShouldQueue
 {
@@ -18,11 +17,9 @@ class SendNotificationJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public NotificationLog $log, public bool $broadcast, public bool $isEmployee)
+    public function __construct(public ModelsNotificationLog $log)
     {
         $this->log          = $log;
-        $this->broadcast    = $broadcast;
-        $this->isEmployee   = $isEmployee;
     }
 
     /**
@@ -41,10 +38,8 @@ class SendNotificationJob implements ShouldQueue
                     SendMail::send($this->log, $receiverInstance);
                     break;
     
-             
-    
                 case ($subGroup == SettingKey::FIREBASE_GATEWAY->value):
-                    SendPushNotification::send($this->log, $receiverInstance, $this->broadcast, $this->isEmployee);
+                    SendPushNotification::send($this->log, $receiverInstance);
                     break;
             }
           

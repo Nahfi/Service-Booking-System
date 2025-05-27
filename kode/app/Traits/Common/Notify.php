@@ -3,18 +3,18 @@
 
 namespace App\Traits\Common;
 
-use App\Models\Setting;
+use App\Models\Scopes\UserScope;
 use Illuminate\Support\Arr;
 use App\Enums\Common\Status;
-use App\Models\NotificationLog;
 use App\Jobs\SendNotificationJob;
 use App\Enums\Settings\SettingKey;
 use App\Enums\Settings\GlobalConfig;
-use App\Models\DatabaseNotification;
-use App\Models\NotificationTemplate;
-use Illuminate\Database\Eloquent\Builder;
 use App\Enums\Settings\NotificationLogStatus;
 use App\Models\User;
+use Modules\Settings\Models\DatabaseNotification as ModelsDatabaseNotification;
+use Modules\Settings\Models\NotificationLog as ModelsNotificationLog;
+use Modules\Settings\Models\NotificationTemplate as ModelsNotificationTemplate;
+use Modules\Settings\Models\Settings;
 
 trait Notify
 {
@@ -22,150 +22,127 @@ trait Notify
     use Fileable;
 
 
+    
     /**
-     * sendNotification
-     *
+     * Summary of sendNotification
      * @param string $templateKey
-     * @param null|int|null $bo_id
      * @param array $data
-     * @param bool $broadcast
-     * @param bool $isEmployee
-     * 
+     * @param \App\Models\User|null $parentUser
      * @return bool
      */
-    public function sendNotification(string $templateKey, null|int $bo_id = null,  array $data = [], bool $broadcast = false, bool $isEmployee = false): bool
+    public function sendNotification(string $templateKey,  array $data = [] , User | null $parentUser = null): bool
     {
-        
-        $template = NotificationTemplate::when($bo_id , fn(Builder $builder): Builder =>
-                             $builder->where('bo_id', $bo_id))->where('slug', $templateKey)
-                             ->first();
 
+        if(!$parentUser) $parentUser = parent_user();
+        
+        $template = ModelsNotificationTemplate::withoutGlobalScope(UserScope::class)
+                                    ->where('key', $templateKey)
+                                    ->where('user_id', $parentUser->id)
+                                    ->first();
 
                              
         if (!$template) return false;
 
         $data['custom_data']['subject'] = $template->subject; 
 
-        $siteLogo = Setting::with(relations: ['file'])
-                            ->when($bo_id , 
-                            fn(Builder $q):Builder => $q->where('bo_id',$bo_id) , 
-                            fn(Builder $q):Builder =>   $q->system() )
-                            ->where('key',SettingKey::SITE_LOGO->value)
-                            ->where('group', SettingKey::LOGO->value)
-                            ->first();
-
-
-
 
         $messageData = [
-            'tmpCodes' => Arr::get($data, 'template_code'),
-            'userinfo' => Arr::get($data, 'receiver_model'),
-            'logo'     => $this->getimageURL(
-                                    file    : @$siteLogo->file , 
-                                    location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value][ $template->bo_id ?'admin' : 'business']['path']),
-        ];
-
-
-
-
-        $notifications = [
-
-            'email_notification' => [ 
-                                        'status'  => $template->email_notification, 
-                                        'gateway' => 'mailGateway', 
-                                        'body'    => $template->mail_body,
-                                        'global_template_key' => SettingKey::DEFAULT_MAIL_TEMPLATE->value
-                                    ],
-
-            'sms_notification' =>   [ 
-                                        'status'  => $template->sms_notification, 
-                                        'gateway' => 'smsGateway', 
-                                        'body'   => $template->sms_body,
-                                        'global_template_key' => SettingKey::DEFAULT_SMS_TEMPLATE->value
-                                    ],
-
-            'push_notification' =>  [
-                                        'status'  => $template->push_notification,
-                                        'gateway' => 'firebaseGateway', 
-                                        'body'    => $template->push_notification_body,
-                                        'global_template_key' => SettingKey::DEFAULT_PUSH_TEMPLATE->value
-                                    ]
+            'tmpCodes'   => Arr::get($data, 'template_code'),
+            'userinfo'   => Arr::get($data, 'receiver_model'),
+            'parentUser' => $parentUser 
         ];
 
         
+        if ($template->email_notification == Status::ACTIVE->value) {
 
+            $emailBody =   $template->mail_body;
 
+            $gateway =  Settings::withoutGlobalScope(UserScope::class)
+                                        ->where('user_id', $parentUser->id)
+                                        ->mailGateway()
+                                        ->default()
+                                        ->first();
 
-      
-        foreach ($notifications as $type => $details) {
- 
-            if ($details['status'] == Status::ACTIVE->value) {
+            if($gateway && !is_null($emailBody)){
+
+                $message = $this->replacePlaceholders( $emailBody,SettingKey::DEFAULT_MAIL_TEMPLATE->value,...$messageData);
                 
-
-                $gateway = getNotificationGateway($type , $details , $template , $bo_id );
-
-        
-                                        
-                if ($gateway && !is_null($details['body'])) {
-
-                    $message = $this->replacePlaceholders( $details['body'],$details['global_template_key'],$bo_id, ...$messageData);
-        
-
-      
-                    $this->createLog(gateway: $gateway, message: $message, data: $data, broadcast:$broadcast, isEmployee:$isEmployee);
-                }
+                $this->createLog(gateway: $gateway, message: $message, data: $data);
             }
+
         }
 
-        
+      
         if ($template->site_notificaton == Status::ACTIVE->value && $template->push_notification_body) {
             
-            $message = $this->replacePlaceholders($template->push_notification_body, SettingKey::DEFAULT_PUSH_TEMPLATE->value ,$bo_id, ...$messageData);
-            
-            $this->createDatabaseNotification(message: $message, data: $data);
+            $dbNotification = Arr::get($data ,'custom_data.push_notification');
+
+            if($dbNotification){
+
+                $message = $this->replacePlaceholders($template->push_notification_body, SettingKey::DEFAULT_PUSH_TEMPLATE->value , ...$messageData);
+                $receiverModel =  Arr::get($dbNotification , 'receiver_model');
+                if($receiverModel) $this->createDatabaseNotification(message: $message, data: $data);
+            }
+
         }
         
         return true;
     }
 
 
+    
     /**
      * Summary of replacePlaceholders
      * @param string $body
+     * @param string $settingsKey
      * @param array $tmpCodes
-     * @param object $userinfo
+     * @param mixed $userinfo
+     * @param null|\App\Models\User $parentUser
      * @return array|string
      */
     public function replacePlaceholders( string $body , 
                                          string $settingsKey ,
-                                         int | string | null $bo_id = null ,
                                          array $tmpCodes,
                                          mixed $userinfo, 
-                                         mixed $logo): array|string
+                                         null | User $parentUser  = null
+                                         ): array|string
     {
 
 
-         $siteName  =   site_settings(SettingKey::SITE_NAME->value);
-         $sitePhone =   site_settings(SettingKey::SITE_PHONE->value);
-         $email     =   site_settings(SettingKey::EMAIL->value);
+        $siteLogo = Settings::with(relations: ['file'])
+                    ->withoutGlobalScope(UserScope::class)
+                    ->where('user_id', $parentUser->id)
+                    ->where('key',SettingKey::SITE_LOGO->value)
+                    ->where('group', SettingKey::LOGO->value)
+                    ->first();
 
-         $globalTemplate =  site_settings($settingsKey);
 
-         if($bo_id){
+        $logo = $this->getimageURL(
+                                    file    : $siteLogo?->file , 
+                                    location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value]['user']['path']
+                                );
 
-            $user  = User::whereNull('parent_id')
-                               ->where('id',$bo_id)
-                               ->first();
-                        
-            if($user){
-                $siteName            =   business_site_settings($user , SettingKey::SITE_NAME->value);
-                $sitePhone           =   business_site_settings($user , SettingKey::SITE_PHONE->value);
-                $email               =   business_site_settings($user, SettingKey::EMAIL->value);    
-                $globalTemplate      =   business_site_settings($user, $settingsKey);    
 
-                
-            }           
-         }
+        $settings = Settings::with(relations: ['file'])
+                    ->withoutGlobalScope(UserScope::class)
+                    ->where('user_id', $parentUser->id)
+                    ->whereIn('key',[
+                        SettingKey::SITE_NAME->value,
+                        SettingKey::SITE_PHONE->value,
+                        SettingKey::SITE_EMAIL->value,
+                        $settingsKey])
+                    ->pluck('value','key')
+                    ->toArray();
+
+
+
+         $siteName  = Arr::get( $settings ,  SettingKey::SITE_NAME->value ,'system');
+
+         $sitePhone = Arr::get( $settings ,  SettingKey::SITE_PHONE->value ,'11233');
+
+         $email     = Arr::get( $settings ,  SettingKey::SITE_EMAIL->value ,'system@gmail.com');
+
+         $globalTemplate =  Arr::get( $settings ,  $settingsKey ,'{{message}}');
 
 
          return str_replace(
@@ -182,8 +159,8 @@ trait Notify
                                            "{{logo}}"
                                          ], 
                                          [ 
-                                             @$userinfo->username ?: @$userinfo->name, 
-                                             @$body , 
+                                             $userinfo->username?? $siteName , 
+                                             $body ?? translate('Dummy message') , 
                                              $siteName,
                                              $sitePhone,
                                              $email,
@@ -201,7 +178,7 @@ trait Notify
     /**
      * createLog
      *
-     * @param Setting $gateway
+     * @param Settings $gateway
      * @param string $message
      * @param array $data
      * @param bool $broadcast
@@ -209,9 +186,9 @@ trait Notify
      * 
      * @return void
      */
-    public function createLog(Setting  $gateway , string $message , array $data, bool $broadcast, bool $isEmployee): void{
+    public function createLog(Settings  $gateway , string $message , array $data): void{
 
-        $notificationLog = new NotificationLog();
+        $notificationLog = new ModelsNotificationLog();
 
         $receiverModel =  Arr::get($data , 'receiver_model');
 
@@ -222,18 +199,15 @@ trait Notify
 
         $notificationLog->gateway_id        = $gateway->id;
         $notificationLog->sender_model      = $senderModel ? get_class($senderModel) : null;
-        
         $notificationLog->sender_id         = $senderModel? $senderModel->id : null;
         $notificationLog->receiver_model    = $receiverModel ? get_class($receiverModel) : null;
-        
-        $notificationLog->receiver_id       = @$receiverModel?->id;
-
+        $notificationLog->receiver_id       = $receiverModel?->id;
         $notificationLog->custom_data       = $customData;
         $notificationLog->message           = $message;
         $notificationLog->status            = NotificationLogStatus::PENDING;
         $notificationLog->save();
         
-        SendNotificationJob::dispatchSync($notificationLog->load('gateway', 'receiver'), $broadcast, $isEmployee);
+        SendNotificationJob::dispatchSync($notificationLog->load('gateway', 'receiver'));
 
     }
 
@@ -246,23 +220,18 @@ trait Notify
      * @param array $data
      * @return void
      */
-    public function createDatabaseNotification(string $message , array $data ): void{
+    public function createDatabaseNotification(string $message , array $data): void{
 
         $dbNotification = Arr::get($data ,'custom_data.push_notification');
 
-        if($dbNotification){
+        $receiverModel =  Arr::get($dbNotification , 'receiver_model');
 
-            $receiverModel =  Arr::get($dbNotification , 'receiver_model');
-            if($receiverModel) {
-
-                $notification  = new DatabaseNotification();
-                $notification->receiver_model    = get_class($receiverModel);
-                $notification->reciever_id       = $receiverModel->id;
-                $notification->payload           = Arr::get($dbNotification , 'payload');
-                $notification->message           = $message;
-                $notification->is_read           = false;
-                $notification->save();
-            }
-        }
+        $notification  = new ModelsDatabaseNotification();
+        $notification->receiver_model    = get_class($receiverModel);
+        $notification->reciever_id       = $receiverModel->id;
+        $notification->payload           = Arr::get($dbNotification , 'payload');
+        $notification->message           = $message;
+        $notification->is_read           = false;
+        $notification->save();
     }
 }

@@ -20,8 +20,7 @@ class LanguageController extends Controller
 {
 
     use ModelAction;
-     public function __construct(protected LanguageService $languageService)
-    {
+    public function __construct(protected LanguageService $languageService){
         $this->middleware('user.permission.check:view_language')->only(['index','getTranslation']);
         $this->middleware('user.permission.check:save_language')->only(['store', 'update', 'updateStatus','translate','makeDefault']);
         $this->middleware('user.permission.check:destroy_language')->only(['destroy']);

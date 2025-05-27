@@ -23,6 +23,7 @@ use Modules\Settings\Models\File;
 use Modules\Settings\Models\Settings;
 use Modules\User\Models\Role;
 use Modules\User\Models\UserSession;
+use Modules\User\Models\VerificationCode;
 
 class User extends Authenticatable
 {
@@ -137,6 +138,17 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserSession::class);
     }
+
+
+    /**
+     * Summary of otp
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function otp(): MorphMany
+    {
+        return $this->MorphMany(VerificationCode::class, 'otpable');
+    }
+
     
 
 

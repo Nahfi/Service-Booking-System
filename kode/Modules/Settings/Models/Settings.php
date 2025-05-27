@@ -29,7 +29,7 @@ class Settings extends Model
                     $model->user_id = parent_user()->id;
                 }
             });
-        }
+    }
 
      /**
      * The attributes that are mass assignable.
