@@ -22,6 +22,8 @@
         .campaign-sidebar-body {
             @include flex($direction:column,
                 $gap:30px);
+                position: sticky;
+                top: 20px;
 
             .step-item {
                 @include flex($align: flex-start,
@@ -143,16 +145,16 @@
 
 .message-preview {
   position: sticky !important;
-  top: 70px;
+  top: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   position: relative;
   z-index: 1;
-  width: 330px;
-  height: 655px;
+  max-width: 330px;
+  width: 100%;
+  aspect-ratio: 8/16;
   overflow: hidden;
   margin: 0 auto;
   transform: translateX(15px);

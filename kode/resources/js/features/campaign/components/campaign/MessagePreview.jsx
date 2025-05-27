@@ -15,6 +15,7 @@ const MessagePreview = (props) => {
     buttonText,
     buttonSelectValue,
     urlText,
+    type
   } = props;
 
   const displayImages = images.slice(0, 4);

@@ -103,7 +103,7 @@
             position: relative;
             .message-content {
               padding: 12px;
-              font-size: 15px;
+              font-size: 14px;
               line-height: 1.6;
               @include md-down {
                 padding: 10px;
@@ -197,15 +197,14 @@
   }
 
   .chat-body-footer {
-    border: 1px solid $border-primary;
-    margin-inline: 15px;
-    margin-bottom: 15px;
+    border-top: 1px solid $border-primary;
+    // margin-inline: 15px;
+    // margin-bottom: 15px;
     padding: 12px 20px;
-    border-radius: $radius-16;
 
     @include md-down {
-      margin-inline: 10px;
-      margin-bottom: 10px;
+      // margin-inline: 10px;
+      // margin-bottom: 10px;
       padding: 10px 15px;
     }
   }

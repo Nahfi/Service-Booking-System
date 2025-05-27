@@ -3,7 +3,12 @@
 
 .conversation {
   --c-sidebar: 240px;
+  --c-sidebar-header:62px;
   $c-sidebar: var(--c-sidebar);
+  $c-sidebar-header:var(--c-sidebar-header);
+  @include xxl-down {
+    --c-sidebar-header:52px;
+  }
   @include lg-down {
     --c-sidebar: 100%;
   }
@@ -25,18 +30,18 @@
       inset-block-start: 0;
       inset-inline-start: 0;
       @include xxl-up {
-        min-height: calc(100dvh - 101px) !important;
-        max-height: calc(100dvh - 101px) !important;
+        min-height: calc(100dvh - $header-h ) !important;
+        max-height: calc(100dvh - $header-h) !important;
         overflow-y: auto;
         overflow-x: hidden;
       }
 
       @include xl {
-        min-height: calc(100dvh - 81px) !important;
+        min-height: calc(100dvh - $header-h) !important;
       }
 
       @include lg-up {
-        min-height: calc(100dvh - 71px);
+        min-height: calc(100dvh - $header-h);
         z-index: 2;
       }
 
@@ -48,7 +53,7 @@
       .sidebar-header {
         @include flex($align: center, $justify: space-between, $gap: 10px);
         border-bottom: 1px solid $border-primary;
-        height: 62px;
+        height: $c-sidebar-header;
         -webkit-padding-start: 30px;
         padding-inline-start: 30px;
         -webkit-padding-end: 10px;
@@ -56,10 +61,6 @@
         > h6 {
           font-size: 17px;
         }
-        @include xxl-down {
-          height: 52px;
-        }
-
         @include lg-down {
           all: unset;
         }
@@ -67,11 +68,11 @@
 
       .chat-menus-wrapper {
         @include xxl-up {
-          max-height: calc(100dvh - calc(62px + 101px)) !important;
+          max-height: calc(100dvh - calc($c-sidebar-header + $header-h)) !important;
         }
         @include lg-up {
           padding-block: 15px;
-          max-height: calc(100dvh - calc(52px + 81px));
+          max-height: calc(100dvh - calc($c-sidebar-header + $header-h));
           overflow-y: auto;
           overflow-x: hidden;
         }
@@ -80,7 +81,7 @@
           overflow-x: auto;
           overflow-y: hidden;
           padding-block: 0;
-          height: 62px;
+          height: 62px !important;
           @include flex($align: center);
         }
 
@@ -254,14 +255,14 @@
     }
   }
 
-  .main-content {
+  .conversation-content {
     max-width: calc(100% - $c-sidebar);
     width: 100%;
     @include lg-down {
       max-width: calc(100% - 0px);
     }
 
-    .main-content-body {
+    .conversation-content-body {
       padding: 30px;
 
       @include lg-down {

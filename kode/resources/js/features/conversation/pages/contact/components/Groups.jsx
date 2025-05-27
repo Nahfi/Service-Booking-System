@@ -10,11 +10,11 @@ import {
 
 import empty from "@/assets/images/empty.svg";
 import { LuUser } from "react-icons/lu";
-import Filter from "../../../../components/common/filter/Filter";
-import Field from "../../../../components/common/from/Field";
-import ModalWrapper from "../../../../components/common/modal/ModalWrapper";
-import PaginationWrapper from "../../../../components/common/pagination/PaginationWrapper";
-import Table from "../../../../components/common/table/Table";
+import Filter from "../../../../../components/common/filter/Filter";
+import Field from "../../../../../components/common/from/Field";
+import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
+import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
+import Table from "../../../../../components/common/table/Table";
 
 const Groups = () => {
   const [contactData, setContactData] = useState(null);

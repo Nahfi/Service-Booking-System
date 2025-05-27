@@ -1,5 +1,4 @@
 
-import AuthFooter from "./components/AuthFooter";
 import AuthHeader from "./components/AuthHeader";
 import AuthLayout from "./components/AuthLayout";
 import SignupForm from "./components/SignupForm";
@@ -13,7 +12,7 @@ const Signup = () => {
                     description={"Register to new account"}
                 />
                 <SignupForm />
-                <AuthFooter isSignup={"true"} />
+                {/* <AuthFooter isSignup={"true"} /> */}
             </>
         </AuthLayout>
     );

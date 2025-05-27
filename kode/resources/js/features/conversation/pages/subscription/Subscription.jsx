@@ -4,7 +4,7 @@ import PlanItem from "../../../plans/components/PlanItem";
 
 const Subscription = () => {
   return (
-    <div className="main-content-body">
+    <div className="conversation-content-body">
       <div className="mb-4">
         <PageHeader title="Subscription" description="Manage your profile" />
       </div>

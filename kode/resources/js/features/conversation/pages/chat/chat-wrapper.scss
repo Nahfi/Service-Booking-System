@@ -4,7 +4,6 @@
   --contact-sidebar: 345px;
   --profile-sidebar: 270px;
   --chat-header: 62px;
-  --header-h: 81px;
   --sidebar-height: 62px;
   $sidebar-height: var(--sidebar-height);
   $header-h: var(--header-h);
@@ -14,14 +13,9 @@
   @include xxl-down {
     --chat-header: 52px;
   }
-  @include xl {
-    --header-h: 81px;
-  }
   @include xl-down {
     --contact-sidebar: 300px;
-    --header-h: 72px;
   }
-
   @include md-down {
     --contact-sidebar: 100%;
   }

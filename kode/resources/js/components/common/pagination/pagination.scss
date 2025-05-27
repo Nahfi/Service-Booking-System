@@ -3,7 +3,7 @@
 .pagination-wrapper {
   @include flex(
     $align: center,
-    $justify: space-between,
+    $justify: end,
     $gap: 20px,
     $wrap: wrap
   );

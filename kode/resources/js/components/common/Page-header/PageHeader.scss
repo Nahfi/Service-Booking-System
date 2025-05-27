@@ -1,4 +1,4 @@
-@use "../../../styles/sass/abstracts/" as *;
+@use "@/styles/sass/abstracts/" as *;
 
 .page-header-wrapper {
   @include flex(
@@ -9,17 +9,10 @@
   );
   .page-header-left {
     h2 {
-      font-size: 30px;
+      font-size: 24px;
       color: $text-primary;
       margin-bottom: 5px;
       margin-top: -8px;
-      @include lg {
-        font-size: 26px;
-      }
-
-      @include md {
-        font-size: 24px;
-      }
       @include md-down {
         font-size: 22px;
       }
@@ -29,6 +22,31 @@
       color: $text-secondary;
       line-height: 1.2;
     }
+
+    @at-root{
+      .breadcrumb-wrapper {
+          margin-top: 10px;
+          .breadcrumb {
+              margin-bottom: 0;
+              .breadcrumb-item {
+                  color: $text-ternary;
+                  line-height: 1;
+                  font-weight: 500;
+                  font-size: 14px;
+                  .breadcrumb-link {
+                      color: $text-primary;
+                      -webkit-transition: 0.3s ease-in-out;
+                      -o-transition: 0.3s ease-in-out;
+                      transition: 0.3s ease-in-out;
+                      &:hover {
+                          color: $color-primary;
+                          text-decoration: underline;
+                      }
+                  }
+              }
+          }
+      }
+  }
   }
   .page-header-action {
     @include flex($align: center, $gap: 20px, $wrap: wrap);

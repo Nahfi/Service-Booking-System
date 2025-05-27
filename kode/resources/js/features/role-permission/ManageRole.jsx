@@ -1,10 +1,10 @@
 
+import TableWrapper from "@/components/common/table/TableWrapper";
 import { BsPlusLg } from "react-icons/bs";
 import Button from "../../components/common/button/Button";
 import Filter from "../../components/common/filter/Filter";
 import PageHeader from "../../components/common/Page-header/PageHeader";
 import PaginationWrapper from "../../components/common/pagination/PaginationWrapper";
-import Table from "../../components/common/table/Table";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import RoleListTable from "./components/table/RoleListTable";
 const ManageRole = () => {
@@ -26,9 +26,9 @@ const ManageRole = () => {
             <Filter />
           </div>
 
-          <Table>
+          <TableWrapper>
             <RoleListTable />
-          </Table>
+          </TableWrapper>
 
           <div className="mt-4">
             <PaginationWrapper />

@@ -37,12 +37,15 @@
     &::placeholder {
       color: $text-placeholder;
     }
+    &:disabled{
+      background-color: var(--bs-secondary-bg) !important;
+    }
+
   }
 
   .form-control[type="file"] {
     padding-inline: 12px;
     padding-block: 0;
-    line-height: 50px;
   }
 
   .form-select {
@@ -113,26 +116,14 @@ input[type="checkbox"] {
   border-radius: $radius-8;
   cursor: pointer;
 }
-textarea.form-control {
-  min-height: 80px;
-}
+// textarea.form-control {
+//   min-height: 80px;
+// }
 
 // File Input
 
 .file-input-wrapper {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-align: start;
-  -ms-flex-align: start;
-  align-items: start;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
+  @include flex($align:start,$direction:column,$justify:center);
   position: relative !important;
 
   input[type="file"] {
@@ -145,47 +136,37 @@ textarea.form-control {
     width: 100%;
     opacity: 0;
   }
+  .file-input {
+    border: 1px dashed $color-primary;
+    border-radius: $radius-8;
+    width: 100%;
+    @include flex($align:center,$direction:column,$justify:center);
+    padding: 20px;
+    background-color: $site-bg;
+    -webkit-transition: 0.4s ease;
+    -o-transition: 0.4s ease;
+    transition: 0.4s ease;
+    > svg {
+      color: $color-primary;
+    }
+  
+   > span {
+      display: inline-block;
+      font-size: 12px;
+    }
+
+   > p {
+     margin-top: 10px;
+     font-size: 16px;
+     color: $text-primary;
+   }
+  }
+  
 }
 
-.file-input {
-  border: 1px dashed $color-primary;
-  border-radius: $radius-8;
-  height: 200px;
-  width: 100%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  background-color: $site-bg;
-  -webkit-transition: 0.4s ease;
-  -o-transition: 0.4s ease;
-  transition: 0.4s ease;
-
-  svg {
-    color: $color-primary;
-  }
-
-  span {
-    display: inline-block;
-    font-size: 12px;
-  }
-}
-
-.file-input p {
-  margin-top: 10px;
-  font-size: 16px;
-  color: $text-primary;
+.input-group-select{
+  border: none;
+  background-color: $light-bg !important;
 }
 
 .input-clearable-wrapper {
@@ -237,3 +218,12 @@ textarea.form-control {
             padding-block-start: 0;
   }
 }
+
+
+.date-range-wrapper{
+  width: 240px;
+  .react-datepicker-wrapper{
+    width: 100%;
+  }
+}
+

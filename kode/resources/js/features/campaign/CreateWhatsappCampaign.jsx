@@ -110,7 +110,7 @@ const CreateWhatsappCampaign = () => {
 //             <CampaignSidebar activeStep={1} />
 //           </div>
 //           <div className="col-xl-10 col-lg-9">
-//             <div className="main-content-body py-0">
+//             <div className="conversation-content-body">
 //               <div className="row">
 //                 <div className="col-xxl-8 col-xl-7 col-lg-6 py-30 border-lg-end pe-lg-30">
 //                   <PageTitle title="Create Whatsapp Campaign" />

@@ -18,6 +18,10 @@
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 
+  &:disabled{
+    pointer-events: none;
+    opacity: 0.60;
+  }
   &.btn--sm {
     padding: 10px 20px;
     font-size: 12px;

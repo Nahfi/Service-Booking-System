@@ -1,0 +1,22 @@
+@use "@/styles/sass/abstracts/" as *;
+
+.create-event {
+  .date-time {
+    border: 1px solid $border-primary;
+    border-radius: $radius-12;
+    .date-time-header {
+      padding: 12px;
+      -webkit-border-after: 1px solid $border-primary;
+              border-block-end: 1px solid $border-primary;
+    }
+
+    .date-time-body {
+      padding: 12px;
+      @include flex($direction: column, $gap: 12px);
+    }
+  }
+
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
+}

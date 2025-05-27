@@ -2,8 +2,8 @@
 const BaseLayout = ({ children,...props }) => {
   
     const attributes = {
-      ...props,
-      className: `base-layout ${props.className || ""}`,
+        ...props,
+        className: `base-layout main-body-scroll ${props.className || ""}`,
     };
   return (
     <div {...attributes}>

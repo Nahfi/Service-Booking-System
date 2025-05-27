@@ -17,6 +17,11 @@
   }
 }
 
+.main-body-scroll{
+  max-height: calc(100dvh - calc($header-h + 0px));
+  height: 100%;
+  overflow-y: auto;
+}
 .container-wrapper {
   max-width: 100%;
   width: 100%;
@@ -152,12 +157,6 @@
 
 .space-nowrap {
   white-space: nowrap;
-}
-
-.w-max-content {
-  width: -webkit-max-content !important;
-  width: -moz-max-content !important;
-  width: max-content !important;
 }
 
 .apex-charts {
@@ -761,11 +760,18 @@
 }
 
 .animate-spin {
-  animation: var(--animate-spin);
+  animation: spin 1s linear infinite;
 
   @keyframes spin {
     to {
       transform: rotate(360deg);
     }
   }
+}
+
+
+
+.filter-form{
+  margin-bottom: 24px;
+  max-width: fit-content;
 }
