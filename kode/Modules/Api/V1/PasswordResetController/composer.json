@@ -1,0 +1,15 @@
+{
+    "name": "akaunting/api/-v1/-password-reset-controller",
+    "description": "",
+    "authors": [
+        {
+            "name": "Akaunting",
+            "email": "info@akaunting.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Modules\\Api/V1/PasswordResetController\\": ""
+        }
+    }
+}

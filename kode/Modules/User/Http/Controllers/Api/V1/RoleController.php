@@ -24,7 +24,7 @@ class RoleController extends Controller
 
     public function __construct(protected RoleService $roleService)
     {
-        $this->middleware('user.permission.check:view_role')->only('index');
+        $this->middleware('user.permission.check:view_role')->only(['index','show']);
         $this->middleware('user.permission.check:save_role')->only(['store', 'update', 'updateStatus']);
         $this->middleware('user.permission.check:destroy_role')->only('destroy');
     }
@@ -36,9 +36,7 @@ class RoleController extends Controller
      */
     public function index(): JsonResponse
     {
-
         return $this->roleService->getRoles();
-
     }
 
 
@@ -63,8 +61,20 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, int | string  $id): JsonResponse
     {
-
         return $this->roleService->save($request);
+    }
+
+
+
+
+    /**
+     * Summary of show
+     * @param int|string $id
+     * @return JsonResponse
+     */
+    public function show(int | string $id): JsonResponse
+    {
+        return $this->roleService->getRoles($id);
     }
 
     /**

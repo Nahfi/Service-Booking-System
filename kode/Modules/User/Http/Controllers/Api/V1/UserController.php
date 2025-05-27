@@ -23,7 +23,7 @@ class UserController extends Controller
 
     public function __construct(protected UserService $userService)
     {
-        $this->middleware('user.permission.check:view_user')->only('index');
+        $this->middleware('user.permission.check:view_user')->only(['index','show']);
         $this->middleware('user.permission.check:save_user')->only(['store', 'update', 'updateStatus']);
         $this->middleware('user.permission.check:destroy_user')->only('destroy');
     }
@@ -47,6 +47,18 @@ class UserController extends Controller
     public function store(UserRequest $request): JsonResponse
     {
         return $this->userService->save($request);
+    }
+
+
+
+    /**
+     * Summary of show
+     * @param int|string $id
+     * @return JsonResponse
+     */
+    public function show(int | string $id): JsonResponse
+    {
+        return $this->userService->getUsers($id);
     }
 
    

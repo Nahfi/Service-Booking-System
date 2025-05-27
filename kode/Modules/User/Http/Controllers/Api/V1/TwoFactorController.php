@@ -35,7 +35,6 @@ class TwoFactorController extends Controller
     public function verify(Request $request): JsonResponse
     {
 
-
         $validator = Validator::make($request->all(), rules: [
             'code'    => ['required','digits:6']
         ]);

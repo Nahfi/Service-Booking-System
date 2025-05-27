@@ -3,6 +3,8 @@
 namespace Modules\User\Http\Services;
 use App\Facades\ApiResponse;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,17 +14,22 @@ use Modules\User\Models\Role;
 class RoleService 
 {
 
+     
      /**
       * Summary of getRoles
+      * @param int|string|null $id
       * @return JsonResponse
       */
-     public  function getRoles(): JsonResponse{
+     public  function getRoles(int| string | null $id = null): JsonResponse{
 
 
           $roles = Role::search(['name'])
                               ->date()
                               ->latest()
-                              ->get();
+                              ->when($id,fn(Builder $q):Role | null => $q->where('id',  $id)->firstOrfail(),
+                                         fn(Builder $q): Collection => $q->get()
+                               );
+
 
           return ApiResponse::asSuccess()
                                    ->withData(resource: $roles,resourceNamespace: RoleResource::class )

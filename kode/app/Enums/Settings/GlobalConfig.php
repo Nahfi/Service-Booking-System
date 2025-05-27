@@ -782,10 +782,9 @@ enum GlobalConfig {
 
 
 
-        "gateway_management" => [ 
+        "gateway_management" => [  //cheked 
             "view_gateway",
-            "save_gateway",
-            "destroy_gateway",
+            "save_gateway"
         ],
 
         "language_management" => [ //checked

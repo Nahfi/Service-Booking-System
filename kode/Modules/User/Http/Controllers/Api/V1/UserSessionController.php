@@ -12,8 +12,6 @@ use Modules\User\Http\Services\ProfileService;
 class UserSessionController extends Controller
 {
 
-
-
     public function __construct(protected ProfileService $profileService){}
 
 
@@ -27,17 +25,13 @@ class UserSessionController extends Controller
     }
     
 
-
-
     /**
      * Summary of logoutOtherSessions
      * @param \Illuminate\Http\Request $request
      * @return JsonResponse
      */
     public function logoutOtherSessions(Request $request): JsonResponse{
-
         return $this->profileService->logOutFromOtherDevices($request);
-
     }
 
    

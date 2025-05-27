@@ -9,9 +9,11 @@ use App\Models\User;
 use App\Traits\Common\Fileable;
 use App\Traits\Common\ModelAction;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Http\Resources\UserResource;
 use Modules\User\Models\Role;
@@ -20,31 +22,35 @@ class UserService
 
     use Fileable , ModelAction;
 
-  
-     /**
-      * Summary of getUsers
-      * @return JsonResponse
-      */
-    public  function getUsers(): JsonResponse{
 
-    $user = getAuthUser();
-    $parentUser = parent_user();
+    /**
+     * Summary of getUsers
+     * @param int|string | null $id
+     * @return JsonResponse
+     */
+    public  function getUsers(int | string | null $id = null): JsonResponse{
 
-    $users = User::with(['file','role'])
-                    ->latest()
-                    ->child()
-                    ->recycle()
-                    ->filter(['role_id','status'])
-                    ->search(['name','email'])
-                    ->date()
-                    ->where('parent_id',$parentUser->id)
-                    ->excludeSelfIfNotParent($user)
-                    ->paginate(paginateNumber())
-                    ->appends(request()->all());
+        $user       = getAuthUser();
+        $parentUser = parent_user();
 
-    return ApiResponse::asSuccess()
-                            ->withData(resource: $users,resourceNamespace: UserResource::class)
-                            ->build();
+        $users = User::with(['file','role'])
+                        ->latest()
+                        ->child()
+                        ->recycle()
+                        ->filter(['role_id','status'])
+                        ->search(['name','email'])
+                        ->date()
+                        ->where('parent_id',$parentUser->id)
+                        ->excludeSelfIfNotParent($user)
+                        ->when($id,fn(Builder $q):User | null => $q->where('id',  $id)->firstOrfail(),
+                                fn(Builder $q) : LengthAwarePaginator => $q->paginate(paginateNumber())
+                                                  ->appends(request()->all())
+                               );
+        
+
+        return ApiResponse::asSuccess()
+                                ->withData(resource: $users,resourceNamespace: UserResource::class)
+                                ->build();
     }
 
      

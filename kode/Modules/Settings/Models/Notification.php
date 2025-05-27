@@ -11,13 +11,5 @@ class Notification extends Model
 
     protected $fillable = [];
 
-    /**
-     * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    protected static function newFactory()
-    {
-        return \Modules\Settings\Database\Factories\Notification::new();
-    }
+ 
 }

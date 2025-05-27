@@ -42,10 +42,16 @@ class ProfileController extends Controller
 
 
     
+    /**
+     * Summary of updateFcmToken
+     * @param \Illuminate\Http\Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     * @return JsonResponse
+     */
     public function updateFcmToken(Request $request): JsonResponse
     {
 
-         $validator = Validator::make($request->all(), rules: [
+        $validator = Validator::make($request->all(), rules: [
             'fcm_token' => 'required|string',
         ]);
 
