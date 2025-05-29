@@ -36,4 +36,6 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'check_your_email_an_email_verification_code_sent_successfully' => 'Check your email an email verification code sent successfully',
   'invalid_verification_code' => 'Invalid verification code',
   'password_updated' => 'Password Updated',
+  'language_already_exists' => 'Language already exists',
+  'sqlstate[42s02]:_base_table_or_view_not_found:_1146_table__quick_message.user_conversations__doesn_t_exist_(connection:_mysql__sql:_select_count(*)_as_aggregate_from_`user_conversations`_where_`user_one_id`_=_1_or_`user_two_id`_=_1)' => 'SQLSTATE[42S02]: Base table or view not found: 1146 Table  quick_message.user_conversations  doesn t exist (Connection: mysql  SQL: select count(*) as aggregate from `user_conversations` where `user_one_id` = 1 or `user_two_id` = 1)',
 );

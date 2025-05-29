@@ -22,7 +22,7 @@ class LanguageController extends Controller
     use ModelAction;
     public function __construct(protected LanguageService $languageService){
         $this->middleware('user.permission.check:view_language')->only(['index','getTranslation']);
-        $this->middleware('user.permission.check:save_language')->only(['store', 'update', 'updateStatus','translate','makeDefault']);
+        $this->middleware('user.permission.check:save_language')->only(['store', 'update', 'updateStatus','translate','makeDefault','toggleDirection']);
         $this->middleware('user.permission.check:destroy_language')->only(['destroy']);
     }
 
@@ -165,6 +165,28 @@ class LanguageController extends Controller
         return  $this->languageService->setDefaultLanguage($request->input('id'));
 
                                                         
+    }
+
+
+
+    /**
+     * Summary of toggleDirection
+     * @param \Illuminate\Http\Request $request
+     * @throws \Illuminate\Validation\ValidationException
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function toggleDirection(Request $request): JsonResponse{
+
+        $validator = Validator::make($request->all() ,rules: [
+            'id'            => 'required|exists:settings,id',
+        ]);
+
+        if ($validator->fails())  throw new ValidationException( validator: $validator,  response: ApiResponse::error(
+                                                                    data    : ['errors' => $validator->errors()],
+                                                                    code    : Response::HTTP_BAD_REQUEST
+                                                                ));
+        
+        return  $this->languageService->switchDirection($request->input('id'));
     }
 
 

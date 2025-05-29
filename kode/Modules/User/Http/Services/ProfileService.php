@@ -93,6 +93,29 @@ class ProfileService
 
 
 
+
+
+
+       
+   
+    /**
+     * Summary of switchOnlineStatus
+     * @return JsonResponse
+     */
+    public function switchOnlineStatus(): JsonResponse{
+
+        $user = getAuthUser('user:api');
+        $user->show_online_status = !$user->show_online_status;
+        $user->save();
+
+        return ApiResponse::asSuccess()
+                    ->withData(resource: $user,resourceNamespace: UserResource::class)
+                    ->build();
+
+    }
+
+
+
     /**
      * Summary of updatePassword
      * @param \Illuminate\Http\Request $request

@@ -21,6 +21,7 @@ class LanguageResource extends JsonResource
             'id'             => $this->id,
             'status'         => $this->status,
             'is_default'     => (bool) $this->is_default,
+            'direction'     =>  $languageConfiguration?->direction ?? 'ltr',
             'name'           => $languageConfiguration?->name,
             'code'           => $languageConfiguration?->code,
             'created_at'     => $this->created_at ? get_date_time($this->created_at) : null,

@@ -69,6 +69,19 @@ class ProfileController extends Controller
     }
 
 
+
+
+    /**
+     * Summary of toggleOnlineStatus
+     * @return JsonResponse
+     */
+    public function toggleOnlineStatus(): JsonResponse{
+
+        return $this->profileService->switchOnlineStatus();
+
+    }
+
+
     /**
      * Summary of destroyAccount
      * @param \Illuminate\Http\Request $request

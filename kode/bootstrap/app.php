@@ -42,12 +42,12 @@ return Application::configure(basePath: dirname(__DIR__))
    
         $exceptions->render(function (Exception $e, Request $request) {
 
-             if (
-                $e instanceof \Illuminate\View\ViewException  &&
-                str_contains($e->getMessage(), 'Vite manifest not found')
-            ) {
-                return response()->json('NPM IS NOT RUNNING',500);
-            }
+            //  if (
+            //     $e instanceof \Illuminate\View\ViewException  &&
+            //     str_contains($e->getMessage(), 'Vite manifest not found')
+            // ) {
+            //     return response()->json('NPM IS NOT RUNNING',500);
+            // }
         
    
             if ($request->is('api/*')) {

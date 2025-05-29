@@ -2,11 +2,12 @@
 
 
 use Illuminate\Support\Facades\Route;
+use Modules\Settings\Enums\RateLimit;
 use Modules\Settings\Http\Controllers\Api\V1\EmailGatewayController;
 use Modules\Settings\Http\Controllers\Api\V1\LanguageController;
 use Modules\Settings\Http\Controllers\Api\V1\NotificationTemplateController;
 use Modules\Settings\Http\Controllers\Api\V1\SettingsController;
-use Modules\User\Enums\RateLimit;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -44,6 +45,7 @@ use Modules\User\Enums\RateLimit;
                 Route::post('make-default', 'makeDefault');
                 Route::get('get-translation/{code}', 'getTranslation');
                 Route::post('translate', 'translate');
+                Route::post('toggle-direction', 'toggleDirection');
 
             });
 

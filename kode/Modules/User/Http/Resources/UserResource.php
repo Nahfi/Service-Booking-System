@@ -45,7 +45,16 @@ class UserResource extends JsonResource
             'last_login_time'        => $this->last_login_time 
                                         ? get_date_time($this->last_login_time) 
                                         : null,
-                                        
+
+
+            'is_online' => $this->last_login_time 
+                                            ? $this->last_login_time->diffInMinutes(now()) < 2 && $this->show_online_status
+                                            : false,
+
+                                    
+            'show_online_status' => (bool) $this->show_online_status,
+
+                                                                                         
             'created_at'         => get_date_time($this->created_at),
             'deleted_at'         => $this->deleted_at ? get_date_time($this->deleted_at) : null,
         ];
@@ -54,7 +63,6 @@ class UserResource extends JsonResource
           
         if ($this->relationLoaded('role') 
                 && $this->role) {
-
             $data['role'] = new RoleResource($this->role);
         }
         
