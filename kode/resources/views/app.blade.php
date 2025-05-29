@@ -8,7 +8,10 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>Laravel React App</title>
 
-        @php
+        @viteReactRefresh
+        @vite('resources/js/main.jsx')
+
+        <!-- @php
         
             $manifestPath = public_path('build/manifest.json');
             $manifest = file_exists($manifestPath) ? json_decode(file_get_contents($manifestPath), true) : null;
@@ -28,7 +31,7 @@
             <script>
                 console.error("Vite build file not found. Please run `npm run build`.");
             </script>
-        @endif
+        @endif -->
 
         <script>
             window.APP_BASE_URL = '{{ url('/') }}';

@@ -4,7 +4,7 @@ import LogoLight from "@/assets/images/logo/logo-light.svg";
 import headerLogo from "@/assets/images/logo/logo.png";
 import { useContext, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { BsMoon, BsSunFill, BsViewList } from "react-icons/bs";
+import { BsMoon, BsSunFill } from "react-icons/bs";
 import {
     LuLanguages,
     LuLogOut,
@@ -123,12 +123,12 @@ const Header = () => {
                             )}
                         </button>
 
-                        <button
+                        {/* <button
                             className="header-action"
                             onClick={toggleDirection}
                         >
                             <BsViewList />
-                        </button>
+                        </button> */}
 
                         <Dropdown className="icon-dropdown">
                             <Dropdown.Toggle className="transparent-dropdown">
