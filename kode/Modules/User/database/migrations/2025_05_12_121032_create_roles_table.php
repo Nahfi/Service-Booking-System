@@ -19,7 +19,7 @@ class CreateRolesTable extends Migration
             $table->unsignedBigInteger('user_id')->index()->nullable()->constrained(table: 'users');
             $table->string('name');
             $table->longText('permissions');
-            $table->enum('status',Status::getValues());
+            $table->enum('status',Status::getValues())->default(Status::ACTIVE);
             $table->timestamps();
         });
     }

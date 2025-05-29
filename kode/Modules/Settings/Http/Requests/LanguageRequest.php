@@ -19,6 +19,8 @@ class LanguageRequest extends BaseRequest
             'id'            => 'nullable|exists:settings,id',
             'name'          => 'required|max:100',
             'lang_code'     => 'required|max:100|in:' . implode(',', $langCodes),
+            'direction'     => 'required|in:ltr,rtl|max:3',
+
         ];
     }
 

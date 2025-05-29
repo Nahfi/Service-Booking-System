@@ -781,6 +781,10 @@ enum GlobalConfig {
         ],
 
 
+        "user_message" => [ // checked
+            "view_message"
+        ],
+
 
         "gateway_management" => [  //cheked 
             "view_gateway",

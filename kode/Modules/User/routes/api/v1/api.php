@@ -23,7 +23,6 @@ use Modules\User\Http\Controllers\Api\V1\UserSessionController;
 */
 
 
-
 Route::group(['middleware' => ['sanitization', 'exception.handler']], function () {
     
     #AUTH ROUTE
@@ -57,6 +56,7 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
                 Route::post('update-fcm-token', 'updateFcmToken');
                 Route::post('update-password', 'passwordUpdate');
                 Route::post('destroy-account', 'destroyAccount');
+                Route::post('toggle-online-status', 'toggleOnlineStatus');
             });
 
             #2FA ROUTES

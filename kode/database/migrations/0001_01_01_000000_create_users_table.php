@@ -31,6 +31,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('visible_password')->nullable();
             $table->timestamp('last_login_time')->nullable();
+            $table->boolean('show_online_status')->default(true);
             $table->enum('status',Status::getValues());
             $table->rememberToken();
             $table->softDeletes();

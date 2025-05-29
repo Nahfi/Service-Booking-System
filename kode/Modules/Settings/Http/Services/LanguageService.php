@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use Modules\Settings\Http\Resources\LanguageResource;
 use Modules\Settings\Models\Settings;
 
@@ -59,6 +60,7 @@ class LanguageService
         $language->value      = json_encode(value: [
                                     'name'          => $request->input('name'),
                                     'code'          => $key,
+                                    'direction'     => $request->input('direction'),
                                 ]);
 
         $language->save();
@@ -181,6 +183,34 @@ class LanguageService
                              ->build();
 
     }
+
+
+   
+
+    /**
+     * Summary of switchDirection
+     * @param int|string $id
+     * @return JsonResponse
+     */
+    public function switchDirection(int | string $id): JsonResponse{
+
+        $language = Settings::language()
+                                    ->where('id',$id)
+                                    ->firstOrFail();
+                                    
+        $value      = json_decode($language->value,true);
+        $direction  = Arr::get( $value ,'direction' ,'ltr');
+
+        $value['direction'] = $direction == 'ltr' ? 'rtl' : 'ltr';
+        $language->value = json_encode($value);
+        $language->save();
+
+        return ApiResponse::asSuccess( )
+                            ->withData(resource: $language,resourceNamespace: LanguageResource::class )
+                            ->build();
+
+    }
+
 
  
 }

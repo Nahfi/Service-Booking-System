@@ -2,5 +2,7 @@
     "user": true,
     "settings": true,
     "contact": true,
-    "controller": true
+    "controller": true,
+    "user-chat": true,
+    "user-messaging": true
 }
