@@ -9,7 +9,7 @@
         <title>Laravel React App</title>
 
         @viteReactRefresh
-        @vite('resources/js/main.jsx')
+        @vite('resources/js/main.tsx')
 
         <!-- @php
         
