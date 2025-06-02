@@ -1,4 +1,6 @@
-const ButtonLoader = () => {
+import type React from "react";
+
+const ButtonLoader: React.FC = () => {
   return (
     <div className="dot-container">
       <div className="dot dot1"></div>

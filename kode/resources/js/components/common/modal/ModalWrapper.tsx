@@ -14,7 +14,6 @@ interface ModalWrapperProps extends Omit<ModalProps, "children"> {
 const ModalWrapper = forwardRef<HTMLDivElement, ModalWrapperProps>(
     ({ children, title, onHide, show, ...props }, ref) => {
 
-
         return (
             <Modal
                 {...props}

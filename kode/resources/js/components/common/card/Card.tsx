@@ -1,11 +1,17 @@
+import React, { HTMLAttributes, PropsWithChildren } from "react";
 import "../card/card.scss";
 
-const Card = ({ children, ...props }) => {
-  const attributes = {
-    ...props,
-    className: `card rounded-xl ${props?.className || ""}`,
-  };
-  return <div {...attributes}>{children}</div>;
+interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+
+const Card: React.FC<PropsWithChildren<CardProps>> = ({
+    children,
+    ...props
+}) => {
+    const attributes = {
+        ...props,
+        className: `card rounded-xl ${props?.className || ""}`,
+    };
+    return <div {...attributes}>{children}</div>;
 };
 
 export default Card;

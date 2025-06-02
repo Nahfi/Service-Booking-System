@@ -1,10 +1,10 @@
 
 
 import React, {
-  AnchorHTMLAttributes,
-  ButtonHTMLAttributes,
-  ElementType,
-  ReactNode,
+    AnchorHTMLAttributes,
+    ButtonHTMLAttributes,
+    ElementType,
+    ReactNode,
 } from "react";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -45,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
         ) : (
             <Link to={href} {...props} className={buttonClass}>
                 {isLoading ? (
-                    <div className="flex items-center gap-2">
+                    <div className="d-flex align-items-center gap-2">
                         <FaSpinner className="inline-block animate-spin" />
                         {children}
                     </div>

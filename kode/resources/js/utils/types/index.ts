@@ -44,3 +44,14 @@ export interface ModalContextType {
     ) => void;
     closeModal: () => void;
 }
+
+
+// Theme context type 
+
+export interface ThemeContextType {
+    themeSettings: {
+        theme: "light" | "dark";
+    };
+    toggleTheme: () => void;
+    toggleDirection: () => void;
+}

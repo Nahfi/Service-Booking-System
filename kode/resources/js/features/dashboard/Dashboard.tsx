@@ -300,15 +300,6 @@ const Dashboard: React.FC  = () => {
                 <div className="row g-4">
                     <div className="col-12">
                         <div className="p-4 border rounded-4">
-                            {/* <div className="d-flex align-items-center justify-content-between mb-3">
-                              <h5 className="">Announcements</h5>
-                              <Button
-                                  iconBtn={true}
-                                  tooltipText="Close"
-                                  icon={LuX}
-                                  className="danger-soft btn-ghost hover btn-md rounded-circle fs-18"
-                              />
-                          </div> */}
                             <Alert variant="warning">
                                 <Alert.Heading as={"h6"}>
                                     Hey, nice to see you

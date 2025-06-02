@@ -13,7 +13,7 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': '/resources/js',
+            "@": "/resources/js",
         },
     },
     server: {
@@ -25,4 +25,12 @@ export default defineConfig({
             host: "127.0.0.1",
         },
     },
+    // css: {
+    //     preprocessorOptions: {
+    //         scss: {
+    //             includePaths: ["resources/js/styles/sass"],
+    //             additionalData: `@use "abstracts" as *;`, 
+    //         },
+    //     },
+    // },
 });

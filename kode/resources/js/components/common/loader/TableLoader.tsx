@@ -1,4 +1,6 @@
-const TableLoader = () => {
+import type React from "react";
+
+const TableLoader: React.FC = () => {
   return (
     <div className="table-loader">
       <div className="loading-circle">
