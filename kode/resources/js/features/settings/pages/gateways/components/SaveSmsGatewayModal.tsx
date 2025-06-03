@@ -21,14 +21,84 @@ const SaveSmsGatewayModal: React.FC<SaveSmsGatewayModalProps> = ({
 }) => {
     const [inputs, setInputs] = useState<InputItem[]>([]);
 
-    const handleAddItem = () => {
-        const newItem = { id: Date.now(), name: "", value: "" };
+
+    const handleAddItem = (type: InputType) => {
+        const newItem: InputItem = {
+            id: Date.now(),
+            name: "",
+            value: "",
+            type,
+        };
         setInputs((prev) => [...prev, newItem]);
     };
 
-    const handleRemoveItem = (id) => {
+    const handleRemoveItem = (id: number) => {
         setInputs((prev) => prev.filter((item) => item.id !== id));
     };
+
+    const renderItems = (type: InputType) =>
+        inputs
+            .filter((item) => item.type === type)
+            .map((item, index) => (
+                <div
+                    key={item.id}
+                    className="input-variable d-flex align-items-center justify-content-end gap-2"
+                >
+                    <div className="flex-grow-1">
+                        <Field>
+                            <input
+                                type="text"
+                                id={`${type}-name-${index}`}
+                                value={item.name}
+                                onChange={(e) => {
+                                    const updated = inputs.map((input) =>
+                                        input.id === item.id
+                                            ? { ...input, name: e.target.value }
+                                            : input
+                                    );
+                                    setInputs(updated);
+                                }}
+                                required
+                                name={`variable_${type}_name[${index}]`}
+                                className="form-control rounded-2 h-40"
+                                placeholder={`Enter ${type} name`}
+                            />
+                        </Field>
+                    </div>
+                    <div className="flex-grow-1">
+                        <Field>
+                            <input
+                                type="text"
+                                id={`${type}-value-${index}`}
+                                value={item.value}
+                                onChange={(e) => {
+                                    const updated = inputs.map((input) =>
+                                        input.id === item.id
+                                            ? {
+                                                ...input,
+                                                value: e.target.value,
+                                            }
+                                            : input
+                                    );
+                                    setInputs(updated);
+                                }}
+                                required
+                                name={`variable_${type}_value[${index}]`}
+                                className="form-control rounded-2 h-40"
+                                placeholder={`Enter ${type} value`}
+                            />
+                        </Field>
+                    </div>
+                    <Button
+                        type="button"
+                        iconBtn
+                        tooltipText="Remove"
+                        icon={LuX}
+                        className="danger-soft btn-md rounded-circle flex-shrink-0 fs-18"
+                        onClick={() => handleRemoveItem(item.id)}
+                    />
+                </div>
+            ));
 
     return (
         <form>
@@ -116,143 +186,37 @@ const SaveSmsGatewayModal: React.FC<SaveSmsGatewayModalProps> = ({
 
                 <div className="col-12">
                     <div className="row g-3 mt-1">
-                        <div className="p-3 border rounded-4">
-                            <div className="d-flex align-items-center justify-content-between gap-4">
-                                <h6 className="fs-14">Header</h6>
-                                <Button
-                                    iconBtn={true}
-                                    tooltipText="Add"
-                                    icon={LuPlus}
-                                    type="button"
-                                    className="dark-soft hover btn-sm rounded-circle fs-18"
-                                    onClick={handleAddItem}
-                                />
+                        {["header", "body"].map((type) => (
+                            <div className="p-3 border rounded-4" key={type}>
+                                <div className="d-flex align-items-center justify-content-between gap-4">
+                                    <h6 className="fs-14">
+                                        {type.charAt(0).toUpperCase() +
+                                            type.slice(1)}
+                                    </h6>
+                                    <Button
+                                        iconBtn
+                                        tooltipText="Add"
+                                        icon={LuPlus}
+                                        type="button"
+                                        className="dark-soft hover btn-sm rounded-circle fs-18"
+                                        onClick={() =>
+                                            handleAddItem(type as InputType)
+                                        }
+                                    />
+                                </div>
+                                <div
+                                    className={`d-flex flex-column gap-3 ${
+                                        inputs.filter(
+                                            (item) => item.type === type
+                                        ).length > 0
+                                            ? "mt-3"
+                                            : ""
+                                    }`}
+                                >
+                                    {renderItems(type as InputType)}
+                                </div>
                             </div>
-
-                            <div className="d-flex flex-column gap-3">
-                                {inputs?.length > 0 &&
-                                    inputs?.map((item, index) => (
-                                        <div
-                                            key={item.id}
-                                            className="mt-3 input-variable d-flex align-items-center justify-content-end gap-2"
-                                        >
-                                            <div className="flex-grow-1">
-                                                <Field>
-                                                    <input
-                                                        type="text"
-                                                        id={`${name}-name-${index}`}
-                                                        defaultValue={
-                                                            item?.name
-                                                        }
-                                                        required
-                                                        name={`variable_${name}_name[${index}]`}
-                                                        className="form-control rounded-2 h-40"
-                                                        placeholder="Enter header name"
-                                                    />
-                                                </Field>
-                                            </div>
-
-                                            <div className="flex-grow-1">
-                                                <Field>
-                                                    <input
-                                                        type="text"
-                                                        id={`${name}-name-${index}`}
-                                                        defaultValue={
-                                                            item?.value
-                                                        }
-                                                        required
-                                                        name={`variable_${name}_name[${index}]`}
-                                                        className="form-control rounded-2 h-40"
-                                                        placeholder="Enter header value"
-                                                    />
-                                                </Field>
-                                            </div>
-
-                                            <Button
-                                                type="button"
-                                                iconBtn={true}
-                                                tooltipText="Remove"
-                                                icon={LuX}
-                                                className="danger-soft btn-md rounded-circle flex-shrink-0 fs-18"
-                                                onClick={() =>
-                                                    handleRemoveItem(item.id)
-                                                }
-                                            />
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
-
-                        <div className="p-3 border rounded-4">
-                            <div className="d-flex align-items-center justify-content-between gap-4">
-                                <h6 className="fs-14">Body</h6>
-                                <Button
-                                    iconBtn={true}
-                                    tooltipText="Add"
-                                    icon={LuPlus}
-                                    type="button"
-                                    className="dark-soft hover btn-sm rounded-circle fs-18"
-                                    onClick={handleAddItem}
-                                />
-                            </div>
-
-                            <div
-                                className={`d-flex flex-column gap-3 ${
-                                    inputs?.length > 0 ? "mt-3" : ""
-                                }`}
-                            >
-                                {inputs?.length > 0 &&
-                                    inputs?.map((item, index) => (
-                                        <div
-                                            key={item.id}
-                                            className="input-variable d-flex align-items-center justify-content-end gap-3"
-                                        >
-                                            <div className="flex-grow-1">
-                                                <Field>
-                                                    <input
-                                                        type="text"
-                                                        id={`${name}-name-${index}`}
-                                                        defaultValue={
-                                                            item?.name
-                                                        }
-                                                        required
-                                                        name={`variable_${name}_name[${index}]`}
-                                                        className="form-control rounded-2 h-40"
-                                                        placeholder="Enter body name"
-                                                    />
-                                                </Field>
-                                            </div>
-
-                                            <div className="flex-grow-1">
-                                                <Field>
-                                                    <input
-                                                        type="text"
-                                                        id={`${name}-name-${index}`}
-                                                        defaultValue={
-                                                            item?.value
-                                                        }
-                                                        required
-                                                        name={`variable_${name}_name[${index}]`}
-                                                        className="form-control rounded-2 h-40"
-                                                        placeholder="Enter body value"
-                                                    />
-                                                </Field>
-                                            </div>
-
-                                            <Button
-                                                type="button"
-                                                iconBtn={true}
-                                                tooltipText="Remove"
-                                                icon={LuX}
-                                                className="danger-soft btn-md rounded-circle flex-shrink-0 fs-18"
-                                                onClick={() =>
-                                                    handleRemoveItem(item.id)
-                                                }
-                                            />
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </div>
