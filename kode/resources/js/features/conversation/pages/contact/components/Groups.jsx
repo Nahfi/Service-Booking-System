@@ -14,7 +14,6 @@ import Filter from "../../../../../components/common/filter/Filter";
 import Field from "../../../../../components/common/from/Field";
 import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
-import Table from "../../../../../components/common/table/Table";
 
 const Groups = () => {
   const [contactData, setContactData] = useState(null);
@@ -72,7 +71,7 @@ const Groups = () => {
             <Filter />
           </div>
 
-          <Table>
+          <TableWrapper>
             <thead>
               <tr>
                 <th>
@@ -179,7 +178,7 @@ const Groups = () => {
                 </tr>
               ))}
             </tbody>
-          </Table>
+          </TableWrapper>
 
           <div className="mt-4">
             <PaginationWrapper />
