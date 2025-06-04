@@ -1,9 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { onErrorResponse } from "@/api-manager/api-error-response/ErrorResponses";
-import MainApi from "@/api-manager/MainApi";
+import MainApi from "../../../../api-manager/MainApi";
 
-const userSignIn = async (signInData) => {
+interface SignInData {
+    email: string;
+    password: string;
+    device_name: string;
+    code: string;
+}
+
+const userSignIn = async (signInData: SignInData) => {
     try {
         const { data } = await MainApi.post(`/login`, signInData);
         return data;

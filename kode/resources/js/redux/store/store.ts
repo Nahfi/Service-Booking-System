@@ -2,20 +2,22 @@ import {
     combineReducers,
     configureStore
 } from "@reduxjs/toolkit";
+import type { PersistConfig } from "redux-persist";
 import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userReducer from "../slices/userSlice";
+
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 const rootReducer = combineReducers({
     user: userReducer,
 });
 
-const persistConfig = {
+const persistConfig: PersistConfig<RootState> = {
     key: "quk-msg",
     storage,
-    whitelist: [
-        "user",
-    ],
+    whitelist: ["user"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -31,3 +33,5 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+export type AppDispatch = typeof store.dispatch;

@@ -1,4 +1,4 @@
-import { persistor, store } from "@/redux/store";
+import { persistor, store } from "@/redux/store/store";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -17,7 +17,7 @@ const queryClient = new QueryClient()
 import App from "./App";
 import "./styles/sass/main.scss";
 
-createRoot(document.getElementById("app")!).render(
+createRoot(document.getElementById("app")).render(
     <StrictMode>
         <Provider store={store}>
             <PersistGate persistor={persistor}>

@@ -1,7 +1,9 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 
+import type { JSX } from "react";
+import ForgotPassword from "../features/auth/ForGotPassword";
 import Login from "../features/auth/Login";
-import Signup from "../features/auth/Signup";
+import VerifyEmail from "../features/auth/VerifyEmail";
 import Calendar from "../features/calendar/Calendar";
 import Campaign from "../features/campaign/Campaign";
 import ChooseCampaign from "../features/campaign/ChooseCampaign";
@@ -29,6 +31,8 @@ import NotificationTemplates from "../features/settings/pages/notifications/Noti
 import SaveNotificationTemplates from "../features/settings/pages/notifications/SaveNotificationTemplates";
 import WhatsappSetting from "../features/settings/pages/whatsapp/WhatsappSetting";
 import Settings from "../features/settings/Settings";
+import AuthRoute from "./AuthRoute";
+import ProtectedRoute from "./ProtectedRoute";
 import Root from "./Root";
 
 declare global {
@@ -41,11 +45,16 @@ const basename: string = window.APP_BASE_URL
     ? new URL(window.APP_BASE_URL).pathname
     : "/";
 
+const protectedRoute = (element: JSX.Element) => (
+    <ProtectedRoute>{element}</ProtectedRoute>
+);
+const authRoute = (element: JSX.Element) => <AuthRoute>{element}</AuthRoute>;
+
 const router: RouteObject[] = createBrowserRouter(
     [
         {
             path: "/",
-            element: <Root />,
+            element: protectedRoute(<Root />),
             children: [
                 {
                     index: true,
@@ -169,13 +178,18 @@ const router: RouteObject[] = createBrowserRouter(
                 },
             ],
         },
+
         {
             path: "login",
-            element: <Login />,
+            element: authRoute(<Login />),
         },
         {
-            path: "signup",
-            element: <Signup />,
+            path: "forgot-password",
+            element: authRoute(<ForgotPassword />),
+        },
+        {
+            path: "email-verify",
+            element: authRoute(<VerifyEmail />),
         },
         {
             path: "*",
