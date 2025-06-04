@@ -7,6 +7,17 @@ export const generateUUID = () => {
     });
 };
 
+export const getToken = () => {
+    if (typeof window !== "undefined") {
+      return window.localStorage.getItem("token");
+    }
+  };
+export const clearStore = async () => {
+    if (typeof window !== "undefined") {
+        localStorage.removeItem("token");
+    }
+}  
+
 export const getMonthStartAndEnd = (month, year) => {
     const startDate = new Date(year, month, 1);
     const endDate = new Date(year, month + 1, 0);
