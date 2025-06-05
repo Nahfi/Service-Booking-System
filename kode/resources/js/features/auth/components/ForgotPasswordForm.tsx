@@ -17,19 +17,6 @@ const ForgotPasswordForm: React.FC = ({ handlePasswordUpdate, loading }) => {
     return (
         <form onSubmit={handlePasswordUpdate}>
             <div className="row g-3">
-                {/* <div className="col-12">
-                    <Field label="email" required>
-                        <input
-                            type="text"
-                            id="email"
-                            name="email"
-                            className="form-control"
-                            placeholder="Enter Email"
-                            required
-                        />
-                    </Field>
-                </div> */}
-
                 <div className="col-12">
                     <Field label="Verification Code" required>
                         <input

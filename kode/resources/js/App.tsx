@@ -2,16 +2,15 @@ import { RouterProvider } from "react-router-dom";
 import ModalProvider from "./context-providers/ModalProvider";
 import ThemeProvider from "./context-providers/ThemeProvider";
 import router from "./routes/Router";
+
 function App() {
   return (
-
       <ThemeProvider>
           <ModalProvider>
-            <RouterProvider router={router} />
+              <RouterProvider router={router} />
           </ModalProvider>
-       </ThemeProvider>
-  
-  );
+      </ThemeProvider>
+  );      
 }
 
 export default App;

@@ -13,6 +13,7 @@ import Progress from "../../components/common/progressbar/Progress";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import OverviewCards from "./components/OverviewCards";
 
+import SEO from "../../components/common/seo/SEO";
 import "./dashboard.scss";
 
 const Dashboard: React.FC  = () => {
@@ -250,152 +251,156 @@ const Dashboard: React.FC  = () => {
     );
 
     return (
-        <BaseLayout>
-            <>
-                <PageHeader
-                    title={"Overview"}
-                    shortTitle={"Monitor every activity of your business."}
-                >
-                    <div className="quick-action">
-                        <div className="d-flex align-items-center gap-3">
-                            <Button
-                                href={`/roles/create`}
-                                className="quick-action-btn flex-column gap-2"
-                            >
-                                <span className="quick-action-icon">
-                                    <LuUserPlus />
-                                </span>
-                                <p className="quick-action-btn-level">
-                                    Add Contact
-                                </p>
-                            </Button>
+        <>
+            <SEO title="Dashboard" />
+            
+            <BaseLayout>
+                <>
+                    <PageHeader
+                        title={"Overview"}
+                        shortTitle={"Monitor every activity of your business."}
+                    >
+                        <div className="quick-action">
+                            <div className="d-flex align-items-center gap-3">
+                                <Button
+                                    href={`/roles/create`}
+                                    className="quick-action-btn flex-column gap-2"
+                                >
+                                    <span className="quick-action-icon">
+                                        <LuUserPlus />
+                                    </span>
+                                    <p className="quick-action-btn-level">
+                                        Add Contact
+                                    </p>
+                                </Button>
 
-                            <Button
-                                href={`/roles/create`}
-                                className="quick-action-btn flex-column gap-2"
-                            >
-                                <span className="quick-action-icon">
-                                    <LuLayoutTemplate />
-                                </span>
-                                <p className="quick-action-btn-level">
-                                    Create Template
-                                </p>
-                            </Button>
+                                <Button
+                                    href={`/roles/create`}
+                                    className="quick-action-btn flex-column gap-2"
+                                >
+                                    <span className="quick-action-icon">
+                                        <LuLayoutTemplate />
+                                    </span>
+                                    <p className="quick-action-btn-level">
+                                        Create Template
+                                    </p>
+                                </Button>
 
-                            <Button
-                                href={`/campaign/choose-campaign`}
-                                className="quick-action-btn flex-column gap-2"
-                            >
-                                <span className="quick-action-icon">
-                                    <LuMegaphone />
-                                </span>
-                                <p className="quick-action-btn-level">
-                                    Create Campaign
-                                </p>
-                            </Button>
+                                <Button
+                                    href={`/campaign/choose-campaign`}
+                                    className="quick-action-btn flex-column gap-2"
+                                >
+                                    <span className="quick-action-icon">
+                                        <LuMegaphone />
+                                    </span>
+                                    <p className="quick-action-btn-level">
+                                        Create Campaign
+                                    </p>
+                                </Button>
+                            </div>
+                        </div>
+                    </PageHeader>
+
+                    <div className="row g-4">
+                        <div className="col-12">
+                            <div className="p-4 border rounded-4">
+                                <Alert variant="warning">
+                                    <Alert.Heading as={"h6"}>
+                                        Hey, nice to see you
+                                    </Alert.Heading>
+                                    <p className="mt-2 fs-14">
+                                        Aww yeah, you successfully read this
+                                        important alert message. This example text
+                                        is going to run a bit longer so that you can
+                                        see how spacing within an alert works with
+                                        this kind of content.
+                                    </p>
+                                </Alert>
+                            </div>
+                        </div>
+
+                        <div className="col-12">
+                            <OverviewCards />
+                        </div>
+
+                        <div className="col-xl-5 col-lg-6">
+                            <Card className="h-100">
+                                <CardHeader cardTitle={"SMS Sent Report"} />
+                                <CardBody>
+                                    <ChartWrapper
+                                        options={smsReport}
+                                        series={smsReport.series}
+                                        type="bar"
+                                        height="350"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </div>
+
+                        <div className="col-xl-7 col-lg-6">
+                            <Card className="h-100">
+                                <CardHeader cardTitle={"SMS Sent Report"} />
+                                <CardBody>
+                                    <ChartWrapper
+                                        options={statistics}
+                                        series={statistics.series}
+                                        type="bar"
+                                        height="360"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </div>
+
+                        <div className="col-xl-3 col-lg-5">
+                            <Card className="h-100">
+                                <CardHeader cardTitle={"SMS Sent Report"} />
+                                <CardBody>
+                                    <div className="d-flex flex-column gap-3">
+                                        {Array.from({ length: 5 }).map((_, ind) => (
+                                            <Progress
+                                                key={ind}
+                                                percentage={70}
+                                                type="linear"
+                                                flagUrl={usaImg}
+                                                countryName={"USA"}
+                                            />
+                                        ))}
+                                    </div>
+                                </CardBody>
+                            </Card>
+                        </div>
+
+                        <div className="col-xl-9 col-lg-7">
+                            <Card className="h-100">
+                                <CardHeader cardTitle={"SMS Sent Report"} />
+                                <CardBody>
+                                    <ChartWrapper
+                                        options={whatsappReport}
+                                        series={whatsappReport.series}
+                                        type="line"
+                                        height="380"
+                                    />
+                                </CardBody>
+                            </Card>
+                        </div>
+
+                        <div className="col-12">
+                            <Card className="h-100">
+                                <CardHeader cardTitle={"SMS Sent Report"} />
+                                <CardBody>
+                                    <ChartWrapper
+                                        options={subsribersReport}
+                                        series={subsribersReport.series}
+                                        type="area"
+                                        height="400"
+                                    />
+                                </CardBody>
+                            </Card>
                         </div>
                     </div>
-                </PageHeader>
-
-                <div className="row g-4">
-                    <div className="col-12">
-                        <div className="p-4 border rounded-4">
-                            <Alert variant="warning">
-                                <Alert.Heading as={"h6"}>
-                                    Hey, nice to see you
-                                </Alert.Heading>
-                                <p className="mt-2 fs-14">
-                                    Aww yeah, you successfully read this
-                                    important alert message. This example text
-                                    is going to run a bit longer so that you can
-                                    see how spacing within an alert works with
-                                    this kind of content.
-                                </p>
-                            </Alert>
-                        </div>
-                    </div>
-
-                    <div className="col-12">
-                        <OverviewCards />
-                    </div>
-
-                    <div className="col-xl-5 col-lg-6">
-                        <Card className="h-100">
-                            <CardHeader cardTitle={"SMS Sent Report"} />
-                            <CardBody>
-                                <ChartWrapper
-                                    options={smsReport}
-                                    series={smsReport.series}
-                                    type="bar"
-                                    height="350"
-                                />
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    <div className="col-xl-7 col-lg-6">
-                        <Card className="h-100">
-                            <CardHeader cardTitle={"SMS Sent Report"} />
-                            <CardBody>
-                                <ChartWrapper
-                                    options={statistics}
-                                    series={statistics.series}
-                                    type="bar"
-                                    height="360"
-                                />
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    <div className="col-xl-3 col-lg-5">
-                        <Card className="h-100">
-                            <CardHeader cardTitle={"SMS Sent Report"} />
-                            <CardBody>
-                                <div className="d-flex flex-column gap-3">
-                                    {Array.from({ length: 5 }).map((_, ind) => (
-                                        <Progress
-                                            key={ind}
-                                            percentage={70}
-                                            type="linear"
-                                            flagUrl={usaImg}
-                                            countryName={"USA"}
-                                        />
-                                    ))}
-                                </div>
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    <div className="col-xl-9 col-lg-7">
-                        <Card className="h-100">
-                            <CardHeader cardTitle={"SMS Sent Report"} />
-                            <CardBody>
-                                <ChartWrapper
-                                    options={whatsappReport}
-                                    series={whatsappReport.series}
-                                    type="line"
-                                    height="380"
-                                />
-                            </CardBody>
-                        </Card>
-                    </div>
-
-                    <div className="col-12">
-                        <Card className="h-100">
-                            <CardHeader cardTitle={"SMS Sent Report"} />
-                            <CardBody>
-                                <ChartWrapper
-                                    options={subsribersReport}
-                                    series={subsribersReport.series}
-                                    type="area"
-                                    height="400"
-                                />
-                            </CardBody>
-                        </Card>
-                    </div>
-                </div>
-            </>
-        </BaseLayout>
+                </>
+            </BaseLayout>
+        </>
     );
 };
 

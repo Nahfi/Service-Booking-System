@@ -7,8 +7,6 @@ import { getToken } from "../utils/helper";
 
 export const baseUrl: string | undefined = import.meta.env.VITE_API_BASE_URL;
 
-console.log(baseUrl);
-
 const MainApi: AxiosInstance = axios.create({
     baseURL: baseUrl,
 });

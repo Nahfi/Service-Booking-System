@@ -164,7 +164,7 @@ const ChatContacts = ({ contactAction }) => {
                                         {tabMenu?.map((menu) => (
                                             <Nav.Item key={menu}>
                                                 <Nav.Link
-                                                    as={Button}
+                                                    as='button'
                                                     eventKey={menu}
                                                 >
                                                     <span className="text-capitalize">
