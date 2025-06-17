@@ -5,10 +5,14 @@ interface SwitchWrapperProps {
     label?: string;
 }
 
-const SwitchWrapper: React.FC<SwitchWrapperProps> = ({ id, label }) => {
+const SwitchWrapper: React.FC<SwitchWrapperProps> = ({
+    id,
+    label,
+}) => {
     return (
         <label htmlFor={id} className="switch-wrapper">
             {label && <span className="text-dark">{label}</span>}
+
             <span className="form-check form-switch">
                 <input
                     className="form-check-input"

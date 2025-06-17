@@ -13,10 +13,6 @@ const SEO = ({
     const site_name: string = "QukMsg";
     const faviconUrl: string = favicon; 
     const themeColor: string = "#106aeb";
-
-    console.log(faviconUrl);
-    
-    
     return (
         <Helmet>
             <html lang="en" dir="ltr" />

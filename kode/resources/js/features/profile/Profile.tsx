@@ -1,7 +1,7 @@
 import type React from "react";
 import { Nav } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
-import { LuMonitorDot, LuSettings, LuShield, LuUserCog } from "react-icons/lu";
+import { LuMonitorDot, LuShield, LuUserCog } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import PageHeader from "../../components/common/Page-header/PageHeader";
 import SEO from "../../components/common/seo/SEO";
@@ -9,7 +9,7 @@ import BaseLayout from "../../components/layouts/BaseLayout";
 import type { RootState } from "../../redux/store/store";
 import Information from "./components/Information";
 import Password from "./components/Password";
-import Subscription from "./components/Subscription";
+import Sessions from "./components/Sessions";
 import "./profile.scss";
 
 
@@ -17,7 +17,7 @@ const Profile: React.FC = () => {
   const user = useSelector((state: RootState) => state.user);
   const tabMenu = [
       {
-          label: "Profile",
+          label: "Profile Information",
           value: "profile",
           icon: <LuUserCog />,
           component: <Information user={user} />,
@@ -32,16 +32,9 @@ const Profile: React.FC = () => {
           label: "Sessions",
           value: "sessions",
           icon: <LuMonitorDot />,
-          component: <Subscription user={user} />,
-      },
-      {
-          label: "Setting",
-          value: "setting",
-          icon: <LuSettings />,
-          component: <Password user={user} />,
+          component: <Sessions user={user} />,
       },
   ];
-  // const tabMenu = ["profile", "security", "sessions", "groups"];
 
   return (
       <>
