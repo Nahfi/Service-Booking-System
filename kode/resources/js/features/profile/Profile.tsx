@@ -1,38 +1,42 @@
 import type React from "react";
 import { Nav } from "react-bootstrap";
 import Tab from "react-bootstrap/Tab";
+import { useTranslation } from "react-i18next";
 import { LuMonitorDot, LuShield, LuUserCog } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import PageHeader from "../../components/common/Page-header/PageHeader";
 import SEO from "../../components/common/seo/SEO";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import type { RootState } from "../../redux/store/store";
-import Information from "./components/Information";
-import Password from "./components/Password";
+import { valueToKey } from "../../utils/helper";
+import ProfileInformation from "./components/ProfileInformation";
+import Security from "./components/Security";
 import Sessions from "./components/Sessions";
 import "./profile.scss";
 
 
 const Profile: React.FC = () => {
+  const { t } = useTranslation();
   const user = useSelector((state: RootState) => state.user);
+    
   const tabMenu = [
       {
           label: "Profile Information",
           value: "profile",
           icon: <LuUserCog />,
-          component: <Information user={user} />,
+          component: <ProfileInformation user={user} openModal={openModal} />,
       },
       {
           label: "Security",
           value: "security",
           icon: <LuShield />,
-          component: <Password user={user} />,
+          component: <Security user={user} openModal={openModal} />,
       },
       {
           label: "Sessions",
           value: "sessions",
           icon: <LuMonitorDot />,
-          component: <Sessions user={user} />,
+          component: <Sessions user={user} openModal={openModal} />,
       },
   ];
 
@@ -43,10 +47,10 @@ const Profile: React.FC = () => {
           <BaseLayout>
               <>
                   <PageHeader
-                      title="My Profile"
-                      description="Manage your profile"
+                      title="My Account"
                       breadcrumbs={[{ title: "Profile" }]}
                   />
+
                   <div className="tab-container-wrapper">
                       <Tab.Container
                           id="profile-setting-tab"
@@ -60,10 +64,13 @@ const Profile: React.FC = () => {
                                               as="button"
                                               eventKey={menu.value}
                                               className="pills-tab-item"
-                                      >
+                                          >
                                               {menu.icon}
                                               <span>
-                                                  {menu.label}
+                                                  {t(
+                                                      valueToKey(menu?.label),
+                                                      menu?.label
+                                                  )}
                                               </span>
                                           </Nav.Link>
                                       </Nav.Item>
@@ -85,10 +92,10 @@ const Profile: React.FC = () => {
                               </Tab.Content>
                           </div>
                       </Tab.Container>
-
                   </div>
               </>
           </BaseLayout>
+
       </>
   );
 };

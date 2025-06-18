@@ -55,6 +55,7 @@ const router: RouteObject[] = createBrowserRouter(
         {
             path: "/",
             element: protectedRoute(<Root />),
+            // element:<Root />,
             children: [
                 {
                     index: true,

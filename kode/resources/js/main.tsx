@@ -6,6 +6,7 @@ import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "react-hot-toast";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+import "./utils/i18n/i18n";
 
 import {
     QueryClient,
@@ -18,7 +19,7 @@ const queryClient = new QueryClient()
 import App from "./App";
 import "./styles/sass/main.scss";
 
-createRoot(document.getElementById("app")).render(
+createRoot(document.getElementById("app") as HTMLElement).render(
     <StrictMode>
         <HelmetProvider>
             <Provider store={store}>
@@ -29,6 +30,6 @@ createRoot(document.getElementById("app")).render(
                     </QueryClientProvider>
                 </PersistGate>
             </Provider>
-         </HelmetProvider>
+        </HelmetProvider>
     </StrictMode>
 );

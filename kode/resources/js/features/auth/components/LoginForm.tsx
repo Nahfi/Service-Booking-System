@@ -20,7 +20,7 @@ const LoginForm: React.FC = ({ handleLogin ,loading}) => {
     const userAgent = window?.navigator?.userAgent;
     const parser = new UAParser(userAgent);
     const result = parser.getResult();
-
+    const deviceName = result?.os?.name;
 
     return (
         <form onSubmit={handleLogin}>
@@ -29,7 +29,7 @@ const LoginForm: React.FC = ({ handleLogin ,loading}) => {
                     type="hidden"
                     name="device_name"
                     id="device_name"
-                    defaultValue={"device name"}
+                    defaultValue={deviceName}
                     required
                 />
 

@@ -73,11 +73,10 @@
   }
 }
 
-
 .two-factor-modal{
   .two-factor-wrapper{
     .two-factor-qrcode{
-      max-width: 300px;
+      max-width: 250px;
       width: 100%;
       margin-inline: auto;
       background-color: $light-bg;

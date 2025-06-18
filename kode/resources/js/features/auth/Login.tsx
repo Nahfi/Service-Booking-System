@@ -40,7 +40,6 @@ const Login: React.FC = () => {
         });
     };
 
-
     return (
         <>
             <SEO title="Login"/>

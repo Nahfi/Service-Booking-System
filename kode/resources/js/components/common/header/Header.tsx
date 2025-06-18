@@ -2,11 +2,10 @@ import profileImage from "@/assets/images/bg/user-pro.png";
 import LogoDark from "@/assets/images/logo/logo-dark.svg";
 import LogoLight from "@/assets/images/logo/logo-light.svg";
 import headerLogo from "@/assets/images/logo/logo.png";
-import React, { useContext, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { BsMoon, BsSunFill } from "react-icons/bs";
 import {
-    LuLanguages,
     LuLogOut,
     LuMenu,
     LuSettings,
@@ -16,8 +15,11 @@ import {
 import { Link, NavLink } from "react-router-dom";
 import { ThemeContext } from "../../../context";
 
+import { useTranslation } from "react-i18next";
+import { valueToKey } from "../../../utils/helper";
 import type { ThemeContextType } from "../../../utils/types";
 import "./header.scss";
+import LanguageSwitch from "./Languageswitch";
 
 interface MenuItem {
     label: string;
@@ -28,46 +30,51 @@ const Header: React.FC = () => {
     const { themeSettings, toggleTheme, toggleDirection } = useContext(
         ThemeContext
     ) as ThemeContextType;
+
+    const {t} = useTranslation();
+
     const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
     const handleToggleMenu = () => {
         setMenuOpen((prev: boolean) => !prev);
     };
 
-    const headerMenu = [
-        {
-            label: "Dashboard",
-            path: "/",
-        },
-        {
-            label: "Manage user",
-            path: "/users",
-        },
-        {
-            label: "Conversation",
-            path: "/conversation/inbox",
-        },
-        {
-            label: "Campaign",
-            path: "/campaign",
-        },
-        {
-            label: "Calendar",
-            path: "/calendar",
-        },
-        {
-            label: "Report",
-            path: "/report",
-        },
-        {
-            label: "Manage Role",
-            path: "/roles",
-        },
-        {
-            label: "Settings",
-            path: "/setting/general",
-        },
-    ];
+    const headerMenu = useMemo(() => {
+        return [
+            {
+                label: "Dashboard",
+                path: "/",
+            },
+            {
+                label: "Manage user",
+                path: "/users",
+            },
+            {
+                label: "Conversation",
+                path: "/conversation/inbox",
+            },
+            {
+                label: "Campaign",
+                path: "/campaign",
+            },
+            {
+                label: "Calendar",
+                path: "/calendar",
+            },
+            {
+                label: "Report",
+                path: "/report",
+            },
+            {
+                label: "Manage role",
+                path: "/roles",
+            },
+            {
+                label: "Settings",
+                path: "/setting/general",
+            },
+        ];
+    },[]) 
 
     return (
         <header className="header-area style-1">
@@ -113,7 +120,10 @@ const Header: React.FC = () => {
                             {headerMenu?.map((menu) => (
                                 <li className="menu-item" key={menu?.label}>
                                     <NavLink to={menu?.path}>
-                                        {menu?.label}
+                                        {t(
+                                            valueToKey(menu?.label),
+                                            menu?.label
+                                        )}
                                     </NavLink>
                                 </li>
                             ))}
@@ -136,46 +146,20 @@ const Header: React.FC = () => {
                             <BsViewList />
                         </button> */}
 
-                        <Dropdown className="icon-dropdown">
-                            <Dropdown.Toggle className="transparent-dropdown">
-                                <div className="header-action">
-                                    <LuLanguages />
-                                </div>
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <ul className="dropdown-content language">
-                                    <li className="p-0">
-                                        <Dropdown.Item>
-                                            <LuLanguages />
-                                            English
-                                        </Dropdown.Item>
-                                    </li>
-                                    <li className="p-0">
-                                        <Dropdown.Item>
-                                            <LuLanguages />
-                                            Hindi
-                                        </Dropdown.Item>
-                                    </li>
-                                    <li className="p-0">
-                                        <Dropdown.Item>
-                                            <LuLanguages />
-                                            Bangla
-                                        </Dropdown.Item>
-                                    </li>
-                                </ul>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <LanguageSwitch />
 
                         <Dropdown>
                             <Dropdown.Toggle className="transparent-dropdown">
-                                <div className="user-toggle d-flex justify-content-start align-items-center gap-lg-3 gap-2">
+                                <div className="user-toggle d-flex justify-content-start align-items-center gap-lg-3 gap-2 position-relative">
                                     <div className="image">
                                         <img
                                             src={profileImage}
                                             alt="profile-image"
                                         />
                                     </div>
+                                    <span className="position-absolute top-0 end-0 translate-middle badge border border-light rounded-circle bg-success p-1">
+                                        <span className="visually-hidden"></span>
+                                    </span>
                                 </div>
                             </Dropdown.Toggle>
 
@@ -198,7 +182,9 @@ const Header: React.FC = () => {
                                             <span>
                                                 <LuUser className="fs-18" />
                                             </span>
-                                            <p>My Account</p>
+                                            <p>
+                                                {t("my_account", "My Account")}
+                                            </p>
                                         </Link>
                                     </li>
 
@@ -210,7 +196,7 @@ const Header: React.FC = () => {
                                             <span>
                                                 <LuSettings className="fs-18" />
                                             </span>
-                                            <p>Setting</p>
+                                            <p>{t("settings", "Settings")}</p>
                                         </Link>
                                     </li>
 
@@ -222,7 +208,9 @@ const Header: React.FC = () => {
                                             <span>
                                                 <LuLogOut className="fs-18" />
                                             </span>
-                                            <span>Sign out</span>
+                                            <span>
+                                                {t("sign_out", "Sign out")}
+                                            </span>
                                         </Link>
                                     </li>
                                 </ul>

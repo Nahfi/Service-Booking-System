@@ -6,8 +6,10 @@ import React, {
     ElementType,
     ReactNode,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { FaSpinner } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { valueToKey } from "../../../utils/helper";
 import TooltipWrapper from "../tooltip/TooltipWrapper";
 
 type ButtonProps = {
@@ -33,11 +35,13 @@ const Button: React.FC<ButtonProps> = ({
     href = "",
     ...props
 }) => {
+    
+    const { t } = useTranslation();
     const buttonClass = `${iconBtn ? "icon-btn" : "i-btn"} ${className || ""}`;
 
     if (href) {
         return iconBtn ? (
-            <TooltipWrapper content={tooltipText}>
+            <TooltipWrapper content={t(valueToKey(tooltipText), tooltipText)}>
                 <Link to={href} {...props} className={buttonClass}>
                     {Icon && <Icon className="d-inline" />}
                 </Link>
@@ -58,7 +62,7 @@ const Button: React.FC<ButtonProps> = ({
 
     return iconBtn ? (
         tooltipText ? (
-            <TooltipWrapper content={tooltipText}>
+            <TooltipWrapper content={t(valueToKey(tooltipText), tooltipText)}>
                 <button
                     {...props}
                     className={`${buttonClass} ${

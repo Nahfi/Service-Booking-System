@@ -7,6 +7,7 @@ import { getToken } from '../utils/helper';
 interface ProtectedRouteProps {
     children: React.ReactNode;
 }
+
 const AuthRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     const user = useSelector((state: RootState) => state.user);
     const token = getToken();

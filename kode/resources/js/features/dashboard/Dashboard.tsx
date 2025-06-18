@@ -304,7 +304,7 @@ const Dashboard: React.FC  = () => {
                     <div className="row g-4">
                         <div className="col-12">
                             <div className="p-4 border rounded-4">
-                                <Alert variant="warning">
+                                <Alert variant="warning" className="mb-0">
                                     <Alert.Heading as={"h6"}>
                                         Hey, nice to see you
                                     </Alert.Heading>

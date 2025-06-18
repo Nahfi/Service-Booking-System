@@ -116,6 +116,7 @@
 .popover{
   --bs-popover-zindex: 900;
 }
+
 .tooltip {
   opacity: 1 !important;
   .tooltip-inner {
@@ -251,4 +252,13 @@
       padding: 15px;
     }
   }
+}
+
+
+.alert-danger {
+  --bs-alert-bg: rgba(235, 87, 87, 0.055) !important;
+}
+
+.alert-warning{
+  --bs-alert-bg: rgba(240, 191, 76, 0.060) !important;
 }

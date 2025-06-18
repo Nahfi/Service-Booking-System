@@ -12,7 +12,7 @@
       -webkit-box-pack: justify;
           -ms-flex-pack: justify;
               justify-content: space-between;
-      padding: 25px;
+      padding: 20px;
       -webkit-padding-after: 0;
               padding-block-end: 0;
       border: none;
@@ -34,8 +34,8 @@
     }
 
     .modal-body {
-      scroll-padding: 30px;
-      padding: 25px;
+      scroll-padding: 25px;
+      padding: 20px;
       @include md {
         padding: 20px;
       }
@@ -49,7 +49,7 @@
         position: sticky;
         width: 100%;
         inset-inline: 0;
-        inset-block-end: -25px;
+        inset-block-end: -20px;
         padding-block: 15px;
         margin-inline: -5px;
         margin-block: -15px;
@@ -57,7 +57,7 @@
     }
 
     .modal-footer {
-      padding-inline: 25px;
+      padding-inline: 20px;
       -webkit-padding-before: 0;
               padding-block-start: 0;
       border: none;
