@@ -10,7 +10,7 @@
 
         @viteReactRefresh
         @vite('resources/js/main.tsx')
-
+{{-- 
         <!-- @php
         
             $manifestPath = public_path('build/manifest.json');
@@ -31,7 +31,7 @@
             <script>
                 console.error("Vite build file not found. Please run `npm run build`.");
             </script>
-        @endif -->
+        @endif --> --}}
 
         <script>
             window.APP_BASE_URL = '{{ url('/') }}';
