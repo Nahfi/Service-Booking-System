@@ -8,6 +8,7 @@ enum FileKey: string
 {
     use EnumTrait;
 
-    case AVATAR                = "avatar";
+    case AVATAR                      = "avatar";
+    case MESSAGE_FILE                = "message_file";
 
 }

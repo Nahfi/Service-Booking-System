@@ -19,6 +19,7 @@ class CreateUserMessagesTable extends Migration
             $table->unsignedBigInteger('sender_id')->index()->constrained(table: 'users');
             $table->unsignedBigInteger('reply_to_id')->index()->nullable()->constrained('user_messages');
             $table->text('content');
+            $table->boolean('is_read')->default(false);
             $table->boolean('deleted_by_sender')->default(false);
             $table->boolean('deleted_by_receiver')->default(false);
             $table->timestamps();

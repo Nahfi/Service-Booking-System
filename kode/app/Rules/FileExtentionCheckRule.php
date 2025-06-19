@@ -20,7 +20,7 @@ class FileExtentionCheckRule implements ValidationRule
     public $type;
     public $message;
     public $counter;
-    public function __construct(mixed $extention,string $type = 'image' ,int $counter = 0)
+    public function __construct(mixed $extention,string $type = 'File' ,int $counter = 0)
     {
        $this->extention     = $extention;
        $this->type          = $type;
