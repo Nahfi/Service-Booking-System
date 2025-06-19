@@ -11,7 +11,8 @@ type TableWrapperProps = {
 const TableWrapper: FC<TableWrapperProps> = ({ children, loader = false }) => {
     return (
         <div className="table-container table-responsive">
-            <table className="table align-middle">{children}</table>
+            <table className="align-middle">{children}</table>
+
             {loader && <TableLoader />}
         </div>
     );

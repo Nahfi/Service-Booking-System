@@ -5,7 +5,7 @@
   @include flex(
     $align: center,
     $justify: space-between,
-    $gap: 10px,
+    $gap: 20px,
     $wrap: wrap
   );
   .page-header-left {
