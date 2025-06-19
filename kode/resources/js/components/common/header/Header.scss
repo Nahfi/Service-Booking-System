@@ -600,6 +600,12 @@ header.style-1 .main-nav ul li.menu-item-has-children > i {
     @include md-down {
       @include square($size:36px,$radius:$radius-pill);
     }
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 100%;
+      object-fit: cover;
+    }
   }
   .content {
     span {

@@ -1,4 +1,3 @@
-import profileImage from "@/assets/images/bg/user-pro.png";
 import LogoDark from "@/assets/images/logo/logo-dark.svg";
 import LogoLight from "@/assets/images/logo/logo-light.svg";
 import headerLogo from "@/assets/images/logo/logo.png";
@@ -16,6 +15,8 @@ import { Link, NavLink } from "react-router-dom";
 import { ThemeContext } from "../../../context";
 
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import type { RootState } from "../../../redux/store/store";
 import { valueToKey } from "../../../utils/helper";
 import type { ThemeContextType } from "../../../utils/types";
 import "./header.scss";
@@ -27,13 +28,12 @@ interface MenuItem {
 }
 
 const Header: React.FC = () => {
-    const { themeSettings, toggleTheme, toggleDirection } = useContext(
-        ThemeContext
-    ) as ThemeContextType;
+    const { themeSettings, toggleTheme, toggleDirection } = useContext(ThemeContext) as ThemeContextType;
 
     const {t} = useTranslation();
 
     const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
+    const user = useSelector((state: RootState) => state.user);
 
     const handleToggleMenu = () => {
         setMenuOpen((prev: boolean) => !prev);
@@ -153,11 +153,17 @@ const Header: React.FC = () => {
                                 <div className="user-toggle d-flex justify-content-start align-items-center gap-lg-3 gap-2 position-relative">
                                     <div className="image">
                                         <img
-                                            src={profileImage}
+                                            src={user?.img_url}
                                             alt="profile-image"
                                         />
                                     </div>
-                                    <span className="position-absolute top-0 end-0 translate-middle badge border border-light rounded-circle bg-success p-1">
+                                    <span
+                                        className={`position-absolute top-0 end-0 translate-middle badge border border-light rounded-circle p-1 ${
+                                            user?.is_online
+                                                ? "bg-success"
+                                                : "bg-secondary"
+                                        }`}
+                                    >
                                         <span className="visually-hidden"></span>
                                     </span>
                                 </div>
@@ -168,9 +174,9 @@ const Header: React.FC = () => {
                                     <li className="p-3 pt-1">
                                         <div className="content lh-1">
                                             <h6 className="mb-1">
-                                                Kevin Heart
+                                                {user?.name}
                                             </h6>
-                                            <span>@Kevinuhuy</span>
+                                            <span>{user?.email}</span>
                                         </div>
                                     </li>
 
