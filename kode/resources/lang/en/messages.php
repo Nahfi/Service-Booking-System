@@ -36,10 +36,5 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'check_your_email_an_email_verification_code_sent_successfully' => 'Check your email an email verification code sent successfully',
   'invalid_verification_code' => 'Invalid verification code',
   'password_updated' => 'Password Updated',
-  'language_already_exists' => 'Language already exists',
-  'sqlstate[42s02]:_base_table_or_view_not_found:_1146_table__quick_message.user_conversations__doesn_t_exist_(connection:_mysql__sql:_select_count(*)_as_aggregate_from_`user_conversations`_where_`user_one_id`_=_1_or_`user_two_id`_=_1)' => 'SQLSTATE[42S02]: Base table or view not found: 1146 Table  quick_message.user_conversations  doesn t exist (Connection: mysql  SQL: select count(*) as aggregate from `user_conversations` where `user_one_id` = 1 or `user_two_id` = 1)',
-  'add_[user_one_id]_to_fillable_property_to_allow_mass_assignment_on_[modules\\usermessaging\\models\\userconversation].' => 'Add [user_one_id] to fillable property to allow mass assignment on [Modules\\UserMessaging\\Models\\UserConversation].',
-  'image_must_be_jpg__png_format' => 'image Must be jpg  png Format',
-  'file_must_be_jpg__png_format' => 'File Must be jpg  png Format',
-  'sqlstate[23000]:_integrity_constraint_violation:_1048_column__content__cannot_be_null_(connection:_mysql__sql:_update_`user_messages`_set_`content`_=____`user_messages`.`updated_at`_=_2025-06-03_07:50:31_where_`id`_=_17)' => 'SQLSTATE[23000]: Integrity constraint violation: 1048 Column  content  cannot be null (Connection: mysql  SQL: update `user_messages` set `content` =    `user_messages`.`updated_at` = 2025-06-03 07:50:31 where `id` = 17)',
+  'language_already_exists' => 'Language already exists'
 );

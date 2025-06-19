@@ -1,8 +1,10 @@
 
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 import { Link } from "react-router-dom";
+import { valueToKey } from "../../../utils/helper";
 
 interface LabelLink {
     href: string;
@@ -45,6 +47,8 @@ const Field: React.FC<FieldProps> = ({
     const isTextarea = childType === "textarea";
     const isFileInput = inputType === "file";
 
+    const { t } = useTranslation();
+
     return (
         <div
             className={`form-inner ${className ? className : ""} ${
@@ -63,7 +67,7 @@ const Field: React.FC<FieldProps> = ({
                             htmlFor={id}
                             className="form-label mb-0 fw-normal"
                         >
-                            {label}{" "}
+                            {t(valueToKey(label), label)}
                             {labelLink && (
                                 <Link to={labelLink.href} className="ms-1">
                                     {labelLink.text}
@@ -79,7 +83,7 @@ const Field: React.FC<FieldProps> = ({
                 <div className="file-input-wrapper">
                     {label && (
                         <label htmlFor={id} className="form-label">
-                            {label}{" "}
+                            {t(valueToKey(label), label)}
                             {labelLink && (
                                 <Link to={labelLink.href} className="ms-1">
                                     {labelLink.text}
@@ -101,7 +105,7 @@ const Field: React.FC<FieldProps> = ({
                 <>
                     {label && (
                         <label htmlFor={id} className="form-label">
-                            {label}
+                            {t(valueToKey(label), label)}
                             {labelLink && (
                                 <Link to={labelLink.href} className="ms-1">
                                     {labelLink.text}

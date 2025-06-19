@@ -1,0 +1,305 @@
+import Button from "@/components/common/button/Button";
+import TableWrapper from "@/components/common/table/TableWrapper";
+import { ModalContext } from "@/context";
+import React, { useContext, useRef, useState } from "react";
+import { BsDownload, BsPlusLg } from "react-icons/bs";
+import Filter from "../../../../../components/common/filter/Filter";
+import Field from "../../../../../components/common/from/Field";
+import ImageUpload from "../../../../../components/common/from/ImageUpload";
+import SelectBox from "../../../../../components/common/from/SelectBox";
+import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
+import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
+import type { ModalContextType } from "../../../../../utils/types";
+
+
+const AllContacts: React.FC = () => {
+  const [contactData, setContactData] = useState(null);
+  const [selectedContacts, setSelectedContacts] = useState([]);
+  const selectAllContact = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setContactData("");
+  };
+
+  const handleSelectAll = () => {
+    const isChecked = selectAllContact?.current?.checked;
+    if (isChecked === undefined) return;
+    const checkboxes = document.querySelectorAll(
+      "input[name='contactCheckbox']"
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = isChecked;
+    });
+    if (isChecked) {
+      setSelectedContacts(Array.from({ length: 7 }, (_, i) => i));
+    } else {
+      setSelectedContacts([]);
+    }
+  };
+
+  const handleCheckboxChange = (e, contactId) => {
+    if (e.target.checked) {
+      setSelectedContacts([...selectedContacts, contactId]);
+    } else {
+      setSelectedContacts(selectedContacts.filter((id) => id !== contactId));
+    }
+  };
+
+    
+  const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
+
+  return (
+      <>
+          {!contactData === null ? (
+              <form onSubmit={handleSubmit}>
+                  <div className="mb-20">
+                      <h6 className="fs-18">Upload your file</h6>
+                      <p className="fs-14">
+                          Add your documents here, and you can upload up to 5
+                          files max
+                      </p>
+                  </div>
+
+                  <ImageUpload
+                      uploadText="Drag your file(s) or Browse"
+                      maxFile="Max 20 MB files are allowed"
+                  />
+
+                  <p className="fs-14 mt-2">
+                      Only support extension of{" "}
+                      <span className="text-info">.csv</span>,
+                      <span className="text-info">.dsv</span>,
+                      <span className="text-info">.txt</span> or
+                      <span className="text-info">.xlsx.</span>
+                  </p>
+
+                  <div className="mt-4">
+                      <button className="i-btn btn--primary btn--lg rounded-3">
+                          Submit
+                      </button>
+                  </div>
+              </form>
+          ) : (
+              <>
+                  <div>
+                      <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+                          <Filter className={"mb-0"} />
+
+                          <div className="d-flex align-items-center gap-3">
+                              <Button className="btn--dark outline btn--md rounded-3">
+                                  <BsDownload className="fs-16" />
+                                  Download CSV
+                              </Button>
+
+                              <Button
+                                  className="btn--primary btn--md rounded-3"
+                                  onClick={() =>
+                                      openModal(
+                                          "CREATE",
+                                          "Create new contact",
+                                          "lg"
+                                      )
+                                  }
+                              >
+                                  <BsPlusLg className="fs-16" /> Add Contact
+                              </Button>
+                          </div>
+                      </div>
+
+                      <div className="row row-cols-xl-3 g-4 mb-4">
+                          <div className="col">
+                              <div className="contact-status-card">
+                                  <p>Total Contacts</p>
+                                  <h6>2105</h6>
+                              </div>
+                          </div>
+
+                          <div className="col">
+                              <div className="contact-status-card">
+                                  <p>Active contacts</p>
+                                  <h6>75.25%</h6>
+                              </div>
+                          </div>
+
+                          <div className="col">
+                              <div className="contact-status-card">
+                                  <p>Contact Blacklisted</p>
+                                  <h6>150</h6>
+                              </div>
+                          </div>
+                      </div>
+
+                      <TableWrapper>
+                          <thead>
+                              {selectedContacts.length >= 1 ? (
+                                  <tr>
+                                      <th>
+                                          <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
+                                              <input
+                                                  type="checkbox"
+                                                  ref={selectAllContact}
+                                                  onChange={handleSelectAll}
+                                              />
+                                              <div className="d-flex align-items-center gap-4">
+                                                  <button
+                                                      className="bg--transparent text-primary fw-bold"
+                                                      onClick={handleShowModal}
+                                                  >
+                                                      Add to Group
+                                                  </button>
+
+                                                  <button className="bg--transparent text-primary fw-bold">
+                                                      More Action
+                                                  </button>
+                                              </div>
+                                          </div>
+                                      </th>
+                                      <th colSpan="2"></th>
+                                      <th>
+                                          <span className="fw-normal">
+                                              {selectedContacts.length} Contact
+                                              Selected
+                                          </span>
+                                      </th>
+                                  </tr>
+                              ) : (
+                                  <tr>
+                                      <th>
+                                          <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
+                                              <input
+                                                  type="checkbox"
+                                                  ref={selectAllContact}
+                                                  onChange={handleSelectAll}
+                                              />
+                                              Name
+                                          </div>
+                                      </th>
+                                      <th>Phone Number</th>
+                                      <th>Status</th>
+                                      <th>Date Added</th>
+                                  </tr>
+                              )}
+                          </thead>
+                          <tbody>
+                              {Array.from({ length: 7 }).map((_, ind) => (
+                                  <tr key={ind}>
+                                      <td>
+                                          <div className="d-flex justify-content-start align-items-start gap-3">
+                                              <input
+                                                  type="checkbox"
+                                                  name="contactCheckbox"
+                                                  id={ind}
+                                                  onChange={(e) =>
+                                                      handleCheckboxChange(
+                                                          e,
+                                                          ind
+                                                      )
+                                                  }
+                                              />
+                                              <h6 className="fs-15">
+                                                  Jane Cooper
+                                              </h6>
+                                          </div>
+                                      </td>
+
+                                      <td>
+                                          <span className="text--primary">
+                                              5146846548465
+                                          </span>
+                                      </td>
+
+                                      <td>
+                                          <span className="i-badge pill success-soft">
+                                              Subscribed
+                                          </span>
+                                      </td>
+
+                                      <td>
+                                          <span className="text--primary">
+                                              25/06/2024
+                                          </span>
+                                      </td>
+                                  </tr>
+                              ))}
+                          </tbody>
+                      </TableWrapper>
+
+                      <div className="mt-4">
+                          <PaginationWrapper />
+                      </div>
+                  </div>
+              </>
+          )}
+
+          <ModalWrapper
+              title={modalConfig?.title}
+              onHide={closeModal}
+              show={showModal}
+              size={modalConfig?.size}
+              scrollable
+              centered
+          >
+              {(modalConfig?.type === "CREATE" ||
+                  modalConfig?.type === "EDIT") && (
+                  <form action="#">
+                      <div className="row g-3"> 
+                        <Field label={"Choose Group"} required>
+                            <>
+                                <SelectBox />
+
+                                <p className="mt-1 fs-14 text-muted">
+                                    Select the members of your group where you
+                                    want to send this campaign.
+                                </p>
+                            </>
+                        </Field>
+
+                        <div>
+                            <div className="mb-20">
+                                <h6 className="fs-18">Upload your file</h6>
+                                <p className="fs-14">
+                                    Add your documents here, and you can upload up
+                                    to 5 files max
+                                </p>
+                            </div>
+
+                            <ImageUpload
+                                uploadText="Drag your file(s) or Browse"
+                                maxFile="Max 20 MB files are allowed"
+                            />
+
+                            <p className="fs-14 mt-1">
+                                Only support extension of{" "}
+                                <span className="text-info">.csv</span>,
+                                <span className="text-info">.dsv</span>,
+                                <span className="text-info">.txt</span> or
+                                <span className="text-info">.xlsx.</span>
+                            </p>
+                        </div>
+                      </div>
+
+                      <div className="modal-custom-footer mt-4">
+                          <Button
+                              className="i-btn btn--dark outline btn--lg rounded-3"
+                              type="button"
+                              onClick={closeModal}
+                          >
+                              Cancel
+                          </Button>
+
+                          <Button
+                              type="submit"
+                              className="i-btn btn--primary btn--lg rounded-3"
+                          >
+                              Save
+                          </Button>
+                      </div>
+                  </form>
+              )}
+          </ModalWrapper>
+      </>
+  );
+};
+
+export default AllContacts;

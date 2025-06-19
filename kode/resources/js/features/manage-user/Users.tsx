@@ -13,6 +13,7 @@ import { DeleteModal } from "../../components/common/modal";
 import ModalWrapper from "../../components/common/modal/ModalWrapper";
 import PageHeader from "../../components/common/Page-header/PageHeader";
 import PaginationWrapper from "../../components/common/pagination/PaginationWrapper";
+import SEO from "../../components/common/seo/SEO";
 import type { ModalContextType } from "../../utils/types";
 import SaveUserModal from "./components/SaveUserModal";
 import UserTable from "./components/UserTable";
@@ -23,6 +24,8 @@ const Users: React.FC = () => {
 
     return (
         <>
+            <SEO title="User" />
+
             <BaseLayout>
                 <PageHeader
                     title={"Manage Staffs"}

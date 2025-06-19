@@ -1,5 +1,7 @@
 import React, { HTMLAttributes, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
+import { valueToKey } from "../../../utils/helper";
 import "../Page-header/PageHeader.scss";
 
 // Define breadcrumb type
@@ -24,6 +26,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     children,
     ...props
 }) => {
+
+    const {t} = useTranslation();
+    
     const attributes = {
         ...props,
         className: `page-header-wrapper mb-4 ${props?.className || ""}`,
@@ -51,15 +56,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({
     return (
         <div {...attributes}>
             <div className="page-header-left">
-                <h2>{title}</h2>
-                {shortTitle && <p>{shortTitle}</p>}
+                <h2>{t(valueToKey(title), title)}</h2>
+                {shortTitle && <p>{t(valueToKey(shortTitle), shortTitle)}</p>}
 
                 {breadcrumbs && (
                     <nav aria-label="breadcrumb" className="breadcrumb-wrapper">
                         <ol className="breadcrumb mb-0">
                             <li className="breadcrumb-item">
                                 <Link to="/" className="breadcrumb-link">
-                                    Dashboard
+                                    {t("dashboard", "Dashboard")}
                                 </Link>
                             </li>
                             {breadcrumbs.map((breadcrumb, i) => (
@@ -77,10 +82,10 @@ const PageHeader: React.FC<PageHeaderProps> = ({
                                             to={getUrlWithQuery(breadcrumb)}
                                             className="breadcrumb-link bg--transparent"
                                         >
-                                            {breadcrumb.title}
+                                            {t(valueToKey(breadcrumb?.title), breadcrumb?.title)}
                                         </Link>
                                     ) : (
-                                        breadcrumb.title
+                                        t(valueToKey(breadcrumb?.title), breadcrumb?.title)
                                     )}
                                 </li>
                             ))}

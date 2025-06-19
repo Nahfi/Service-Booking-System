@@ -2,7 +2,9 @@
 import { forwardRef, ReactNode } from "react";
 
 import Modal, { type ModalProps } from "react-bootstrap/Modal";
+import { useTranslation } from "react-i18next";
 import { LuX } from "react-icons/lu";
+import { valueToKey } from "../../../utils/helper";
 import Button from "../button/Button";
 import "./modal.scss";
 
@@ -13,7 +15,7 @@ interface ModalWrapperProps extends Omit<ModalProps, "children"> {
 
 const ModalWrapper = forwardRef<HTMLDivElement, ModalWrapperProps>(
     ({ children, title, onHide, show, ...props }, ref) => {
-
+       const {t}= useTranslation()
         return (
             <Modal
                 {...props}
@@ -24,7 +26,7 @@ const ModalWrapper = forwardRef<HTMLDivElement, ModalWrapperProps>(
                 animation={false}
             >
                 <Modal.Header>
-                    <Modal.Title>{title}</Modal.Title>
+                    <Modal.Title>{t(valueToKey(title), title)}</Modal.Title>
                     <Button
                         iconBtn={true}
                         icon={LuX}
