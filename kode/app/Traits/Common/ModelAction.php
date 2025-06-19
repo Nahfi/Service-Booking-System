@@ -232,14 +232,14 @@ trait ModelAction
             
             $file = new ModelsFile([
 
-                'display_name' => Arr::get($response, 'display_name'),
-                'name'         => Arr::get($response, 'name', 'default'),
-                'disk'         => Arr::get($response, 'disk', 'local'),
-                'type'         => $type,
-                'size'         => Arr::get($response, 'size', ''),
-                'extension'    => Arr::get($response, 'extension', ''),
-                
-            ]);
+                            'display_name' => Arr::get($response, 'display_name'),
+                            'name'         => Arr::get($response, 'name', 'default'),
+                            'disk'         => Arr::get($response, 'disk', 'local'),
+                            'type'         => $type,
+                            'size'         => Arr::get($response, 'size', ''),
+                            'extension'    => Arr::get($response, 'extension', ''),
+                            
+                        ]);
             
 
             $model->file()->save($file);
@@ -248,6 +248,44 @@ trait ModelAction
         }
 
         return false;
+    }
+
+
+
+
+
+    
+    /**
+     * Summary of saveFiles
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param array $response
+     * @return bool
+     */
+    private function saveFiles( 
+                                Model $model ,
+                                array $responses  = [],
+                                ? string $type =  null
+                              ):bool
+                            {
+
+
+        $files = collect($responses)
+                            ->map(fn (array $response, int $index) : ModelsFile =>
+                                    new ModelsFile([
+
+                                        'display_name' => Arr::get($response, 'display_name'),
+                                        'name'         => Arr::get($response, 'name', 'default'),
+                                        'disk'         => Arr::get($response, 'disk', 'local'),
+                                        'type'         => $type,
+                                        'size'         => Arr::get($response, 'size', ''),
+                                        'extension'    => Arr::get($response, 'extension', ''),
+                                    ])
+                            );
+
+        if (!empty($files))  $model->files()->saveMany($files);
+
+        return true ;
+   
     }
 
 

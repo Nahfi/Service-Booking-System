@@ -11,7 +11,7 @@ class UserMessageReaction extends Model
 {
     use HasFactory;
 
-    protected $fillable = [];
+    protected $guarded = [];
 
     /**
      * Summary of user
