@@ -15,6 +15,7 @@ use Illuminate\Support\Arr;
 use Modules\Settings\Models\File;
 use Throwable;
 use Illuminate\Support\Facades\Storage;
+use Modules\Settings\Http\Resources\FileResource;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -96,6 +97,7 @@ trait Fileable
         return [
             'status'    => $status,
             'name'      => $name,
+            'display_name'      => $file->getClientOriginalName(),
             'disk'      => $disk ,
             "size"      => $this->formatSize($size),
             "extension" => strtolower($file->getClientOriginalExtension())
@@ -187,13 +189,13 @@ trait Fileable
     
     /**
      * Summary of getimageURL
-     * @param \Modules\Settings\Models\File|null $file
+     * @param \Modules\Settings\Models\File|FileResource|null $file
      * @param string $location
      * @param mixed $foreceSize
      * @return string
      */
     private function getimageURL(
-                                File| null $file = null, 
+                                File | FileResource | null $file = null, 
                                 string $location ,
                                 ?string $foreceSize  = null
                              ): string{
@@ -214,12 +216,11 @@ trait Fileable
             default:
 
                 $configurationFn = StorageKey::getConfigurationFnName($disk );
-
+                
                 if($configurationFn){
                     $this->{$configurationFn}();
                     if (Storage::disk($disk)->exists($image))
                     $imageURL = \Storage::disk($disk)->url($image);
-
                 }
         }
 

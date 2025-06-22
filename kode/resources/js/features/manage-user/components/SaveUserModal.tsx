@@ -134,7 +134,6 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                                     id="password_confirmation"
                                     name="password_confirmation"
                                     className="form-control"
-                                    placeholder="Enter your confirmation password"
                                     placeholder={t(
                                         valueToKey(
                                             "Enter your confirmation password"

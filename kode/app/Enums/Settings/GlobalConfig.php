@@ -732,6 +732,11 @@ enum GlobalConfig {
         'text_editor' => [
            'path'        => self::IMAGE_PATH_PREFIX.'texteditor',
         ],
+
+        'messages' => [
+           'user'      => ['path' => self::IMAGE_PATH_PREFIX.'user/messages'],
+           'whats_app' => ['path' => self::IMAGE_PATH_PREFIX.'user/whats_app']
+        ],
         
         'site_logo' => [
             'user' => [
