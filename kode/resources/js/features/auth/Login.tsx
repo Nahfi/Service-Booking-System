@@ -19,7 +19,7 @@ const Login: React.FC = () => {
     const token = getToken() 
     const { mutate: signIn, isPending, error } = useSignIn();
 
-    const handleLogin = async (e: FormSubmitEvent): void => {
+    const handleLogin = (e: FormSubmitEvent): void => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const signInData = Object.fromEntries(formData.entries());

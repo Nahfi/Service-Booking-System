@@ -3,7 +3,7 @@ import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
-  BsThreeDotsVertical
+    BsThreeDotsVertical
 } from "react-icons/bs";
 import { LuSquarePen, LuTrash2 } from 'react-icons/lu';
 import { Link } from 'react-router';
@@ -48,8 +48,8 @@ const RoleListTable: React.FC = ({ roles, isPending, actions={} }) => {
                                         className="form-check-input"
                                         type="checkbox"
                                         role="switch"
-                                        checked={role?.status === "active"}
                                         id={`role-${role?.id}`}
+                                        checked={role?.status === "active"}
                                         onChange={() =>
                                             actions?.status?.fn(role)
                                         }

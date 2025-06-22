@@ -17,24 +17,30 @@ import TableWrapper from "../../components/common/table/TableWrapper";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import { ModalContext } from "../../context";
 import type { ModalContextType } from "../../utils/types";
+import useGetRoles from "../role-permission/api/hooks/useGetRoles";
 import useDeleteUser from "./api/hooks/useDeleteUser";
 import useGetUsers from "./api/hooks/useGetUsers";
 import useUpdateUserStatus from "./api/hooks/useUpdateUserStatus";
 import SaveUserModal from "./components/SaveUserModal";
 import UserTable from "./components/UserTable";
+import type { ModalConfigType, RoleType, UserType } from "./utils/type";
 
 
 const Users: React.FC = () => {
     const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
 
     const { data, refetch, isPending } = useGetUsers();
-    const usersData = data?.data || [];
+    const usersData: UserType[] = data?.data || [];
 
     const { mutate: updateStatus } = useUpdateUserStatus();
     const { mutate: deleteRoleFn, isPending: deleteButtonLoader } = useDeleteUser();
 
-    const handleStatusChange = (user) => {
+    const { data:rolesData } = useGetRoles();
+    const roles: RoleType[] = rolesData?.data || [];
+
+    const handleStatusChange = (user: UserType) => {
         const toastId = toast.loading("Updating.....");
+
         const postData = {
             id: user?.id,
             value: user?.status === "active" ? "inactive" : "active",
@@ -46,6 +52,8 @@ const Users: React.FC = () => {
                     toast.success("Updated");
                     refetch();
                     if (response?.success) {
+                        toast.dismiss(toastId);
+                    } else {
                         toast.dismiss(toastId);
                     }
                 }
@@ -126,7 +134,9 @@ const Users: React.FC = () => {
                     modalConfig?.type === "EDIT") && (
                     <SaveUserModal
                         closeModal={closeModal}
-                        modalConfig={modalConfig}
+                        modalConfig={modalConfig as ModalConfigType}
+                        refetchFn={refetch}
+                        roles={roles}
                     />
                 )}
 

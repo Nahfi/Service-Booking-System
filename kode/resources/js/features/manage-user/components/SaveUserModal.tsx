@@ -1,28 +1,55 @@
 import Button from "@/components/common/button/Button";
 import Field from "@/components/common/from/Field";
 import type React from "react";
+import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { valueToKey } from "../../../utils/helper";
-import useGetRoles from "../../role-permission/api/hooks/useGetRoles";
+import type { FormSubmitEvent } from "../../../utils/types";
+import useSaveUser from "../api/hooks/useSaveUser";
+import type { ModalConfigType, RoleType, SaveUserPayload } from "../utils/type";
 
 interface SaveUserModalProps {
     closeModal: () => void;
-    modalConfig: {};
+    modalConfig: ModalConfigType;
+    refetchFn: () => void;
+    roles: RoleType[];
 }
 
 const SaveUserModal: React.FC<SaveUserModalProps> = ({
     closeModal,
-    modalConfig = {},
+    modalConfig,
+    refetchFn,
+    roles,
 }) => {
+
     const { t } = useTranslation();
 
-    const { data } = useGetRoles();
-    const roles = data?.data || null;
-
+    const { mutate: saveUserFn, isPending } = useSaveUser();
     const user = modalConfig?.data;
 
+    const handleOnSubmit = (e: FormSubmitEvent): void => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const postData = Object.fromEntries(
+            formData.entries()
+        ) as unknown as SaveUserPayload;
+
+        console.log(postData);
+
+        saveUserFn(postData, {
+            onSuccess: (response) => {
+                if (response) {
+                    e.target.reset();
+                    refetchFn();
+                    closeModal();
+                    toast.success("User create successfully!");
+                }
+            },
+        });
+    };
+
     return (
-        <form>
+        <form onSubmit={handleOnSubmit}>
             <div>
                 <div
                     className={`${
@@ -38,8 +65,12 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                         </h6>
                     </div>
 
-                    {!modalConfig?.type === "CREATE" && (
-                        <input type="hidden" name="id" defaultValue={user?.id}/>
+                    {user && user?.id && (
+                        <input
+                            type="hidden"
+                            name="id"
+                            defaultValue={user?.id}
+                        />
                     )}
 
                     <div className="row g-3">
@@ -88,17 +119,22 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                         </div>
 
                         <div className="col-md-6">
-                            <Field label="Choose Role">
+                            <Field label="Choose Role" required>
                                 <select
                                     className="form-select"
                                     id="role_id"
                                     aria-label="role"
                                     name="role_id"
+                                    required
+                                    defaultValue={user?.role?.id}
                                 >
                                     <option>--Select role--</option>
                                     {roles?.length > 0 &&
                                         roles?.map((role) => (
-                                            <option value={role?.id}>
+                                            <option
+                                                value={role?.id}
+                                                key={role?.id}
+                                            >
                                                 {role?.name}
                                             </option>
                                         ))}
@@ -107,28 +143,22 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                         </div>
 
                         <div className="col-md-6">
-                            <Field label="New password" required>
+                            <Field label="New password">
                                 <input
                                     type="password"
                                     id="password"
                                     name="password"
                                     className="form-control"
                                     placeholder={t(
-                                        valueToKey(
-                                            "Enter your password"
-                                        ),
+                                        valueToKey("Enter your password"),
                                         "Enter your password"
                                     )}
-                                    required={modalConfig?.type === "CREATE"}
                                 />
                             </Field>
                         </div>
 
                         <div className="col-md-6">
-                            <Field
-                                label="Confirm New Password"
-                                required
-                            >
+                            <Field label="Confirm New Password" required>
                                 <input
                                     type="password"
                                     id="password_confirmation"
@@ -140,7 +170,6 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                                         ),
                                         "Enter your confirmation password"
                                     )}
-                                    required={modalConfig?.type === "CREATE"}
                                 />
                             </Field>
                         </div>
@@ -267,17 +296,18 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                     className="btn--dark btn--lg outline rounded-3"
                     onClick={closeModal}
                 >
-                    Cancel
+                    {t(valueToKey("Cancel"), "Cancel")}
                 </Button>
 
                 <Button
                     type="submit"
                     className="btn--primary btn--lg rounded-3"
+                    isLoading={isPending}
                 >
-                    Save
+                    {t(valueToKey("Submit"), "Submit")}
                 </Button>
             </div>
-        </form >
+        </form>
     );
 };
 

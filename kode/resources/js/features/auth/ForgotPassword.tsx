@@ -67,10 +67,6 @@ const ForgotPassword: React.FC = () => {
         });
     };
 
-
-
-
-    console.log(formConfiguration);
     
     return (
         <AuthLayout>

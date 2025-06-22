@@ -9,10 +9,27 @@ import { LuSquarePen, LuTrash2 } from "react-icons/lu";
 import NoDataFound from "../../../components/common/NoDataFound/NoDataFound";
 import { valueToKey } from "../../../utils/helper";
 import type { OpenModalFn } from "../../../utils/types";
+import type { UserType } from "../utils/type";
 
+
+interface ActionHandlers {
+    status?: {
+        fn: (user: UserType) => void;
+    };
+    modal?: {
+        fn: (
+            type: "EDIT" | "DELETE",
+            title?: string,
+            size?: string,
+            data?: any
+        ) => void;
+    };
+}
 
 interface UserTableProps {
     openModal: OpenModalFn;
+    usersData: UserType[];
+    actions?: ActionHandlers;
 }
 
 const UserTable: FC<UserTableProps> = ({

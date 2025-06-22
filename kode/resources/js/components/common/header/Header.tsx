@@ -13,8 +13,9 @@ import { ThemeContext } from "../../../context";
 import { useTranslation } from "react-i18next";
 import { valueToKey } from "../../../utils/helper";
 import type { ThemeContextType } from "../../../utils/types";
-import "./header.scss";
-import LanguageSwitch from "./Languageswitch";
+
+import "./Header.scss";
+import LanguageSwitch from "./LanguageSwitch";
 import ProfileDropdown from "./ProfileDropdown";
 
 interface MenuItem {
@@ -32,7 +33,7 @@ const Header: React.FC = () => {
         setMenuOpen((prev: boolean) => !prev);
     };
 
-    const headerMenu = useMemo(() => {
+    const headerMenu: MenuItem[] = useMemo(() => {
         return [
             {
                 label: "Dashboard",
@@ -67,7 +68,7 @@ const Header: React.FC = () => {
                 path: "/setting/general",
             },
         ];
-    },[]) 
+    }, []); 
 
     return (
         <header className="header-area style-1">
