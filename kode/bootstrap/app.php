@@ -25,9 +25,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-      
+
             $middleware->alias([
-    
+
                 'user.api.token'            => UserApiAuthMiddleware::class,
                 'user.permission.check'     => UserPermissions::class,
                 'sanitization'              => Sanitization::class,
@@ -36,22 +36,22 @@ return Application::configure(basePath: dirname(__DIR__))
                 'app.verification'          => ApplicationVerification::class
 
             ]);
-        
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
-   
+
         $exceptions->render(function (Exception $e, Request $request) {
 
-            //  if (
-            //     $e instanceof \Illuminate\View\ViewException  &&
-            //     str_contains($e->getMessage(), 'Vite manifest not found')
-            // ) {
-            //     return response()->json('NPM IS NOT RUNNING',500);
-            // }
-        
-   
+             if (
+                $e instanceof \Illuminate\View\ViewException  &&
+                str_contains($e->getMessage(), 'Vite manifest not found')
+            ) {
+                return response()->json('NPM IS NOT RUNNING',500);
+            }
+
+
             if ($request->is('api/*')) {
-                
+
 
                 if ($e instanceof \Illuminate\Validation\ValidationException)    return null;
 
@@ -59,18 +59,19 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)   {
 
+                    @dd($e ->getMessage());
                     return ApiResponse::error(
                         data: ['error' => translate('No result found')],
-                        code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_NOT_FOUND : $e->getCode()  
+                        code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_NOT_FOUND : $e->getCode()
                     );
                 }
 
-    
+
                 return ApiResponse::error(
                     data: ['error' => translate(@$e->getMessage() ?? translate('An unexpected error occurred'))],
-                    code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_INTERNAL_SERVER_ERROR : $e->getCode()  
+                    code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_INTERNAL_SERVER_ERROR : $e->getCode()
                 );
             }
         });
-        
+
     })->create();

@@ -4,5 +4,7 @@
     "contact": true,
     "controller": true,
     "user-chat": true,
-    "user-messaging": true
+    "user-messaging": true,
+    "my-blog": true,
+    "sms-messaging": true
 }

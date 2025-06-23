@@ -1,0 +1,13 @@
+{
+    "alias": "sms-messaging",
+    "description": "",
+    "keywords": [],
+    "active": true,
+    "order": 0,
+    "providers": [
+        "Modules\\SmsMessaging\\Providers\\Main"
+    ],
+    "aliases": [],
+    "files": [],
+    "requires": []
+}
