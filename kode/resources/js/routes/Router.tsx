@@ -1,7 +1,7 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 
 import type { JSX } from "react";
-import ForgotPassword from "../features/auth/ForGotPassword";
+import ForgotPassword from "../features/auth/ForgotPassword";
 import Login from "../features/auth/Login";
 import VerifyEmail from "../features/auth/VerifyEmail";
 import Calendar from "../features/calendar/Calendar";

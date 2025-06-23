@@ -74,7 +74,7 @@ const Header: React.FC = () => {
                 path: "/setting/general",
             },
         ];
-    },[]) 
+    },[])
 
     return (
         <header className="header-area style-1">
