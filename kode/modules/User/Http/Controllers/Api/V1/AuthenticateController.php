@@ -28,8 +28,6 @@ class AuthenticateController extends Controller
 
         $user = $this->authService->findActiveUser(attributes: ['email' => $request->input('email')]);
 
-        @dd(    $user );
-
         $rememberMe  = $request->input('remember_me');
         $deviceName  = $request->input('device_name');
 
@@ -86,7 +84,7 @@ class AuthenticateController extends Controller
     {
 
         $logoutFromAllDevice = request()->boolean('all_device_logout');
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
         $user->fcm_token = null;
         $user->save();
 

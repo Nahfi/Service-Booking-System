@@ -4,7 +4,6 @@ namespace Modules\Settings\Database\Seeds;
 
 use App\Enums\Common\Status;
 use App\Enums\Settings\SettingKey;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 use Modules\Settings\Enums\DefaultSettings;
 use Modules\Settings\Models\Settings;
@@ -19,14 +18,13 @@ class SettingsSeeder extends Seeder
     public function run()
     {
 
-         $user = getDefaultUser();
+        $user = getDefaultUser();
 
-        
         if($user){
 
            $settings =  collect(DefaultSettings::get())
                             ->except(Settings::where('user_id',  $user->id)->pluck('key')->toArray())
-                            ->map(fn(mixed $value , string $key):array => 
+                            ->map(fn(mixed $value , string $key):array =>
                                 array(
                                         'user_id'     => $user->id,
                                         'group'       => SettingKey::GENERAL->value,
@@ -42,9 +40,6 @@ class SettingsSeeder extends Seeder
             Settings::insert($settings);
             optimize_clear();
         }
-
-
-
 
     }
 }

@@ -22,10 +22,10 @@ class UserApiAuthMiddleware
      */
     public function handle(Request $request, Closure $next): Response{
 
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
 
         switch (true) {
-            
+
             case $user && $user->status == Status::INACTIVE->value:
                 $user->tokens()->delete();
                 return ApiResponse::error(
@@ -33,7 +33,7 @@ class UserApiAuthMiddleware
                     code: Response::HTTP_UNAUTHORIZED,
                     appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
                 );
-                
+
                 case $user && $user->tokenCan('role:'.TokenKey::USER_AUTH_TOKEN_ABILITIES->value):
 
                     $this->updateLastLoginTime($user);
@@ -43,13 +43,13 @@ class UserApiAuthMiddleware
 
                 return $next($request);
             default:
-    
+
                 return ApiResponse::error(
                     data: ['error' => translate('Invalid token')],
                     code: Response::HTTP_UNAUTHORIZED,
                     appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
                 );
-                
+
         }
     }
 
@@ -75,7 +75,7 @@ class UserApiAuthMiddleware
      * @return void
      */
     private function updateUserSesssion(User $user): void{
-      
+
         $token = request()->bearerToken();
         $hashedToken = hash('sha256', explode('|', $token)[1] ?? '');
 
@@ -100,10 +100,10 @@ class UserApiAuthMiddleware
      */
     private function loadUserContext(User $user): void{
 
-    
+
         $targetId       = $user->parent_id ?: $user->id;
         $cacheKeyPrefix = "user:{$user->id}";
-        $ttl = now()->addDays(2); 
+        $ttl = now()->addDays(2);
 
         $parent = Cache::remember("{$cacheKeyPrefix}:parent:{$targetId}", $ttl, function () use ($user) {
             $user->loadMissing(relations: $user->parent_id ? 'parent' : []);

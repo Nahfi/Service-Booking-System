@@ -48,4 +48,9 @@ context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-messag
 The exception occurred while attempting to log: require(/home/lenovo/www/quick-message-laravel-react/kode/modules/Contact/Providers/../Config/config.php): Failed to open stream: No such file or directory
 Context: { exception :{}}',
   'path__/home/lenovo/www/quick-message-laravel-react/kode/storage/clockwork/index__is_not_writable.' => 'Path  /home/lenovo/www/quick-message-laravel-react/kode/storage/clockwork/index  is not writable.',
+  'the_stream_or_file__/home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log__could_not_be_opened_in_append_mode:_failed_to_open_stream:_permission_denied
+the_exception_occurred_while_attempting_to_log:_file_put_contents(/home/lenovo/www/quick-message-laravel-react/kode/modules/whatsappmessaging/module.json):_failed_to_open_stream:_permission_denied
+context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log  could not be opened in append mode: Failed to open stream: Permission denied
+The exception occurred while attempting to log: file_put_contents(/home/lenovo/www/quick-message-laravel-react/kode/modules/WhatsappMessaging/module.json): Failed to open stream: Permission denied
+Context: { exception :{}}',
 );

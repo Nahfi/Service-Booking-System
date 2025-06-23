@@ -91,7 +91,7 @@ class ApiResponseBuilder
       return $this;
   }
 
-  
+
   /**
    * Summary of withHttpCode
    * @param int $code
@@ -103,7 +103,7 @@ class ApiResponseBuilder
       return $this;
   }
 
-  
+
 
   /**
    * Summary of withData
@@ -130,7 +130,7 @@ class ApiResponseBuilder
         return $this;
   }
 
-  
+
 
     /**
      * Summary of formatResource
@@ -186,7 +186,7 @@ class ApiResponseBuilder
     }
 
 
-  
+
 
   /**
    * Summary of build
@@ -261,19 +261,19 @@ class ApiResponseBuilder
           })
 
             ->when(request()->is('api/user/*') , function (ApiResponseBuilder $builder) use ($appends): ApiResponseBuilder {
-                $user = getAuthUser('user:api');
-        
+                $user = getAuthUser('user_api');
+
                 return $builder->append(key: 'is_user_authenticate', value:     $user &&  $user->status == Status::ACTIVE->value);
 
              })
             ->build();
 
 
-       
+
   }
 
 
-  
+
   /**
    * Summary of success
    * @param mixed $resource
