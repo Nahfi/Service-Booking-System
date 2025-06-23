@@ -17,7 +17,7 @@ use Modules\User\Http\Resources\UserResource;
 use Modules\User\Http\Resources\UserSessionResource;
 use Modules\User\Models\UserSession;
 
-class ProfileService 
+class ProfileService
 {
 
     use Fileable , ModelAction;
@@ -33,7 +33,7 @@ class ProfileService
     public function update(Request $request): JsonResponse{
 
 
-        $user = getAuthUser('user:api',['file']);
+        $user = getAuthUser('user_api',['file']);
 
 
         $user =  DB::transaction(function() use($request , $user): User{
@@ -51,8 +51,8 @@ class ProfileService
 
                         $this->saveFile(model: $user,
                                             response: $this->storeFile(
-                                                                    file: $request->file('image'), 
-                                                                    location : GlobalConfig::FILE_PATH['profile']['user']['path'], 
+                                                                    file: $request->file('image'),
+                                                                    location : GlobalConfig::FILE_PATH['profile']['user']['path'],
 
                                                                     removeFile: request()->isMethod('patch') ? $user->file : null),
                                             type: FileKey::AVATAR->value);
@@ -73,7 +73,7 @@ class ProfileService
 
 
 
-      
+
     /**
      * Summary of updateFirebaseToken
      * @param \Illuminate\Http\Request $request
@@ -81,7 +81,7 @@ class ProfileService
      */
     public function updateFirebaseToken(Request $request): JsonResponse{
 
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
         $user->fcm_token = $request->input('fcm_token');
         $user->save();
 
@@ -96,15 +96,15 @@ class ProfileService
 
 
 
-       
-   
+
+
     /**
      * Summary of switchOnlineStatus
      * @return JsonResponse
      */
     public function switchOnlineStatus(): JsonResponse{
 
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
         $user->show_online_status = !$user->show_online_status;
         $user->save();
 
@@ -124,7 +124,7 @@ class ProfileService
     public function updatePassword(Request $request): JsonResponse{
 
 
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
 
         if (!Hash::check($request->input('current_password'), $user->password))
                throw new \Exception(translate('Your Current Password does not match !!'), Response::HTTP_FORBIDDEN);
@@ -133,14 +133,14 @@ class ProfileService
         $user->password = $request->input('password');
         $user->visible_password = $request->input('password');
         $user->save();
-     
+
         return ApiResponse::asSuccess()
                              ->build();
 
     }
 
 
-    
+
     /**
      * Summary of destroy
      * @param \Illuminate\Http\Request $request
@@ -148,9 +148,9 @@ class ProfileService
      */
     public function destroy(Request $request): JsonResponse{
 
-        $user = getAuthUser('user:api');
+        $user = getAuthUser('user_api');
 
-        #TODO: NEED TO DELETE THE USER WITH ITS RELATIONAL DATA 
+        #TODO: NEED TO DELETE THE USER WITH ITS RELATIONAL DATA
 
 
         return ApiResponse::asSuccess()
@@ -198,9 +198,9 @@ class ProfileService
 
         return ApiResponse::asSuccess()
                      ->build();
-        
+
     }
 
 
-   
+
 }

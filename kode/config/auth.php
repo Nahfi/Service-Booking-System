@@ -44,10 +44,10 @@ return [
 
 
 
-        'user:api' => [
-            'driver'   => 'sanctum',
+        'user_api' => [
+            'driver' => 'sanctum',
             'provider' => 'users',
-        ]
+        ],
     ],
 
     /*
@@ -74,7 +74,7 @@ return [
         ],
 
 
-       
+
 
         // 'users' => [
         //     'driver' => 'database',
@@ -108,7 +108,7 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
-     
+
     ],
 
     /*
