@@ -13,12 +13,16 @@ import Progress from "../../components/common/progressbar/Progress";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import OverviewCards from "./components/OverviewCards";
 
+import { useTranslation } from "react-i18next";
 import SEO from "../../components/common/seo/SEO";
+import { valueToKey } from "../../utils/helper";
 import "./dashboard.scss";
 
 const Dashboard: React.FC  = () => {
     const { themeSettings } = useContext(ThemeContext);
     const currentTheme = themeSettings?.theme || "light";
+
+    const {t} = useTranslation()
 
     const smsReport = useMemo(
         () => ({
@@ -253,7 +257,7 @@ const Dashboard: React.FC  = () => {
     return (
         <>
             <SEO title="Dashboard" />
-            
+
             <BaseLayout>
                 <>
                     <PageHeader
@@ -261,28 +265,34 @@ const Dashboard: React.FC  = () => {
                         shortTitle={"Monitor every activity of your business."}
                     >
                         <div className="quick-action">
-                            <div className="d-flex align-items-center gap-3">
+                            <div className="d-flex align-items-center gap-4">
                                 <Button
-                                    href={`/roles/create`}
+                                    href={`/conversation/contact`}
                                     className="quick-action-btn flex-column gap-2"
                                 >
                                     <span className="quick-action-icon">
                                         <LuUserPlus />
                                     </span>
                                     <p className="quick-action-btn-level">
-                                        Add Contact
+                                        {t(
+                                            valueToKey("Add Contact"),
+                                            "Add Contact"
+                                        )}
                                     </p>
                                 </Button>
 
                                 <Button
-                                    href={`/roles/create`}
+                                    href={`/conversation/templates`}
                                     className="quick-action-btn flex-column gap-2"
                                 >
                                     <span className="quick-action-icon">
                                         <LuLayoutTemplate />
                                     </span>
                                     <p className="quick-action-btn-level">
-                                        Create Template
+                                        {t(
+                                            valueToKey("Create Template"),
+                                            "Create Template"
+                                        )}
                                     </p>
                                 </Button>
 
@@ -294,7 +304,10 @@ const Dashboard: React.FC  = () => {
                                         <LuMegaphone />
                                     </span>
                                     <p className="quick-action-btn-level">
-                                        Create Campaign
+                                        {t(
+                                            valueToKey("Create Campaign"),
+                                            "Create Campaign"
+                                        )}
                                     </p>
                                 </Button>
                             </div>
@@ -310,10 +323,10 @@ const Dashboard: React.FC  = () => {
                                     </Alert.Heading>
                                     <p className="mt-2 fs-14">
                                         Aww yeah, you successfully read this
-                                        important alert message. This example text
-                                        is going to run a bit longer so that you can
-                                        see how spacing within an alert works with
-                                        this kind of content.
+                                        important alert message. This example
+                                        text is going to run a bit longer so
+                                        that you can see how spacing within an
+                                        alert works with this kind of content.
                                     </p>
                                 </Alert>
                             </div>
@@ -356,15 +369,17 @@ const Dashboard: React.FC  = () => {
                                 <CardHeader cardTitle={"SMS Sent Report"} />
                                 <CardBody>
                                     <div className="d-flex flex-column gap-3">
-                                        {Array.from({ length: 5 }).map((_, ind) => (
-                                            <Progress
-                                                key={ind}
-                                                percentage={70}
-                                                type="linear"
-                                                flagUrl={usaImg}
-                                                countryName={"USA"}
-                                            />
-                                        ))}
+                                        {Array.from({ length: 5 }).map(
+                                            (_, ind) => (
+                                                <Progress
+                                                    key={ind}
+                                                    percentage={70}
+                                                    type="linear"
+                                                    flagUrl={usaImg}
+                                                    countryName={"USA"}
+                                                />
+                                            )
+                                        )}
                                     </div>
                                 </CardBody>
                             </Card>

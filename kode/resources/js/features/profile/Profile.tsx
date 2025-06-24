@@ -95,7 +95,6 @@ const Profile: React.FC = () => {
                   </div>
               </>
           </BaseLayout>
-
       </>
   );
 };

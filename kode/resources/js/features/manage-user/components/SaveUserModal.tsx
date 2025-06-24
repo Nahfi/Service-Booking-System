@@ -5,6 +5,7 @@ import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { valueToKey } from "../../../utils/helper";
 import type { FormSubmitEvent } from "../../../utils/types";
+import useGetRoles from "../../role-permission/api/hooks/useGetRoles";
 import useSaveUser from "../api/hooks/useSaveUser";
 import type { ModalConfigType, RoleType, SaveUserPayload } from "../utils/type";
 
@@ -12,20 +13,21 @@ interface SaveUserModalProps {
     closeModal: () => void;
     modalConfig: ModalConfigType;
     refetchFn: () => void;
-    roles: RoleType[];
 }
 
 const SaveUserModal: React.FC<SaveUserModalProps> = ({
     closeModal,
     modalConfig,
     refetchFn,
-    roles,
 }) => {
 
     const { t } = useTranslation();
 
     const { mutate: saveUserFn, isPending } = useSaveUser();
     const user = modalConfig?.data;
+
+    const { data: rolesData } = useGetRoles();
+    const roles: RoleType[] = rolesData?.data || [];
 
     const handleOnSubmit = (e: FormSubmitEvent): void => {
         e.preventDefault();

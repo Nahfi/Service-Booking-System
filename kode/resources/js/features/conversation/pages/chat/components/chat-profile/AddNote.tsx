@@ -2,8 +2,6 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { BsCalendar2Range, BsClock, BsTrash3 } from "react-icons/bs";
 import { LuRepeat2, LuSave, LuUserPlus } from "react-icons/lu";
-// import Field from "../../../../common/from/Field";
-// import SelectBox from "../../../../common/from/SelectBox";
 
 import "react-datepicker/dist/react-datepicker.css";
 import Field from "../../../../../../components/common/from/Field";

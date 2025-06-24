@@ -8,7 +8,7 @@ import {
   BsVolumeMute,
 } from "react-icons/bs";
 import Button from "../../../../../components/common/button/Button";
-import Filter from "../../../../../components/common/filter/Filter";
+import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
 import Table from "../../../../../components/common/table/Table";
 
@@ -45,7 +45,7 @@ const Attribute: React.FC = () => {
   return (
     <>
         <div className="mb-4">
-          <Filter />
+          <FilterWrapper />
         </div>
 
         <Table>

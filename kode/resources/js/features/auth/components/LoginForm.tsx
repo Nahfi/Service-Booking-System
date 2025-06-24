@@ -36,7 +36,7 @@ const LoginForm: React.FC = ({ handleLogin ,loading}) => {
                 <div className="col-12">
                     <Field label="email" required>
                         <input
-                            type="text"
+                            type="email"
                             id="email"
                             name="email"
                             className="form-control"

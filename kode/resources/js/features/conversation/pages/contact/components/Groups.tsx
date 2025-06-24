@@ -1,17 +1,17 @@
 import { useRef, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
-  BsBan,
-  BsPencilSquare,
-  BsThreeDotsVertical,
-  BsTrash3,
-  BsVolumeMute,
+    BsBan,
+    BsPencilSquare,
+    BsThreeDotsVertical,
+    BsTrash3,
+    BsVolumeMute,
 } from "react-icons/bs";
 
 import empty from "@/assets/images/empty.svg";
 import { LuUser } from "react-icons/lu";
 import Button from "../../../../../components/common/button/Button";
-import Filter from "../../../../../components/common/filter/Filter";
+import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
 import TableWrapper from "../../../../../components/common/table/TableWrapper";
 
@@ -64,7 +64,7 @@ const Groups: React.FC = () => {
           ) : (
               <>
                   <div className="mb-4">
-                      <Filter />
+                      <FilterWrapper />
                   </div>
 
                   <TableWrapper>

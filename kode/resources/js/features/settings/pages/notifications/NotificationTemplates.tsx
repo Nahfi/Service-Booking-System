@@ -1,5 +1,4 @@
 import Button from "@/components/common/button/Button";
-import Filter from "@/components/common/filter/Filter";
 import ModalWrapper, { DeleteModal } from "@/components/common/modal";
 import PageHeader from "@/components/common/Page-header/PageHeader";
 import PaginationWrapper from "@/components/common/pagination/PaginationWrapper";
@@ -7,6 +6,7 @@ import TableWrapper from "@/components/common/table/TableWrapper";
 import { ModalContext } from "@/context";
 import React, { useContext } from "react";
 import { BsPlusLg } from "react-icons/bs";
+import FilterWrapper from "../../../../components/common/filter/FilterWrapper";
 import type { ModalContextType } from "../../../../utils/types";
 import NotificationTable from "./components/NotificationTable";
 
@@ -27,7 +27,7 @@ const NotificationTemplates: React.FC = () => {
 
             <div>
                 <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
-                    <Filter className={"mb-0"} />
+                    <FilterWrapper className={"mb-0"} />
 
                     <Button
                         className="btn--primary btn--md rounded-3 flex-shrink-0"

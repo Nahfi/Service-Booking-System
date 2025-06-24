@@ -9,7 +9,7 @@ import BaseLayout from "../../components/layouts/BaseLayout";
 import TableWrapper from "@/components/common/table/TableWrapper";
 import { BsPlusLg } from "react-icons/bs";
 import Button from "../../components/common/button/Button";
-import Filter from "../../components/common/filter/Filter";
+import FilterWrapper from "../../components/common/filter/FilterWrapper";
 import PageHeader from "../../components/common/Page-header/PageHeader";
 import CampaignTable from "./components/table/CampaignTable";
 
@@ -32,7 +32,7 @@ const Campaign: React.FC = () => {
                 className="mb-4 style-1"
             >
                 <Tab eventKey="All" title="All">
-                    <Filter />
+                    <FilterWrapper />
                     <div>
                         <TableWrapper>
                             <CampaignTable />
@@ -41,14 +41,14 @@ const Campaign: React.FC = () => {
                 </Tab>
 
                 <Tab eventKey="SMS" title="SMS">
-                    <Filter />
+                    <FilterWrapper />
                     <TableWrapper>
                         <CampaignTable />
                     </TableWrapper>
                 </Tab>
 
                 <Tab eventKey="Whatsapp" title="Whatsapp">
-                    <Filter />
+                    <FilterWrapper />
                     <TableWrapper>
                         <CampaignTable />
                     </TableWrapper>

@@ -116,6 +116,7 @@ header.style-1 .main-nav ul {
   padding: 0;
   background-color: $light-bg;
   border-radius: $radius-pill;
+  @include flex($align:center,$gap:5px);
 }
 
 header.style-1 .main-nav ul > li {
@@ -555,15 +556,7 @@ header.style-1 .main-nav ul li.menu-item-has-children > i {
 .header-action {
   @include square($size:40px,$radius:$radius-pill);
   background-color: $light-bg;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  @include flex($align:center,$justify:center);
   -webkit-transition: 0.4s ease;
   -o-transition: 0.4s ease;
   transition: 0.4s ease;
@@ -576,6 +569,7 @@ header.style-1 .main-nav ul li.menu-item-has-children > i {
   }
   &:hover {
     background-color: $color-primary;
+    color: $color-white;
     svg {
       fill: $color-white;
     }
