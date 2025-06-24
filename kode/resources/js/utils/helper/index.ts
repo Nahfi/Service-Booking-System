@@ -305,3 +305,10 @@ export const getFilterableUrl = (url, filters) => {
 
     return url;
 };
+
+export const handlePageChange = (page, hookFn) => {
+    hookFn((prevState) => ({
+        ...prevState,
+        page: page,
+    }));
+};

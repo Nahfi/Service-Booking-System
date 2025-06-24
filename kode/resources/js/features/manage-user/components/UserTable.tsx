@@ -29,12 +29,14 @@ interface ActionHandlers {
 interface UserTableProps {
     openModal: OpenModalFn;
     usersData: UserType[];
+    isPending?: boolean;
     actions?: ActionHandlers;
 }
 
 const UserTable: FC<UserTableProps> = ({
     openModal,
     usersData,
+    isPending,
     actions = {},
 }) => {
     const { t } = useTranslation();
@@ -57,7 +59,7 @@ const UserTable: FC<UserTableProps> = ({
             </thead>
 
             <tbody>
-                {usersData?.length > 0 ? (
+                {(!isPending && usersData?.length > 0 ) ? (
                     usersData?.map((user) => (
                         <tr key={user?.id}>
                             <td>

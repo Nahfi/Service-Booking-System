@@ -34,7 +34,6 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
             formData.entries()
         ) as unknown as SaveUserPayload;
 
-        console.log(postData);
 
         saveUserFn(postData, {
             onSuccess: (response) => {

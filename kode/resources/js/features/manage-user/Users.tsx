@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
     BsPlusLg,
     BsRecycle
@@ -16,7 +16,8 @@ import SEO from "../../components/common/seo/SEO";
 import TableWrapper from "../../components/common/table/TableWrapper";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import { ModalContext } from "../../context";
-import type { ModalContextType } from "../../utils/types";
+import { handlePageChange } from "../../utils/helper";
+import type { FormSubmitEvent, ModalContextType } from "../../utils/types";
 import useGetRoles from "../role-permission/api/hooks/useGetRoles";
 import useDeleteUser from "./api/hooks/useDeleteUser";
 import useGetUsers from "./api/hooks/useGetUsers";
@@ -29,13 +30,15 @@ import type { ModalConfigType, RoleType, UserType } from "./utils/type";
 const Users: React.FC = () => {
     const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
 
+    const [filters, setFilters] = useState({});
     const { data, refetch, isPending } = useGetUsers();
     const usersData: UserType[] = data?.data || [];
+    const paginationData = data?.pagination_meta || null;
 
     const { mutate: updateStatus } = useUpdateUserStatus();
     const { mutate: deleteRoleFn, isPending: deleteButtonLoader } = useDeleteUser();
 
-    const { data:rolesData } = useGetRoles();
+    const { data: rolesData } = useGetRoles();
     const roles: RoleType[] = rolesData?.data || [];
 
     const handleStatusChange = (user: UserType) => {
@@ -51,12 +54,11 @@ const Users: React.FC = () => {
                 if (response) {
                     toast.success("Updated");
                     refetch();
-                    if (response?.success) {
-                        toast.dismiss(toastId);
-                    } else {
-                        toast.dismiss(toastId);
-                    }
                 }
+            },
+
+            onSettled: () => {
+                toast.dismiss(toastId);
             },
         });
     };
@@ -71,6 +73,20 @@ const Users: React.FC = () => {
                 }
             },
         });
+    };
+
+    const onPageChange = (page) => {
+        handlePageChange(page, setFilters);
+    };
+
+    const handleOnFilter = (e: FormSubmitEvent): void => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const postData = Object.fromEntries(formData.entries());
+
+        console.log(postData);
+        
+
     };
 
     return (
@@ -100,11 +116,14 @@ const Users: React.FC = () => {
                 </PageHeader>
 
                 <div>
-                    <div className="mb-4">
-                        <Filter />
+                    <div>
+                        <Filter onSubmit={handleOnFilter} filters={{
+                            search: { name: "search" },
+                            dateRange:{ name:"date"}
+                        }} />
                     </div>
 
-                    <TableWrapper>
+                    <TableWrapper loader={isPending}>
                         <UserTable
                             openModal={openModal}
                             usersData={usersData}
@@ -116,9 +135,11 @@ const Users: React.FC = () => {
                         />
                     </TableWrapper>
 
-                    <div className="mt-4">
-                        <PaginationWrapper />
-                    </div>
+                    <PaginationWrapper
+                        pagination_data={paginationData}
+                        handlePageChange={onPageChange}
+                        loader={isPending}
+                    />
                 </div>
             </BaseLayout>
 
