@@ -2,14 +2,13 @@
 
 namespace App\Enums\Settings;
 
-use App\Enums\Common\Status;
 use App\Enums\EnumTrait;
 
 enum SettingKey: string
 {
     use EnumTrait;
 
-    #Global 
+    #Global
 
     case SITE_EMAIL                     = "site_email";
     case SITE_NAME                      = "site_name";
@@ -53,7 +52,6 @@ enum SettingKey: string
     case PLAY_STORE_URL                 = "play_store_url";
     case APP_STORE_URL                  = "app_store_url";
 
-    case UNAUTHORIZED_REQUEST           = "unauthorized_request";
 
 
 }

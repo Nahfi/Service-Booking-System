@@ -35,6 +35,5 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'undefined_array_key__os_platform_' => 'Undefined array key  os_platform ',
   'check_your_email_an_email_verification_code_sent_successfully' => 'Check your email an email verification code sent successfully',
   'invalid_verification_code' => 'Invalid verification code',
-  'password_updated' => 'Password Updated',
-  'language_already_exists' => 'Language already exists'
+  'password_updated' => 'Password Updated'
 );

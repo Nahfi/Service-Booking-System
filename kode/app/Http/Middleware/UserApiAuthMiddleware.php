@@ -6,7 +6,7 @@ use Closure;
 use App\Models\User;
 use App\Facades\ApiResponse;
 use App\Enums\Common\Status;
-use App\Enums\Settings\SettingKey;
+use App\Enums\Settings\ErrorEventKey;
 use Illuminate\Http\Request;
 use App\Enums\Settings\TokenKey;
 use Illuminate\Support\Facades\Cache;
@@ -31,13 +31,13 @@ class UserApiAuthMiddleware
                 return ApiResponse::error(
                     data: ['error' => translate('This Business has been deactivated by the system admin')],
                     code: Response::HTTP_UNAUTHORIZED,
-                    appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+                    appends: ['event' => ErrorEventKey::UNAUTHORIZED_REQUEST->value]
                 );
 
                 case $user && $user->tokenCan('role:'.TokenKey::USER_AUTH_TOKEN_ABILITIES->value):
 
                     $this->updateLastLoginTime($user);
-                   +$this->updateUserSesssion($user);
+                    $this->updateUserSesssion($user);
                     $this->loadUserContext($user);
 
 
@@ -47,7 +47,7 @@ class UserApiAuthMiddleware
                 return ApiResponse::error(
                     data: ['error' => translate('Invalid token')],
                     code: Response::HTTP_UNAUTHORIZED,
-                    appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+                    appends: ['event' => ErrorEventKey::UNAUTHORIZED_REQUEST->value]
                 );
 
         }

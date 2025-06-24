@@ -32,12 +32,10 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
 
             #CUSTOM PROFILE ROUTE
             Route::controller(MessageController::class)->prefix('messages/')->group(function () {
-                Route::post('mute', 'updateFcmToken');
-                Route::post('/mute/conversation/{id}', 'toggleMute');
 
-                // Route::post('update-password', 'passwordUpdate');
-                // Route::post('destroy-account', 'destroyAccount');
-                // Route::post('toggle-online-status', 'toggleOnlineStatus');
+                Route::post('/mute/conversation/{id}', 'toggleMute');
+                Route::post('/block/conversation/{id}', 'toggleBlock');
+
             });
 
         });
