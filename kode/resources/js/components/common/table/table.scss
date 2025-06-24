@@ -3,14 +3,16 @@
 .table-container {
   max-width: 100%;
   width: 100%;
-  overflow-x: auto;
+  height: 100%;
+  min-height: 300px;
   overflow-y: hidden;
   border: 1px solid $border-primary;
   border-radius: $radius-20;
+  position: relative;
   @include md-down {
     border-radius: $radius-12;
   }
-  table {
+  > table {
     max-width: 100%;
     width: 100%;
     white-space: nowrap;

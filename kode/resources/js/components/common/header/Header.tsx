@@ -1,15 +1,10 @@
-import profileImage from "@/assets/images/bg/user-pro.png";
 import LogoDark from "@/assets/images/logo/logo-dark.svg";
 import LogoLight from "@/assets/images/logo/logo-light.svg";
 import headerLogo from "@/assets/images/logo/logo.png";
 import React, { useContext, useMemo, useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import { BsMoon, BsSunFill } from "react-icons/bs";
 import {
-    LuLogOut,
     LuMenu,
-    LuSettings,
-    LuUser,
     LuX
 } from "react-icons/lu";
 import { Link, NavLink } from "react-router-dom";
@@ -18,8 +13,10 @@ import { ThemeContext } from "../../../context";
 import { useTranslation } from "react-i18next";
 import { valueToKey } from "../../../utils/helper";
 import type { ThemeContextType } from "../../../utils/types";
-import "./header.scss";
-import LanguageSwitch from "./Languageswitch";
+
+import "./Header.scss";
+import LanguageSwitch from "./LanguageSwitch";
+import ProfileDropdown from "./ProfileDropdown";
 
 interface MenuItem {
     label: string;
@@ -27,19 +24,16 @@ interface MenuItem {
 }
 
 const Header: React.FC = () => {
-    const { themeSettings, toggleTheme, toggleDirection } = useContext(
-        ThemeContext
-    ) as ThemeContextType;
-
+    const { themeSettings, toggleTheme, toggleDirection } = useContext(ThemeContext) as ThemeContextType;
+    
     const {t} = useTranslation();
-
     const [isMenuOpen, setMenuOpen] = useState<boolean>(false);
 
     const handleToggleMenu = () => {
         setMenuOpen((prev: boolean) => !prev);
     };
 
-    const headerMenu = useMemo(() => {
+    const headerMenu: MenuItem[] = useMemo(() => {
         return [
             {
                 label: "Dashboard",
@@ -74,7 +68,9 @@ const Header: React.FC = () => {
                 path: "/setting/general",
             },
         ];
-    },[])
+
+    }, []); 
+
 
     return (
         <header className="header-area style-1">
@@ -119,7 +115,7 @@ const Header: React.FC = () => {
                         <ul className="menu-list">
                             {headerMenu?.map((menu) => (
                                 <li className="menu-item" key={menu?.label}>
-                                    <NavLink to={menu?.path}>
+                                    <NavLink to={menu?.path} viewTransition>
                                         {t(
                                             valueToKey(menu?.label),
                                             menu?.label
@@ -148,74 +144,7 @@ const Header: React.FC = () => {
 
                         <LanguageSwitch />
 
-                        <Dropdown>
-                            <Dropdown.Toggle className="transparent-dropdown">
-                                <div className="user-toggle d-flex justify-content-start align-items-center gap-lg-3 gap-2 position-relative">
-                                    <div className="image">
-                                        <img
-                                            src={profileImage}
-                                            alt="profile-image"
-                                        />
-                                    </div>
-                                    <span className="position-absolute top-0 end-0 translate-middle badge border border-light rounded-circle bg-success p-1">
-                                        <span className="visually-hidden"></span>
-                                    </span>
-                                </div>
-                            </Dropdown.Toggle>
-
-                            <Dropdown.Menu>
-                                <ul className="dropdown--profile">
-                                    <li className="p-3 pt-1">
-                                        <div className="content lh-1">
-                                            <h6 className="mb-1">
-                                                Kevin Heart
-                                            </h6>
-                                            <span>@Kevinuhuy</span>
-                                        </div>
-                                    </li>
-
-                                    <li>
-                                        <Link
-                                            to="/profile"
-                                            className="text-dark d-flex align-items-center gap-3 w-100 p-3"
-                                        >
-                                            <span>
-                                                <LuUser className="fs-18" />
-                                            </span>
-                                            <p>
-                                                {t("my_account", "My Account")}
-                                            </p>
-                                        </Link>
-                                    </li>
-
-                                    <li>
-                                        <Link
-                                            to="/setting/general"
-                                            className="text-dark d-flex align-items-center gap-3 w-100 p-3"
-                                        >
-                                            <span>
-                                                <LuSettings className="fs-18" />
-                                            </span>
-                                            <p>{t("settings", "Settings")}</p>
-                                        </Link>
-                                    </li>
-
-                                    <li>
-                                        <Link
-                                            to={`/login`}
-                                            className="text-dark d-flex align-items-center gap-3 w-100 p-3"
-                                        >
-                                            <span>
-                                                <LuLogOut className="fs-18" />
-                                            </span>
-                                            <span>
-                                                {t("sign_out", "Sign out")}
-                                            </span>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <ProfileDropdown />
                     </div>
                 </div>
             </div>

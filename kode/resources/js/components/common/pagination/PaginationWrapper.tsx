@@ -1,39 +1,37 @@
 import type React from "react";
-import { BsChevronLeft, BsChevronRight, BsThreeDots } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
+import { valueToKey } from "../../../utils/helper";
 import Button from "../button/Button";
 import "./pagination.scss";
 
 
-const PaginationWrapper:React.FC = () => {
+const PaginationWrapper: React.FC = ({
+  pagination_data,
+  handlePageChange,
+  loader = false,
+}) => {
+  const { t } = useTranslation();
+  
+  const currentPage = pagination_data?.current_page;
+  const totalPages = pagination_data?.last_page;
   return (
-    <div className="pagination-wrapper">
-      <Button className="btn--dark btn--md outline rounded-pill">
-        <BsChevronLeft /> Previous
-      </Button>
+      pagination_data &&
+      (pagination_data.prev_page || pagination_data.next_page) && (
+          <div className="pagination-wrapper">
+              <Button className="btn--dark btn--md outline rounded-pill">
+                  <BsChevronLeft /> {t(valueToKey("Previous"), "Previous")}
+              </Button>
 
-      <nav className="pagination-links">
-        <Link to="#" className="pagination-link active">
-          1
-        </Link>
-        <Link to="#" className="pagination-link">
-          2
-        </Link>
-        <Link to="#" className="pagination-link">
-          3
-        </Link>
-        <Link to="#" className="pagination-link">
-          <BsThreeDots />
-        </Link>
-        <Link to="#" className="pagination-link">
-          10
-        </Link>
-      </nav>
+              <span className="fs-14 text-muted">
+                  {`${(t("page"), "Page")} ${currentPage} of ${totalPages}`}
+              </span>
 
-      <Button className="btn--dark btn--md outline rounded-pill">
-        Next <BsChevronRight />
-      </Button>
-    </div>
+              <Button className="btn--dark btn--md outline rounded-pill">
+                  {t(valueToKey("Next"), "Next")} <BsChevronRight />
+              </Button>
+          </div>
+      )
   );
 };
 
