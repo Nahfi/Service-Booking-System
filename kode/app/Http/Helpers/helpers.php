@@ -18,7 +18,7 @@ use Jenssegers\Agent\Agent;
          Artisan::call('optimize:clear');
       }
    }
-   
+
    if (!function_exists('limit_words')) {
          function limit_words(string $text, int|string $limit) :string  {
             return Str::limit($text, $limit, $end='...');
@@ -29,19 +29,19 @@ use Jenssegers\Agent\Agent;
 
    if (!function_exists('getDefaultUser')) {
 
-       
+
          /**
           * Summary of getDefaultUser
           * @return User|null
           */
          function getDefaultUser(): User | null{
-            
+
                 return  User::parentUser()
                                  ->where('email' , 'demouser@gmail.com')
                                  ->first();
          }
    }
-   
+
 
 
    if (!function_exists('limitText')) {
@@ -58,7 +58,7 @@ use Jenssegers\Agent\Agent;
 
   }
 
- 
+
 
 
    if (!function_exists('paginateNumber')) {
@@ -111,10 +111,10 @@ use Jenssegers\Agent\Agent;
 
              switch (is_array($amount)) {
                case true:
-                  $amount = collect($amount)->map(fn(int | float $value, string $key)  :int | float => 
+                  $amount = collect($amount)->map(fn(int | float $value, string $key)  :int | float =>
                             $numFormat ? currency_conversion(number :round($value)) : round($value))->all();
                   break;
-               
+
                default:
                   $amount = $numFormat ? currency_conversion(number :round($amount)) : round($amount);
                   break;
@@ -127,7 +127,7 @@ use Jenssegers\Agent\Agent;
    }
 
 
-  
+
 	if (!function_exists('diff_for_humans')){
 
       /**
@@ -141,7 +141,7 @@ use Jenssegers\Agent\Agent;
 		}
    }
 
-  
+
 
 
    if (!function_exists('notificationMessage')){
@@ -167,7 +167,7 @@ use Jenssegers\Agent\Agent;
    }
 
 
-   
+
 
 
    if (!function_exists(function: 'key_to_value')){
@@ -181,7 +181,7 @@ use Jenssegers\Agent\Agent;
          return ucfirst(preg_replace(pattern: "/[^A-Za-z0-9 ]/", replacement: ' ', subject: $text));
       }
    }
-   
+
    if (!function_exists(function: 'value_to_key')){
       /**
        * Summary of value_to_key
@@ -196,13 +196,13 @@ use Jenssegers\Agent\Agent;
 
 
    if (!function_exists('generateUniqueCode')) {
-      
+
       /**
        * Generate a unique numeric code based on the current time.
        *
-       * @param int $minDigits 
+       * @param int $minDigits
        * @param int $maxDigits
-       * @return string 
+       * @return string
        */
       function generateUniqueCode(int $minDigits = 6, int $maxDigits = 6): string
       {
@@ -226,12 +226,12 @@ use Jenssegers\Agent\Agent;
                $ip =  $ip  ?? request()->ip();
                $location = Location::get('45.248.150.194');
 
-          
+
                $agent = new Agent();
                $os = $agent->platform();
                $browser = $agent->browser();
                $device = $agent->device();
-               
+
 
                return [
                      'ip'           => $ip,
@@ -248,7 +248,7 @@ use Jenssegers\Agent\Agent;
                   ];
 
 
-               
+
          }
 
    }
@@ -282,8 +282,8 @@ use Jenssegers\Agent\Agent;
 
             $timeZone =  site_settings(SettingKey::TIME_ZONE->value );
 
-            $format   =  site_settings(SettingKey::DATE_FORMAT->value)." ".site_settings(SettingKey::TIME_FORMAT->value); 
-            
+            $format   =  site_settings(SettingKey::DATE_FORMAT->value)." ".site_settings(SettingKey::TIME_FORMAT->value);
+
             return  Carbon::createFromFormat('Y-m-d H:i:s', $date, 'UTC')
                               ->setTimezone($timeZone)
                               ->format($format);
@@ -301,7 +301,7 @@ use Jenssegers\Agent\Agent;
           */
          function format_time(string $time, ?string $format = null): string
          {
-        
+
          }
    }
 
@@ -321,8 +321,8 @@ use Jenssegers\Agent\Agent;
    }
 
 
-  
-  
+
+
 	if (!function_exists('translate')){
 
       /**
@@ -345,7 +345,7 @@ use Jenssegers\Agent\Agent;
                   $str = "<?php return " . var_export(value: $lang_array, return: true) . ";";
                   file_put_contents(filename: base_path('resources/lang/' . $local . '/messages.php'), data: $str);
                   return $value;
-              } 
+              }
               return trans(key: 'messages.' . $key);
 
           } catch (\Exception $ex) {
@@ -451,9 +451,9 @@ if (!function_exists('build_dom_document')){
                    $save_path  = GlobalConfig::FILE_PATH['text_editor']['path'];
 
                    try {
-                     
+
                        if(!file_exists($save_path))  mkdir($save_path, 0755, true);
-                       
+
                        Image::read($imgeData)->save($save_path.'/'.$image_name);
 
                        $getpath = asset( GlobalConfig::FILE_PATH['text_editor']['path'].'/'.$image_name);
@@ -484,14 +484,14 @@ if (!function_exists('build_dom_document')){
 
 
 if (!function_exists('generateTicketNumber')){
-   
+
    /**
     * Summary of generateTicketNumber
     * @return string
     */
    function generateTicketNumber() :string
    {
-      $randomNumber = uniqid(); 
+      $randomNumber = uniqid();
       $ticketNumber = strtoupper(substr($randomNumber, 0, 8));
       return $ticketNumber;
    }
@@ -509,7 +509,7 @@ if (!function_exists('getAuthUser')) {
     * @param array $load
     * @return mixed
     */
-   function getAuthUser(string $guard = 'user:api' ,  array $load = []): mixed
+   function getAuthUser(string $guard = 'user_api' ,  array $load = []): mixed
    {
 
       return auth()?->guard($guard)

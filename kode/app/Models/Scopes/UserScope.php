@@ -14,8 +14,8 @@ class UserScope implements Scope
     public function apply(Builder $builder, Model $model): void
     {
 
-        $user = getAuthUser('user:api');
-    
+        $user = getAuthUser('user_api');
+
         if ($user) {
             $builder->where('user_id', $user->parent_id ? $user->parent_id : $user->id);
         }

@@ -2,7 +2,7 @@
     "user": true,
     "settings": true,
     "contact": true,
-    "controller": true,
-    "user-chat": true,
-    "user-messaging": true
+    "user-messaging": true,
+    "sms-messaging": true,
+    "whatsapp-messaging": true
 }

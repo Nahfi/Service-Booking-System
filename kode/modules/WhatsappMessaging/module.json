@@ -1,0 +1,13 @@
+{
+    "alias": "whatsapp-messaging",
+    "description": "",
+    "keywords": [],
+    "active": true,
+    "order": 0,
+    "providers": [
+        "Modules\\WhatsappMessaging\\Providers\\Main"
+    ],
+    "aliases": [],
+    "files": [],
+    "requires": []
+}

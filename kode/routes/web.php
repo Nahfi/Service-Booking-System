@@ -10,6 +10,9 @@ use Spatie\RobotsMiddleware\RobotsMiddleware;
 //     return $sitemap->render();
 // });
 
+
+
+
 Route::get('/{any?}', function () {
 
     // if (request()->server('HTTP_USER_AGENT') && str_contains(request()->server('HTTP_USER_AGENT'), 'bot')) {
@@ -19,5 +22,5 @@ Route::get('/{any?}', function () {
     //     }
     // }
     return view('app');
-    
+
 })->middleware(RobotsMiddleware::class)->where('any',  '^(?!api).*$');
