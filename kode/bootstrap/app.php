@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Settings\ErrorEventKey;
 use App\Facades\ApiResponse;
 use App\Http\Middleware\ApplicationVerification;
 use App\Http\Middleware\CorsMiddleware;
@@ -46,7 +47,13 @@ return Application::configure(basePath: dirname(__DIR__))
                 $e instanceof \Illuminate\View\ViewException  &&
                 str_contains($e->getMessage(), 'Vite manifest not found')
             ) {
-                return response()->json('NPM IS NOT RUNNING',500);
+
+
+                  return ApiResponse::error(
+                                                data: ['error' => translate('NPM IS NOT RUNNING')],
+                                                code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_NOT_FOUND : $e->getCode(),
+                                                appends: ['event' => ErrorEventKey::NPM_ERROR->value]
+                                            );
             }
 
 
@@ -59,7 +66,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)   {
 
-                    @dd($e ->getMessage());
+
                     return ApiResponse::error(
                         data: ['error' => translate('No result found')],
                         code: $e->getCode() == 0 || is_string($e->getCode()) ? Response::HTTP_NOT_FOUND : $e->getCode()

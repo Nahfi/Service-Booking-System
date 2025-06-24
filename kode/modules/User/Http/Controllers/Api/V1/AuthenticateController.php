@@ -3,7 +3,7 @@
 namespace Modules\User\Http\Controllers\Api\V1;
 
 use App\Builders\ApiResponseBuilder;
-use App\Enums\Settings\SettingKey;
+use App\Enums\Settings\ErrorEventKey;
 use App\Facades\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
@@ -58,7 +58,7 @@ class AuthenticateController extends Controller
                     return ApiResponse::error(
                         data: ['error' => translate('Invalid password!')],
                         code: Response::HTTP_UNAUTHORIZED,
-                        appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+                        appends: ['event' => ErrorEventKey::UNAUTHORIZED_REQUEST->value]
                     );
             }
 
@@ -66,7 +66,7 @@ class AuthenticateController extends Controller
             return ApiResponse::error(
                 data: ['error' => $ex->getMessage()],
                 code: Response::HTTP_UNAUTHORIZED,
-                appends: ['event' => SettingKey::UNAUTHORIZED_REQUEST->value]
+                appends: ['event' => ErrorEventKey::UNAUTHORIZED_REQUEST->value]
             );
 
         }

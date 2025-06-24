@@ -53,4 +53,5 @@ the_exception_occurred_while_attempting_to_log:_file_put_contents(/home/lenovo/w
 context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log  could not be opened in append mode: Failed to open stream: Permission denied
 The exception occurred while attempting to log: file_put_contents(/home/lenovo/www/quick-message-laravel-react/kode/modules/WhatsappMessaging/module.json): Failed to open stream: Permission denied
 Context: { exception :{}}',
+  'npm_is_not_running' => 'NPM IS NOT RUNNING',
 );
