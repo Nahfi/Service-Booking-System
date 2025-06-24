@@ -292,3 +292,23 @@ export const normalizeDate = (date) => {
     normalized.setHours(0, 0, 0, 0);
     return normalized;
 };
+
+export const getFilterableUrl = (url, filters) => {
+    Object.entries(filters).forEach(([key, value], index) => {
+        if (index === 0) {
+            url += "?";
+        } else {
+            url += "&";
+        }
+        url += `${key}=${value || null}`;
+    });
+
+    return url;
+};
+
+export const handlePageChange = (page, hookFn) => {
+    hookFn((prevState) => ({
+        ...prevState,
+        page: page,
+    }));
+};

@@ -35,23 +35,5 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'undefined_array_key__os_platform_' => 'Undefined array key  os_platform ',
   'check_your_email_an_email_verification_code_sent_successfully' => 'Check your email an email verification code sent successfully',
   'invalid_verification_code' => 'Invalid verification code',
-  'password_updated' => 'Password Updated',
-  'language_already_exists' => 'Language already exists',
-  'the_stream_or_file__/home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log__could_not_be_opened_in_append_mode:_failed_to_open_stream:_permission_denied
-the_exception_occurred_while_attempting_to_log:_class__modules\\contact\\providers\\main__not_found
-context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log  could not be opened in append mode: Failed to open stream: Permission denied
-The exception occurred while attempting to log: Class  Modules\\Contact\\Providers\\Main  not found
-Context: { exception :{}}',
-  'the_stream_or_file__/home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log__could_not_be_opened_in_append_mode:_failed_to_open_stream:_permission_denied
-the_exception_occurred_while_attempting_to_log:_require(/home/lenovo/www/quick-message-laravel-react/kode/modules/contact/providers/../config/config.php):_failed_to_open_stream:_no_such_file_or_directory
-context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log  could not be opened in append mode: Failed to open stream: Permission denied
-The exception occurred while attempting to log: require(/home/lenovo/www/quick-message-laravel-react/kode/modules/Contact/Providers/../Config/config.php): Failed to open stream: No such file or directory
-Context: { exception :{}}',
-  'path__/home/lenovo/www/quick-message-laravel-react/kode/storage/clockwork/index__is_not_writable.' => 'Path  /home/lenovo/www/quick-message-laravel-react/kode/storage/clockwork/index  is not writable.',
-  'the_stream_or_file__/home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log__could_not_be_opened_in_append_mode:_failed_to_open_stream:_permission_denied
-the_exception_occurred_while_attempting_to_log:_file_put_contents(/home/lenovo/www/quick-message-laravel-react/kode/modules/whatsappmessaging/module.json):_failed_to_open_stream:_permission_denied
-context:_{_exception_:{}}' => 'The stream or file  /home/lenovo/www/quick-message-laravel-react/kode/storage/logs/laravel.log  could not be opened in append mode: Failed to open stream: Permission denied
-The exception occurred while attempting to log: file_put_contents(/home/lenovo/www/quick-message-laravel-react/kode/modules/WhatsappMessaging/module.json): Failed to open stream: Permission denied
-Context: { exception :{}}',
-  'npm_is_not_running' => 'NPM IS NOT RUNNING',
+  'password_updated' => 'Password Updated'
 );

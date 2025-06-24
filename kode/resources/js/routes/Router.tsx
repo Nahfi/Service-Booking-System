@@ -25,6 +25,7 @@ import Profile from "../features/profile/Profile";
 import Reports from "../features/reports/Reports";
 import CreateRole from "../features/role-permission/CreateRole";
 import ManageRole from "../features/role-permission/ManageRole";
+import UpdateRole from "../features/role-permission/UpdateRole";
 import Gateways from "../features/settings/pages/gateways/Gateways";
 import General from "../features/settings/pages/general/General";
 import NotificationTemplates from "../features/settings/pages/notifications/NotificationTemplates";
@@ -142,6 +143,10 @@ const router: RouteObject[] = createBrowserRouter(
                 {
                     path: "/roles/create",
                     element: <CreateRole />,
+                },
+                {
+                    path: "/roles/edit",
+                    element: <UpdateRole />,
                 },
                 {
                     path: "/users",

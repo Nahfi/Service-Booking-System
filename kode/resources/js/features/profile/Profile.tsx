@@ -24,19 +24,19 @@ const Profile: React.FC = () => {
           label: "Profile Information",
           value: "profile",
           icon: <LuUserCog />,
-          component: <ProfileInformation user={user} openModal={openModal} />,
+          component: <ProfileInformation user={user}/>,
       },
       {
           label: "Security",
           value: "security",
           icon: <LuShield />,
-          component: <Security user={user} openModal={openModal} />,
+          component: <Security user={user}/>,
       },
       {
           label: "Sessions",
           value: "sessions",
           icon: <LuMonitorDot />,
-          component: <Sessions user={user} openModal={openModal} />,
+          component: <Sessions user={user}/>,
       },
   ];
 

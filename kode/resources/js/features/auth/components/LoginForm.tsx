@@ -20,7 +20,7 @@ const LoginForm: React.FC = ({ handleLogin ,loading}) => {
     const userAgent = window?.navigator?.userAgent;
     const parser = new UAParser(userAgent);
     const result = parser.getResult();
-    const deviceName = result?.os?.name;
+    const deviceName = `${result.os.name}-${result.browser.name}-${result.device.type || "Desktop"}`;
 
     return (
         <form onSubmit={handleLogin}>
