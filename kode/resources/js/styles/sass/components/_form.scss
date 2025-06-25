@@ -117,11 +117,6 @@ input[type="checkbox"] {
   border-radius: $radius-8;
   cursor: pointer;
 }
-// textarea.form-control {
-//   min-height: 80px;
-// }
-
-// File Input
 
 .file-input-wrapper {
   @include flex($align:start,$direction:column,$justify:center);

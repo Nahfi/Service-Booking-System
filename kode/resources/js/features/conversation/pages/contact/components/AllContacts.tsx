@@ -3,7 +3,7 @@ import TableWrapper from "@/components/common/table/TableWrapper";
 import { ModalContext } from "@/context";
 import React, { useContext, useRef, useState } from "react";
 import { BsDownload, BsPlusLg } from "react-icons/bs";
-import Filter from "../../../../../components/common/filter/Filter";
+import Filter from "../../../../../components/common/filter/FilterWrapper";
 import Field from "../../../../../components/common/from/Field";
 import ImageUpload from "../../../../../components/common/from/ImageUpload";
 import SelectBox from "../../../../../components/common/from/SelectBox";

@@ -1,14 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import ChatBody from "./chat-body/ChatBody";
-import ChatContacts from "./chat-contact/ChatContacts";
-import ChatProfile from "./chat-profile/ChatProfile";
+import ModalWrapper, { DeleteModal } from "../../../../components/common/modal";
+import { ModalContext } from "../../../../context";
+import type { ModalContextType } from "../../../../utils/types";
 import "./chat-wrapper.scss";
+import ChatBody from "./components/chat-body/ChatBody";
+import ChatContacts from "./components/chat-contact/ChatContacts";
+import ChatProfile from "./components/chat-profile/ChatProfile";
+import EmptyChat from "./components/empty-chat/EmptyChat";
 
 const WhatsappChat: React.FC = () => {
     const [showContact, setShowContact] = useState<boolean>(true);
     const [showProfile, setShowProfile] = useState<boolean>(false);
     const isXXLDown = useMediaQuery({ query: "(max-width: 1399.98px)" });
+
+    const [chatInit, setChatInit] = useState<boolean>(false);
+
+    const { showModal, modalConfig, openModal, closeModal } = useContext(
+        ModalContext
+    ) as ModalContextType;
 
     const handleShowContact = () => {
         setShowContact((prev) => prev = true);
@@ -28,22 +38,52 @@ const WhatsappChat: React.FC = () => {
     };
 
     return (
-        <div className="whatsapp-chat-wrapper">
-            <div className="row g-0">
-                <ChatContacts
-                    contactAction={{ handleHideContact, showContact }}
-                />
-                <ChatBody
-                    onHandle={{
-                        handleShowContact,
-                        handleShowProfile,
-                    }}
-                />
-                <ChatProfile
-                    profileAction={{ handleHideProfile, showProfile }}
-                />
+        <>
+            <div className="whatsapp-chat-wrapper">
+                <div className="row g-0">
+                    <ChatContacts
+                        contactAction={{ handleHideContact, showContact }}
+                    />
+
+                    {chatInit ? (
+                        <EmptyChat />
+                    ) : (
+                        <>
+                            <ChatBody
+                                onHandle={{
+                                    handleShowContact,
+                                    handleShowProfile,
+                                }}
+                            />
+                            <ChatProfile
+                                profileAction={{
+                                    handleHideProfile,
+                                    showProfile,
+                                }}
+                            />
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
+
+            <ModalWrapper
+                title={modalConfig?.title}
+                onHide={closeModal}
+                show={showModal}
+                size={modalConfig?.size}
+                scrollable
+                centered
+            >
+                {(modalConfig?.type === "ADD_NOTE" ||
+                    modalConfig?.type === "EDIT_NOTE") && (
+                    <AddNote onClose={closeModal} />
+                )}
+
+                {modalConfig?.type === "DELETE" && (
+                    <DeleteModal onHide={closeModal} />
+                )}
+            </ModalWrapper>
+        </>
     );
 };
 

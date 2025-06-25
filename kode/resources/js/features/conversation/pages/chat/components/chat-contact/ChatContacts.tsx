@@ -4,7 +4,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Nav from "react-bootstrap/Nav";
 import Tab from "react-bootstrap/Tab";
-import { LuMessageSquarePlus } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 import userOne from "@/assets/images/user/user-1.png";
@@ -12,6 +11,8 @@ import Button from "@/components/common/button/Button";
 import { ThemeContext } from "@/context";
 import { BsThreeDotsVertical } from "react-icons/bs";
 
+import { useTranslation } from "react-i18next";
+import { valueToKey } from "../../../../../../utils/helper";
 import type { ThemeContextType } from "../../../../../../utils/types";
 import "./chat-contact.scss";
 
@@ -22,15 +23,13 @@ interface ChatContactsProps {
     };
 }
 
-const options = [
-    { value: "chocolate", label: "Chocolate" },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-];
 
 const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
     const { handleHideContact, showContact } = contactAction;
+
+    const {t} =useTranslation()
+
     const [showSearch, setShowSearch] = useState<boolean>(true);
     const [sim, setSim] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
@@ -40,7 +39,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
     const handleSelectSim = (event: React.MouseEvent<HTMLElement>) => {
         setSim(event.target.innerText);
         if (dropdownRef?.current) {
-            dropdownRef?.current?.click(); // Force close the dropdown
+            dropdownRef?.current?.click();
         }
         event?.stopPropagation();
     };
@@ -57,32 +56,25 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                     <Nav variant="pills" className="contact-tab">
                         <Nav.Item>
                             <Nav.Link as={Button} eventKey="1">
-                                All
+                                {t(valueToKey("All"), "All")}
                             </Nav.Link>
                         </Nav.Item>
 
                         <Nav.Item>
                             <Nav.Link as={Button} eventKey="2">
-                                Read
+                                {t(valueToKey("Read"), "Read")}
                             </Nav.Link>
                         </Nav.Item>
 
                         <Nav.Item>
                             <Nav.Link as={Button} eventKey="3">
-                                Unread
+                                {t(valueToKey("Unread"), "Unread")}
                             </Nav.Link>
                         </Nav.Item>
                     </Nav>
 
                     <div className="flex-shrink-0">
                         <div className="d-flex align-items-center gap-1">
-                            <Button
-                                iconBtn={true}
-                                tooltipText="New Chat"
-                                icon={LuMessageSquarePlus}
-                                className="dark-soft btn-sm btn-ghost circle fs-20 p-0"
-                            ></Button>
-
                             <Dropdown className="icon-dropdown">
                                 <Dropdown.Toggle
                                     id="dropdown-5"
@@ -92,8 +84,9 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu
-                                    align={`${themeSettings.dir === "ltr" ? "end" : ""
-                                        }`}
+                                    align={`${
+                                        themeSettings.dir === "ltr" ? "end" : ""
+                                    }`}
                                 >
                                     <ul className="dropdown-content">
                                         <li className="d-xxl-none">
@@ -119,7 +112,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
                 <div className="contact-tab-content scroll scroll-3">
                     <div className="d-flex align-items-center justify-content-between gap-3 mx-3 my-2">
-                        <h6>Choose Gateway</h6>
+                        <h6 className="fs-14">Choose Device</h6>
                         <DropdownButton
                             id="gateway-dropdown"
                             title={sim || "Choose SIM"}
@@ -148,8 +141,9 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                     <Link
                                         to="#"
                                         key={ind}
-                                        className={`contact-link ${ind === 1 ? "active" : ""
-                                            }`}
+                                        className={`contact-link ${
+                                            ind === 1 ? "active" : ""
+                                        }`}
                                         onClick={handleHideContact}
                                     >
                                         <div className="contact-item">
@@ -211,8 +205,9 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                     <Link
                                         to="#"
                                         key={ind}
-                                        className={`contact-link ${ind === 3 ? "active" : ""
-                                            }`}
+                                        className={`contact-link ${
+                                            ind === 3 ? "active" : ""
+                                        }`}
                                         onClick={handleHideContact}
                                     >
                                         <div className="contact-item">
@@ -274,8 +269,9 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                     <Link
                                         to="#"
                                         key={ind}
-                                        className={`contact-link ${ind === 0 ? "active" : ""
-                                            }`}
+                                        className={`contact-link ${
+                                            ind === 0 ? "active" : ""
+                                        }`}
                                         onClick={handleHideContact}
                                     >
                                         <div className="contact-item">

@@ -198,13 +198,10 @@
 
   .chat-body-footer {
     border-top: 1px solid $border-primary;
-    // margin-inline: 15px;
-    // margin-bottom: 15px;
+    @include flex($align:center);
     padding: 12px 20px;
 
     @include md-down {
-      // margin-inline: 10px;
-      // margin-bottom: 10px;
       padding: 10px 15px;
     }
   }

@@ -256,6 +256,7 @@
 
   .conversation-content {
     max-width: calc(100% - $c-sidebar);
+    height: 100%;
     width: 100%;
     @include lg-down {
       max-width: calc(100% - 0px);

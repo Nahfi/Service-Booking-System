@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Filter from "../../../components/common/filter/Filter";
 import PaginationWrapper from "../../../components/common/pagination/PaginationWrapper";
 import SendLogTable from "./table/SendLogTable";
 
+import FilterWrapper from "../../../components/common/filter/FilterWrapper";
 import TableWrapper from "../../../components/common/table/TableWrapper";
 
 const SendLog: FC = () => {
@@ -17,7 +17,7 @@ const SendLog: FC = () => {
 
     return (
         <>
-            <Filter />
+            <FilterWrapper />
 
             <TableWrapper>
                 <SendLogTable />

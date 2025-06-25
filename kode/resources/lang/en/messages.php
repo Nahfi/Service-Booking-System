@@ -35,5 +35,8 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'undefined_array_key__os_platform_' => 'Undefined array key  os_platform ',
   'check_your_email_an_email_verification_code_sent_successfully' => 'Check your email an email verification code sent successfully',
   'invalid_verification_code' => 'Invalid verification code',
-  'password_updated' => 'Password Updated'
+  'password_updated' => 'Password Updated',
+  'sqlstate[42s22]:_column_not_found:_1054_unknown_column__show_online_status__in__field_list__(connection:_mysql__sql:_update_`users`_set_`show_online_status`_=_1__`users`.`updated_at`_=_2025-06-24_03:59:39_where_`id`_=_1)' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column  show_online_status  in  field list  (Connection: mysql  SQL: update `users` set `show_online_status` = 1  `users`.`updated_at` = 2025-06-24 03:59:39 where `id` = 1)',
+  'sqlstate[42s22]:_column_not_found:_1054_unknown_column__show_online_status__in__field_list__(connection:_mysql__sql:_update_`users`_set_`show_online_status`_=_1__`users`.`updated_at`_=_2025-06-24_04:40:09_where_`id`_=_1)' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column  show_online_status  in  field list  (Connection: mysql  SQL: update `users` set `show_online_status` = 1  `users`.`updated_at` = 2025-06-24 04:40:09 where `id` = 1)',
+  'sqlstate[42s22]:_column_not_found:_1054_unknown_column__show_online_status__in__field_list__(connection:_mysql__sql:_update_`users`_set_`show_online_status`_=_1__`users`.`updated_at`_=_2025-06-24_04:40:18_where_`id`_=_1)' => 'SQLSTATE[42S22]: Column not found: 1054 Unknown column  show_online_status  in  field list  (Connection: mysql  SQL: update `users` set `show_online_status` = 1  `users`.`updated_at` = 2025-06-24 04:40:18 where `id` = 1)',
 );

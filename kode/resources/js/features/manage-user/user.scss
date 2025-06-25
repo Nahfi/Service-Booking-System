@@ -1,0 +1,11 @@
+@use "@/styles/sass/abstracts/" as *;
+
+
+.user-details{
+    .user-profile-wrapper{
+        .user-profile-image{
+            @include square(90px,$radius-rounded);
+            overflow: hidden;
+        }
+    }
+}

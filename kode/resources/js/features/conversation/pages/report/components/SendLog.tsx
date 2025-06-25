@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Dropdown, ProgressBar } from "react-bootstrap";
 import { BsBan, BsFillCheckCircleFill, BsFillPauseFill, BsFillPlayFill, BsPencilSquare, BsThreeDotsVertical, BsTrash3, BsVolumeMute } from "react-icons/bs";
 import Button from "../../../../../components/common/button/Button";
-import Filter from "../../../../../components/common/filter/Filter";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
 import TableWrapper from "../../../../../components/common/table/TableWrapper";
 
@@ -19,7 +18,7 @@ const SendLog: React.FC = () => {
 
   return (
       <>
-          <Filter />
+          <FilterWrapper />
 
           <TableWrapper>
               <thead>

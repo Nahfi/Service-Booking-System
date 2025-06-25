@@ -2,19 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  BsArrowRight,
-  BsPencilSquare,
-  BsPlusLg,
-  BsTrash3,
+    BsArrowRight,
+    BsPencilSquare,
+    BsPlusLg,
+    BsTrash3,
 } from "react-icons/bs";
 import "./chat-profile.scss";
 
 import userOne from "@/assets/images/user/user-1.png";
-// import CollapseItem from "../../../../../components/common/collapse/CollapseItem";
-// import ModalWrapper from "../../../../../components/common/modal/ModalWrapper";
-import CollapseItem from "@/components/common/collapse/CollapseItem";
-import ModalWrapper from "@/components/common/modal";
-import AddNote from "./AddNote";
+import CollapseItem from "../../../../../../components/common/collapse/CollapseItem";
+
 
 const ChatProfile = ({ profileAction }) => {
   const [activeModal, setActiveModal] = useState(null);

@@ -3,7 +3,7 @@ import React, { useContext, useMemo } from "react";
 import Card, { CardBody, CardHeader } from "../../../components/common/card";
 import ChartWrapper from "../../../components/common/chart/ChartWrapper";
 
-import Filter from "../../../components/common/filter/Filter";
+import FilterWrapper from "../../../components/common/filter/FilterWrapper";
 import Progress from "../../../components/common/progressbar/Progress";
 import { ThemeContext } from "../../../context";
 import type { ThemeContextType } from "../../../utils/types";
@@ -68,7 +68,7 @@ const ReportOverview: React.FC = () => {
 
     return (
         <>
-        <Filter />
+        <FilterWrapper />
         
             <div className="row g-4">
                 <div className="col-xl-5">

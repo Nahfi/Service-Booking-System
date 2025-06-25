@@ -5,10 +5,11 @@ import {
 } from "react-icons/bs";
 
 import { useTranslation } from "react-i18next";
-import { LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { LuEye, LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { Link } from "react-router";
 import NoDataFound from "../../../components/common/NoDataFound/NoDataFound";
 import { valueToKey } from "../../../utils/helper";
-import type { OpenModalFn } from "../../../utils/types";
+import type { InputChangeEvent, OpenModalFn } from "../../../utils/types";
 import type { UserType } from "../utils/type";
 
 
@@ -26,10 +27,16 @@ interface ActionHandlers {
     };
 }
 
+interface BulkActions {
+    selectedId: number[]; // Assuming user.id is a number; adjust to string if needed
+    setSelectedId: React.Dispatch<React.SetStateAction<number[]>>;
+}
+
 interface UserTableProps {
     openModal: OpenModalFn;
     usersData: UserType[];
     isPending?: boolean;
+    bulkActions: BulkActions;
     actions?: ActionHandlers;
 }
 
@@ -37,9 +44,32 @@ const UserTable: FC<UserTableProps> = ({
     openModal,
     usersData,
     isPending,
+    bulkActions,
     actions = {},
 }) => {
     const { t } = useTranslation();
+
+    const { selectedId, setSelectedId } = bulkActions;
+
+    const handleOnSelect = (event: InputChangeEvent, id:number) => {
+        if (event.target.checked) {
+            setSelectedId((prev) => [...new Set([...prev, id])]);
+        } else {
+            setSelectedId((prev) =>
+                prev.filter((selectedId) => selectedId !== id)
+            );
+        }
+    };
+
+    const handleOnBulkSelect = (event: InputChangeEvent) => {
+        const isChecked = event.target.checked;
+        if (isChecked) {
+            const checkedRecords = usersData.map((user) => user?.id);
+            setSelectedId((prev) => [...new Set([...prev, ...checkedRecords])]);
+        } else {
+            setSelectedId([]);
+        }
+    };
 
     return (
         <>
@@ -47,7 +77,18 @@ const UserTable: FC<UserTableProps> = ({
                 <tr>
                     <th>
                         <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
-                            <input type="checkbox" id="roleId" />
+                            {usersData?.length > 0 && (
+                                <input
+                                    type="checkbox"
+                                    id="bulk"
+                                    onChange={handleOnBulkSelect}
+                                    checked={
+                                        usersData.length > 0 &&
+                                        usersData.length === selectedId.length
+                                    }
+                                />
+                            )}
+
                             {t(valueToKey("User Details"), "User Details")}
                         </div>
                     </th>
@@ -59,15 +100,19 @@ const UserTable: FC<UserTableProps> = ({
             </thead>
 
             <tbody>
-                {(!isPending && usersData?.length > 0 ) ? (
+                {!isPending && usersData?.length > 0 ? (
                     usersData?.map((user) => (
                         <tr key={user?.id}>
                             <td>
                                 <div className="d-flex justify-content-start align-items-center gap-3">
                                     <input
                                         type="checkbox"
-                                        name="contactCheckbox"
-                                        id={user?.uid}
+                                        name="bulk-check"
+                                        checked={selectedId.includes(user?.id)}
+                                        id={`user-${user?.id}`}
+                                        onChange={(event) =>
+                                            handleOnSelect(event, user?.id)
+                                        }
                                     />
 
                                     <div className="d-flex justify-content-start align-items-center gap-3">
@@ -132,13 +177,27 @@ const UserTable: FC<UserTableProps> = ({
                                             <ul className="dropdown-content">
                                                 <li>
                                                     <Dropdown.Item
+                                                        as={Link}
+                                                        to={`/users/${user?.id}`}
+                                                    >
+                                                        <LuEye />
+                                                        {t(
+                                                            valueToKey(
+                                                                "View Details"
+                                                            ),
+                                                            "View Details"
+                                                        )}
+                                                    </Dropdown.Item>
+                                                </li>
+                                                <li>
+                                                    <Dropdown.Item
                                                         as={"button"}
                                                         onClick={() =>
                                                             openModal(
                                                                 "EDIT",
                                                                 "Update User",
                                                                 "lg",
-                                                                 user
+                                                                user
                                                             )
                                                         }
                                                     >
