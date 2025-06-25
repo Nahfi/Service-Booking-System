@@ -12,6 +12,7 @@ const EmptyContact: React.FC = () => {
           <span className="empty-contact-icon">
               <LuUserRoundPlus />
           </span>
+
           <div>
               <h6 className="mb-2">
                   {t(
@@ -35,7 +36,7 @@ const EmptyContact: React.FC = () => {
               className="btn--primary btn--lg outline rounded-3"
           >
               <LuPlus className="fs-18" />
-              {t(valueToKey("Add Contact"), "Add Contact")}
+              {t(valueToKey("Add New chat"), "Add New chat")}
           </Button>
       </div>
   );

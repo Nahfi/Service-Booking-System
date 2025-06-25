@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Dropdown, ProgressBar } from "react-bootstrap";
 import { BsBan, BsFillCheckCircleFill, BsFillPauseFill, BsFillPlayFill, BsPencilSquare, BsThreeDotsVertical, BsTrash3, BsVolumeMute } from "react-icons/bs";
 import Button from "../../../../../components/common/button/Button";
+import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
 import TableWrapper from "../../../../../components/common/table/TableWrapper";
 

@@ -31,6 +31,19 @@
         padding-inline: 8px;
       }
     }
+
+    .contact-search{
+      background-color: $light-bg;
+      padding: 4px;
+      border-radius: $radius-8;
+      @include flex($align:center);
+      > input{
+        border: none;
+        background-color: transparent;
+        padding-inline: 5px;
+      }
+    }
+    
     .contact-list {
       .contact-link {
         display: inline-block;

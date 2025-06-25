@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
-    BsArrowRight,
-    BsPencilSquare,
-    BsPlusLg,
-    BsTrash3,
+  BsArrowRight,
+  BsPencilSquare,
+  BsPlusLg,
+  BsTrash3,
 } from "react-icons/bs";
 import "./chat-profile.scss";
 
@@ -68,12 +68,6 @@ const ChatProfile = ({ profileAction }) => {
             <img src={userOne} alt="" className="avatar avatar-xxl circle" />
             <h5 className="mt-20">Jane Doe</h5>
             <p className="text-ternary mt-2">jane.doe@gmail.com</p>
-            <Link
-              to={"/conversation/subscriptions"}
-              className="i-btn btn--primary btn--lg rounded-3 mt-20"
-            >
-              FREE PLAN
-            </Link>
           </div>
 
           <div className="d-flex flex-column gap-3">

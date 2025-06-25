@@ -3,14 +3,13 @@ import { useContext, useEffect, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Tab from "react-bootstrap/Tab";
-import { LuChevronDown, LuSearch, LuX } from "react-icons/lu";
+import { LuChevronDown, LuMessageSquarePlus, LuSearch, LuX } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 import userOne from "@/assets/images/user/user-1.png";
 import Button from "@/components/common/button/Button";
 import SpinnerLoader from "@/components/common/loader/SpinnerLoader";
 import { ThemeContext } from "@/context";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import type { ThemeContextType } from "../../../../../../utils/types";
 import "./chat-contact.scss";
 import EmptyContact from "./EmptyContact";
@@ -22,7 +21,7 @@ interface ChatContactsProps {
     };
 }
 
-const contactsData = Array.from({ length: 10 }).map((_, ind) => ({
+const contactsData = Array.from({ length: 0 }).map((_, ind) => ({
     id: ind,
     name: `Jane Doe ${ind + 1}`,
     message: "Hi, I want to make enquiries",
@@ -90,37 +89,12 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                     <h6>Whatsapp</h6>
                     <div className="flex-shrink-0">
                         <div className="d-flex align-items-center gap-1">
-                            <Dropdown className="icon-dropdown">
-                                <Dropdown.Toggle
-                                    id="dropdown-5"
-                                    className="icon-btn dark-soft btn-sm btn-ghost circle fs-20 p-0"
-                                >
-                                    <BsThreeDotsVertical />
-                                </Dropdown.Toggle>
-
-                                <Dropdown.Menu
-                                    align={`${
-                                        themeSettings.dir === "ltr" ? "end" : ""
-                                    }`}
-                                >
-                                    <ul className="dropdown-content">
-                                        <li className="d-xxl-none">
-                                            <Dropdown.Item>
-                                                New Group
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Archived
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Starred message
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Select chats
-                                            </Dropdown.Item>
-                                        </li>
-                                    </ul>
-                                </Dropdown.Menu>
-                            </Dropdown>
+                            <Button
+                                iconBtn={true}
+                                icon={LuMessageSquarePlus}
+                                tooltipText="New Chat"
+                                className="dark-soft btn-ghost btn-sm fs-18 circle"
+                            />
                         </div>
                     </div>
                 </div>
@@ -344,7 +318,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                     </div>
                                 </>
                             ) : (
-                                <EmptyContact/>
+                                <EmptyContact />
                             )}
                         </div>
                     </Tab.Container>
