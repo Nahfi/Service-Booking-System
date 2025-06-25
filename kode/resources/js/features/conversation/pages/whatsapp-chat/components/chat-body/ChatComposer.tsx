@@ -5,8 +5,11 @@ import { Dropdown } from "react-bootstrap";
 import { BsEmojiSmileFill } from "react-icons/bs";
 import { LuPaperclip, LuSendHorizontal } from "react-icons/lu";
 
+import EmojiPicker from "emoji-picker-react";
+import type { ThemeContextType } from "../../../../../../utils/types";
+
 const ChatComposer = () => {
-  const { themeSettings } = useContext(ThemeContext);
+  const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
   return (
       <div className="chat-body-footer">
           <form action="#" className="d-flex align-items-center gap-3 w-100">
@@ -41,12 +44,21 @@ const ChatComposer = () => {
               />
 
               <div className="d-flex align-items-center gap-3 flex-shrink-0">
-                  <Button
-                      type="button"
-                      className="bg--transparent text-warning fs-20 lh-1"
-                  >
-                      <BsEmojiSmileFill />
-                  </Button>
+                  <Dropdown className="icon-dropdown" drop={"up"}>
+                      <Dropdown.Toggle
+                          id="dropdown-5"
+                          className="bg--transparent fs-20 lh-1 p-0"
+                      >
+                          <BsEmojiSmileFill className="text-warning" />
+                      </Dropdown.Toggle>
+
+                      <Dropdown.Menu
+                          align={`${themeSettings.dir === "ltr" ? "end" : ""}`}
+                          className="py-0"
+                      >
+                          <EmojiPicker size="25" height={350} />
+                      </Dropdown.Menu>
+                  </Dropdown>
 
                   <Button
                       className="icon-btn primary-solid btn-sm  circle fs-18"

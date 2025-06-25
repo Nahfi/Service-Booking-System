@@ -51,14 +51,6 @@
                 color: $text-light;
               }
 
-              .message-file {
-                -webkit-margin-start: auto;
-                margin-inline-start: auto;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: reverse;
-                -ms-flex-direction: row-reverse;
-                flex-direction: row-reverse;
-              }
               .given-react {
                 inset-inline-start: 10px;
               }
@@ -115,7 +107,6 @@
               max-width: 350px;
               width: 100%;
               background-color: $color-primary-light;
-              border-radius: $radius-8;
               @include flex($align: center, $gap: 15px);
               padding: 15px;
               &-type {
@@ -152,7 +143,6 @@
 
             .message-time {
               @include flex($align: center, $gap: 5px);
-              margin-top: 8px;
               line-height: 1;
               color: $text-secondary;
             }

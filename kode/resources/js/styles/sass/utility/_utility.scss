@@ -66,13 +66,12 @@
 
     &:is(.user-react-dropdown) {
       .user-react-btn {
-        @include square(32px, $radius-4);
+        @include square(32px, $radius-rounded);
         background-color: transparent;
         @include item-center;
         line-height: 1;
         padding: 0;
-        font-size: 16px;
-
+        font-size: 18px;
         &:hover {
           background-color: var(--color-primary-soft);
           color: var(--color-primary);
