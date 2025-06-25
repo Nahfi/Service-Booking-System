@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 
 import {
-  BsArrowRight,
-  BsPencilSquare,
-  BsPlusLg,
-  BsTrash3,
+    BsArrowRight,
+    BsPencilSquare,
+    BsTrash3
 } from "react-icons/bs";
 import "./chat-profile.scss";
 
 import userOne from "@/assets/images/user/user-1.png";
 
+import { LuPlus } from "react-icons/lu";
 import Button from "../../../../../../components/common/button/Button";
 import CollapseItem from "../../../../../../components/common/collapse/CollapseItem";
 
 const ChatProfile = ({ profileAction }) => {
-  const { handleHideProfile, showProfile } = profileAction;
+  const { handleHideProfile, showProfile, openModal } = profileAction;
 
 
   return (
@@ -84,31 +84,56 @@ const ChatProfile = ({ profileAction }) => {
                               </ul>
                           </div>
                       </CollapseItem>
-            
+
                       <CollapseItem title="Notes" className="profile-collapse">
-                          <div className="collapse-body-content">
-                              <p className="fs-14 text-dark fw-medium">
-                                  In some other cases, a note can also be used
-                                  as an agreement for financial purposes
-                              </p>
+                          <div className="collapse-body-content">                          
+                                <div className="mb-3 d-flex flex-column gap-2 note-container scroll scroll-3">
+                                    <div className="p-2 bg-white rounded-2">
+                                        <p className="fs-14 text-dark fw-medium">
+                                            In some other cases, a note can
+                                            also be used as an agreement for
+                                            financial purposes
+                                        </p>
 
-                              <span className="fs-12">
-                                  by Jane Doe on 12 May 2024
-                              </span>
+                                        <div className="d-flex align-items-center gap-1 lh-1 mt-2">
+                                            <Button
+                                                iconBtn={true}
+                                                tooltipText="Edit Note"
+                                                icon={BsPencilSquare}
+                                                className="info-soft btn-sm btn-ghost circle fs-16"
+                                                onClick={() =>
+                                                    openModal(
+                                                        "EDIT_NOTE",
+                                                        "Edit Note",
+                                                        ""
+                                                    )
+                                                }
+                                            />
+                                            <Button
+                                                iconBtn={true}
+                                                tooltipText="Delete Note"
+                                                icon={BsTrash3}
+                                                className="danger-soft btn-sm btn-ghost circle fs-16"
+                                                onClick={() =>
+                                                    openModal(
+                                                        "DELETE",
+                                                        "",
+                                                        ""
+                                                    )
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
 
-                              <div className="d-flex align-items-center gap-3 lh-1 mt-4">
-                                  <Button className="i-btn btn--primary btn--md rounded-3">
-                                      Add notes <BsPlusLg className="fs-16" />
-                                  </Button>
-
-                                  <Button className="bg--transparent text-danger fs-18">
-                                      <BsTrash3 />
-                                  </Button>
-
-                                  <Button className="bg--transparent text-info fs-18">
-                                      <BsPencilSquare />
-                                  </Button>
-                              </div>
+                                <Button
+                                    className="btn--primary btn--sm rounded-3"
+                                    onClick={() =>
+                                        openModal("ADD_NOTE", "Add Note", "")
+                                    }
+                                >
+                                    Add notes <LuPlus />
+                                </Button>                          
                           </div>
                       </CollapseItem>
 

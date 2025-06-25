@@ -136,5 +136,18 @@
           }
       }
     }
+
+    .empty-contact{
+      @include flex($align:center,$direction:column,$gap:30px);
+      text-align: center;
+      padding:35px 25px;
+      .empty-contact-icon {
+        @include square(5rem,$radius-rounded);
+        @include flex($align:center,$justify:center);
+        background-image: linear-gradient(to bottom right, $color-primary-light, #e9d5ff);
+        color: $color-primary;
+        font-size: 36px;
+      }
+    }
   }
 }

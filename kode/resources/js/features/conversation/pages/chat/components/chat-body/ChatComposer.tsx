@@ -1,40 +1,37 @@
-import { BsEmojiSmileFill, BsMic } from "react-icons/bs";
+import { BsEmojiSmileFill } from "react-icons/bs";
 import { LuPaperclip, LuSendHorizontal } from "react-icons/lu";
+import Button from "../../../../../../components/common/button/Button";
 
 const ChatComposer = () => {
   return (
     <div className="chat-body-footer">
       <form action="#" className="d-flex align-items-center gap-3 w-100">
         <div className="d-flex align-items-center gap-3 flex-shrink-0">
-          <button className="bg--transparent text-muted fs-20 lh-1">
+          <Button className="bg--transparent text-muted fs-20 lh-1">
             <LuPaperclip />
-          </button>
-
-          <button className="bg--transparent text-muted fs-20 lh-1">
-            <BsMic />
-          </button>
+          </Button>
         </div>
 
         <input
           type="text"
           placeholder="Write a message…"
-          className="w-100 border-0 py-1 bg--transparent"
+          className="w-100 border-0 py-1 bg--transparent flex-grow-1"
         />
 
         <div className="d-flex align-items-center gap-3 flex-shrink-0">
-          <button
+          <Button
             type="button"
-            className="bg--transparent text-warning fs-20 lh-1"
+            className="bg--transparent text-warning fs-18 lh-1"
           >
             <BsEmojiSmileFill />
-          </button>
+          </Button>
 
-          <button
-            className="icon-btn primary-solid btn-sm  circle fs-18"
+          <Button
+            className="icon-btn primary-solid btn-sm circle fs-18"
             type="submit"
           >
             <LuSendHorizontal  />
-          </button>
+          </Button>
         </div>
       </form>
     </div>

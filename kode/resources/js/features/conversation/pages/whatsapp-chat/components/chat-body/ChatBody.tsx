@@ -8,7 +8,7 @@ import {
     BsVolumeMute,
 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
-import { ThemeContext } from "../../../../../context";
+import { ThemeContext } from "../../../../../../context";
 import "./chat-body.scss";
 import ChatComposer from "./ChatComposer";
 import Message from "./Message";

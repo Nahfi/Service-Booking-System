@@ -2,7 +2,7 @@ import Button from "@/components/common/button/Button";
 import { ThemeContext } from "@/context";
 import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
-import { BsEmojiSmileFill, BsMic } from "react-icons/bs";
+import { BsEmojiSmileFill } from "react-icons/bs";
 import { LuPaperclip, LuSendHorizontal } from "react-icons/lu";
 
 const ChatComposer = () => {
@@ -22,20 +22,16 @@ const ChatComposer = () => {
                       <Dropdown.Menu
                           align={`${themeSettings.dir === "ltr" ? "end" : ""}`}
                       >
-                          <ul className="dropdown-content">
-                              <li className="d-xxl-none">
-                                  <Dropdown.Item>New Group</Dropdown.Item>
-                                  <Dropdown.Item>Archived</Dropdown.Item>
-                                  <Dropdown.Item>Starred message</Dropdown.Item>
-                                  <Dropdown.Item>Select chats</Dropdown.Item>
-                              </li>
-                          </ul>
+                          <div className="dropdown-content">
+                              <Dropdown.Item as={"button"} type="button">
+                                  Document
+                              </Dropdown.Item>
+                              <Dropdown.Item as={"button"} type="button">
+                                  Photo & Video
+                              </Dropdown.Item>
+                          </div>
                       </Dropdown.Menu>
                   </Dropdown>
-
-                  <Button className="bg--transparent text-muted fs-20 lh-1">
-                      <BsMic />
-                  </Button>
               </div>
 
               <input

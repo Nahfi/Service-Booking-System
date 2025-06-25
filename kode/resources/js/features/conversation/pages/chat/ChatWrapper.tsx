@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import ModalWrapper from "../../../../components/common/modal";
+import ModalWrapper, { DeleteModal } from "../../../../components/common/modal";
 import { ModalContext } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
 
@@ -8,6 +8,7 @@ import "./chat-wrapper.scss";
 import ChatBody from "./components/chat-body/ChatBody";
 import ChatContacts from "./components/chat-contact/ChatContacts";
 import ChatProfile from "./components/chat-profile/ChatProfile";
+import AddNote from "./components/modals/AddNote";
 
 
 
@@ -41,8 +42,15 @@ const ChatWrapper: React.FC = () => {
           <div className="chat-wrapper">
               <div className="row g-0">
                   <ChatContacts contactAction={{ handleHideContact }} />
-                  <ChatBody onHandle={{ handleShowContact, handleShowProfile }}/>
-                  <ChatProfile profileAction={{ handleHideProfile, showProfile }}
+                  <ChatBody
+                      onHandle={{ handleShowContact, handleShowProfile }}
+                  />
+                  <ChatProfile
+                      profileAction={{
+                          handleHideProfile,
+                          showProfile,
+                          openModal,
+                      }}
                   />
               </div>
           </div>
@@ -55,7 +63,16 @@ const ChatWrapper: React.FC = () => {
               scrollable
               centered
           >
-              {/* <AddNote onModalClose={closeModal} /> */}
+              {(modalConfig?.type === "ADD_NOTE" ||
+                  modalConfig?.type === "EDIT_NOTE") && (
+                  <AddNote onClose={closeModal} />
+              )}
+
+              {modalConfig?.type === "DELETE" && (
+                  <DeleteModal
+                      onHide={closeModal}
+                  />
+              )}
           </ModalWrapper>
       </>
   );

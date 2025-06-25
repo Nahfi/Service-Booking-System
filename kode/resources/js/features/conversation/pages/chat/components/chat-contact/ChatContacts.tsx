@@ -75,13 +75,6 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
                     <div className="flex-shrink-0">
                         <div className="d-flex align-items-center gap-1">
-                            {/* <Button
-                                iconBtn={true}
-                                tooltipText="New Chat"
-                                icon={LuMessageSquarePlus}
-                                className="dark-soft btn-sm btn-ghost circle fs-20 p-0"
-                            /> */}
-
                             <Dropdown className="icon-dropdown">
                                 <Dropdown.Toggle
                                     id="dropdown-5"
@@ -119,7 +112,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
                 <div className="contact-tab-content scroll scroll-3">
                     <div className="d-flex align-items-center justify-content-between gap-3 mx-3 my-2">
-                        <h6>Choose Gateway</h6>
+                        <h6 className="fs-14">Choose Device</h6>
                         <DropdownButton
                             id="gateway-dropdown"
                             title={sim || "Choose SIM"}
