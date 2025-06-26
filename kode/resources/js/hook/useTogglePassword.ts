@@ -5,11 +5,7 @@ const useTogglePassword = () => {
     const [visible, setVisible] = useState<boolean>(false);
 
     const togglePassword = () => {
-        if(!visible) {
-            setVisible(true);
-        } else {
-            setVisible(false);
-        }
+        setVisible(prevState => !prevState)
     }
 
     return{

@@ -25,11 +25,11 @@ const handleTokenExpire = (redirectPath: string = "/login"): void => {
 };
 
 const onErrorResponse = (data: AxiosError): void => {
+
   const response = data?.response;
-
   const resData = response?.data as ApiErrorResponse | undefined;
-
   if (resData) {
+
     const errors = resData?.data?.errors;
 
     if (errors) {
