@@ -17,12 +17,13 @@
   }
 }
 
-.main-body-scroll{
+.main-body-scroll {
   max-height: calc(100dvh - calc($header-h + 0px));
   height: 100%;
   overflow-y: auto;
   min-height: calc(100dvh - calc($header-h + 0px));
 }
+
 .container-wrapper {
   max-width: 100%;
   width: 100%;
@@ -72,6 +73,7 @@
         line-height: 1;
         padding: 0;
         font-size: 18px;
+
         &:hover {
           background-color: var(--color-primary-soft);
           color: var(--color-primary);
@@ -771,28 +773,30 @@
 
 
 
-.filter-form{
+.filter-form {
   margin-bottom: 24px;
   max-width: fit-content;
 }
 
 
-.tab-container-wrapper{
-  .tab-wrapper{
-    .pills-tab{
+.tab-container-wrapper {
+  .tab-wrapper {
+    .pills-tab {
       @include flex($align:center);
       width: fit-content;
       background-color: $light-bg;
       border-radius: $radius-8;
       padding: 5px;
-      .nav-item{
-        .nav-link{
+
+      .nav-item {
+        .nav-link {
           padding: 5px 30px;
           color: $text-primary;
           border-radius: $radius-4;
           font-size: 14px;
-          @include flex($align:center,$justify:center,$gap:10px);
-          &.active{
+          @include flex($align:center, $justify:center, $gap:10px);
+
+          &.active {
             background-color: $color-white;
           }
         }
@@ -801,16 +805,50 @@
   }
 }
 
-@keyframes fade-in {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
 
 .animate-fade-in {
   animation: fade-in 0.3s ease-in-out;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
 }
 
-.no-data-image{
+.fade-out {
+  -webkit-animation: fade-out 0.4s ease-out both;
+  animation: fade-out 0.4s ease-out both;
+
+  @-webkit-keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+
+    100% {
+      opacity: 0;
+    }
+  }
+
+}
+
+.no-data-image {
   max-width: 230px;
   width: 100%;
 }

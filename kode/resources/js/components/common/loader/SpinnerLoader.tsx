@@ -3,7 +3,7 @@ import React from "react";
 
 interface SpinnerLoaderProps {
     bg?: string;
-    size?: "sm" | "md" | "lg" | string;
+    size?: "sm" | "md" | "lg" | "xl" | string;
 }
 
 const SpinnerLoader: React.FC<SpinnerLoaderProps> = ({

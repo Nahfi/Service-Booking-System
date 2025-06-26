@@ -1,4 +1,4 @@
-import Button from "@/components/common/button/Button";
+
 import { ThemeContext } from "@/context";
 import { useContext } from "react";
 import { Dropdown } from "react-bootstrap";
@@ -6,6 +6,7 @@ import { BsEmojiSmileFill } from "react-icons/bs";
 import { LuPaperclip, LuSendHorizontal } from "react-icons/lu";
 
 import EmojiPicker from "emoji-picker-react";
+import Button from "../../../../../../components/common/button/Button";
 import type { ThemeContextType } from "../../../../../../utils/types";
 
 const ChatComposer = () => {

@@ -11,8 +11,8 @@ import Button from "@/components/common/button/Button";
 import SpinnerLoader from "@/components/common/loader/SpinnerLoader";
 import { ThemeContext } from "@/context";
 import type { ThemeContextType } from "../../../../../../utils/types";
+import EmptyContact from "../../../chat/components/chat-contact/EmptyContact";
 import "./chat-contact.scss";
-import EmptyContact from "./EmptyContact";
 
 interface ChatContactsProps {
     contactAction: {

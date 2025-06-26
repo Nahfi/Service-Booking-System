@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
-  BsArrowLeft,
-  BsBan,
-  BsThreeDotsVertical,
-  BsTrash3,
-  BsVolumeMute,
+    BsArrowLeft,
+    BsBan,
+    BsThreeDotsVertical,
+    BsTrash3,
+    BsVolumeMute,
 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
 
@@ -16,100 +16,103 @@ import "./chat-body.scss";
 import ChatComposer from "./ChatComposer";
 import Message from "./Message";
 
-const ChatBody: React.FC = ({ onHandle, type }) => {
-  const { handleShowContact, handleShowProfile } = onHandle;
-  const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
+const ChatBody: React.FC = ({ onHandle, type, user=null }) => {
+    const { handleShowContact, handleShowProfile } = onHandle;
+    const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
 
-  return (
-      <div className="col chat-body">
-          <div className="chat-header chat-body-header">
-              <div className="d-flex align-items-center gap-2">
-                  <Button
-                      iconBtn={true}
-                      icon={BsArrowLeft}
-                      className="dark-soft btn-md bg--transparent circle fs-20 d-md-none flex-shrink-0"
-                      onClick={handleShowContact}
-                  />
+    return (
+        <div className="col chat-body">
+            <div className="chat-header chat-body-header">
+                <div className="d-flex align-items-center gap-2">
+                    <Button
+                        iconBtn={true}
+                        icon={BsArrowLeft}
+                        className="dark-soft btn-md bg--transparent circle fs-20 d-md-none flex-shrink-0"
+                        onClick={handleShowContact}
+                    />
 
-                  <h6 role="button" onClick={handleShowProfile}>
-                      Jane Doe
-                  </h6>
-              </div>
+                    <div role="button" onClick={handleShowProfile}>
+                       <h6>{user?.name}</h6>
+                    </div>
+                </div>
 
-              <div className="flex-shrink-0">
-                  <Dropdown className="icon-dropdown">
-                      <Dropdown.Toggle
-                          id="dropdown-5"
-                          className="icon-btn dark-soft btn-sm btn-ghost circle fs-20 p-0"
-                      >
-                          <BsThreeDotsVertical />
-                      </Dropdown.Toggle>
+                <div className="flex-shrink-0">
+                    <Dropdown className="icon-dropdown">
+                        <Dropdown.Toggle
+                            id="dropdown-5"
+                            className="icon-btn dark-soft btn-sm btn-ghost circle fs-20 p-0"
+                        >
+                            <BsThreeDotsVertical />
+                        </Dropdown.Toggle>
 
-                      <Dropdown.Menu
-                          align={`${themeSettings.dir === "ltr" ? "end" : ""}`}
-                      >
-                          <ul className="dropdown-content">
-                              <li className="d-xxl-none">
-                                  <Dropdown.Item onClick={handleShowProfile}>
-                                      <LuUser />
-                                      Profile
-                                  </Dropdown.Item>
-                              </li>
+                        <Dropdown.Menu
+                            align={`${
+                                themeSettings.dir === "ltr" ? "end" : ""
+                            }`}
+                        >
+                            <ul className="dropdown-content">
+                                <li className="d-xxl-none">
+                                    <Dropdown.Item onClick={handleShowProfile}>
+                                        <LuUser />
+                                        Profile
+                                    </Dropdown.Item>
+                                </li>
 
-                              <li>
-                                  <Dropdown.Item>
-                                      <BsVolumeMute />
-                                      Mute
-                                  </Dropdown.Item>
-                              </li>
+                                <li>
+                                    <Dropdown.Item>
+                                        <BsVolumeMute />
+                                        Mute
+                                    </Dropdown.Item>
+                                </li>
 
-                              <li>
-                                  <Dropdown.Item>
-                                      <BsBan />
-                                      Blocked
-                                  </Dropdown.Item>
-                              </li>
+                                <li>
+                                    <Dropdown.Item>
+                                        <BsBan />
+                                        Blocked
+                                    </Dropdown.Item>
+                                </li>
 
-                              <li>
-                                  <Dropdown.Item>
-                                      <BsTrash3 />
-                                      Delete Chat
-                                  </Dropdown.Item>
-                              </li>
-                          </ul>
-                      </Dropdown.Menu>
-                  </Dropdown>
-              </div>
-          </div>
+                                <li>
+                                    <Dropdown.Item>
+                                        <BsTrash3 />
+                                        Delete Chat
+                                    </Dropdown.Item>
+                                </li>
+                            </ul>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </div>
+            </div>
 
-          <div className="chat-box scroll scroll-3">
-              <div className="date-divider">
-                  <span>Today</span>
-              </div>
+            <div className="chat-box scroll scroll-3">
+                <div className="date-divider">
+                    <span>Today</span>
+                </div>
 
-              <ul className="chatting">
-                  <Message className="incoming" />
-                  <Message className="outgoing" />
-                  <Message className="incoming" />
-                  <Message className="outgoing" />
-                  <Message className="incoming" />
-                  <Message className="outgoing" />
-              </ul>
+                <ul className="chatting">
+                    <Message className="incoming" />
+                    <Message className="outgoing" />
+                    <Message className="incoming" />
+                    <Message className="outgoing" />
+                    <Message className="incoming" />
+                    <Message className="outgoing" />
+                </ul>
 
-              <div className="date-divider">
-                  <span>February 16th, 2024</span>
-              </div>
+                <div className="date-divider">
+                    <span>February 16th, 2024</span>
+                </div>
 
-              <ul className="chatting">
-                  <Message className="incoming" />
-                  <Message className="outgoing" />
-                  <Message className="incoming" />
-                  <Message className="outgoing" />
-              </ul>
-          </div>
-          <ChatComposer type={type} />
-      </div>
-  );
+                <ul className="chatting">
+                    <Message className="incoming" />
+                    <Message className="outgoing" />
+                    <Message className="incoming" />
+                    <Message className="outgoing" />
+                </ul>
+            </div>
+
+            <ChatComposer type={type} />
+        </div>
+    );
 };
 
 export default ChatBody;

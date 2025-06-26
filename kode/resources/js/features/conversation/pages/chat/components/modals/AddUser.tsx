@@ -21,14 +21,13 @@ const AddUser: React.FC = ({ onHide }) => {
                 <Field label={"Choose Audience"}>
                     <SelectBox
                         options={options}
-                        isMulti
                         icon={<LuUserPlus />}
                         name="multiUser"
                         placeholder={"Add Audience"}
                     />
                 </Field>
             </div>
-            
+
             <div className="modal-custom-footer mt-4">
                 <Button
                     type="button"
