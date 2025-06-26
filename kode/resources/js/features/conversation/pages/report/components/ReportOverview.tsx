@@ -2,6 +2,7 @@ import usaImg from "@/assets/images/icons/usa.png";
 import React, { useContext, useMemo } from "react";
 import Card, { CardBody, CardHeader } from "../../../../../components/common/card";
 import ChartWrapper from "../../../../../components/common/chart/ChartWrapper";
+import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
 import Progress from "../../../../../components/common/progressbar/Progress";
 import { ThemeContext } from "../../../../../context";
 import type { ThemeContextType } from "../../../../../utils/types";

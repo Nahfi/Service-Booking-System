@@ -1,7 +1,6 @@
 import { useContext, useRef, useState } from "react";
 
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Nav from "react-bootstrap/Nav";
 import Tab from "react-bootstrap/Tab";
 import { Link } from "react-router-dom";
@@ -9,10 +8,11 @@ import { Link } from "react-router-dom";
 import userOne from "@/assets/images/user/user-1.png";
 import Button from "@/components/common/button/Button";
 import { ThemeContext } from "@/context";
-import { BsThreeDotsVertical } from "react-icons/bs";
 
+import { DropdownButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { valueToKey } from "../../../../../../utils/helper";
+import { LuSearch, LuUserPlus, LuX } from "react-icons/lu";
+import { keyToValue, valueToKey } from "../../../../../../utils/helper";
 import type { ThemeContextType } from "../../../../../../utils/types";
 import "./chat-contact.scss";
 
@@ -24,11 +24,32 @@ interface ChatContactsProps {
 }
 
 
+const contactsData = Array.from({ length: 0 }).map((_, ind) => ({
+    id: ind,
+    name: `Jane Doe ${ind + 1}`,
+    message: "Hi, I want to make enquiries",
+    time: "12:55 am",
+    isOnline: ind % 2 === 0,
+    type: ind % 3 === 0 ? "SMS" : "CHAT",
+    isUnread: ind % 2 === 1,
+    isFavorite: ind % 3 === 0,
+    isGroup: ind % 4 === 0,
+}));
+
+const tabMenus = ["all", "read", "unread"];
+
+const devises = {
+    devise_one: ["sim_one", "sim_two"],
+    devise_two: ["sim_one", "sim_two"],
+    devise_three: [],
+    devise_four: ["sim_one", "sim_two"],
+};
+
 const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
     const { handleHideContact, showContact } = contactAction;
 
-    const {t} =useTranslation()
+    const { t } = useTranslation()
 
     const [showSearch, setShowSearch] = useState<boolean>(true);
     const [sim, setSim] = useState<string | null>(null);
@@ -51,34 +72,31 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                 transform: showContact ? "translateX(0)" : "",
             }}
         >
-            <Tab.Container id="contact-tab" defaultActiveKey="1">
+            <Tab.Container id="contact-tab" defaultActiveKey={tabMenus[0]}>
                 <div className="chat-header contact-header gap-2">
                     <Nav variant="pills" className="contact-tab">
-                        <Nav.Item>
-                            <Nav.Link as={Button} eventKey="1">
-                                {t(valueToKey("All"), "All")}
-                            </Nav.Link>
-                        </Nav.Item>
-
-                        <Nav.Item>
-                            <Nav.Link as={Button} eventKey="2">
-                                {t(valueToKey("Read"), "Read")}
-                            </Nav.Link>
-                        </Nav.Item>
-
-                        <Nav.Item>
-                            <Nav.Link as={Button} eventKey="3">
-                                {t(valueToKey("Unread"), "Unread")}
-                            </Nav.Link>
-                        </Nav.Item>
+                        {tabMenus.map((menu) => (
+                            <Nav.Item>
+                                <Nav.Link as={Button} eventKey={menu}>
+                                    {t(valueToKey(menu), keyToValue(menu))}
+                                </Nav.Link>
+                            </Nav.Item>
+                        ))}
                     </Nav>
 
                     <div className="flex-shrink-0">
                         <div className="d-flex align-items-center gap-1">
-                            <Dropdown className="icon-dropdown">
+                            <Button
+                                iconBtn={true}
+                                icon={LuUserPlus}
+                                tooltipText="Add user"
+                                className="dark-soft btn-ghost btn-sm fs-18 circle"
+                            />
+
+                            {/* <Dropdown className="icon-dropdown">
                                 <Dropdown.Toggle
                                     id="dropdown-5"
-                                    className="icon-btn dark-soft btn-sm btn-ghost circle fs-20 p-0"
+                                    className="icon-btn dark-soft btn-sm btn-ghost circle fs-18 p-0"
                                 >
                                     <BsThreeDotsVertical />
                                 </Dropdown.Toggle>
@@ -88,244 +106,160 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                         themeSettings.dir === "ltr" ? "end" : ""
                                     }`}
                                 >
-                                    <ul className="dropdown-content">
-                                        <li className="d-xxl-none">
-                                            <Dropdown.Item>
-                                                New Group
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Archived
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Starred message
-                                            </Dropdown.Item>
-                                            <Dropdown.Item>
-                                                Select chats
-                                            </Dropdown.Item>
-                                        </li>
-                                    </ul>
+                                    <div className="dropdown-content">
+                                        <Dropdown.Item>New Group</Dropdown.Item>
+                                        <Dropdown.Item>Archived</Dropdown.Item>
+                                        <Dropdown.Item>
+                                            Starred message
+                                        </Dropdown.Item>
+                                        <Dropdown.Item>
+                                            Select chats
+                                        </Dropdown.Item>
+                                    </div>
                                 </Dropdown.Menu>
-                            </Dropdown>
+                            </Dropdown> */}
                         </div>
                     </div>
                 </div>
 
                 <div className="contact-tab-content scroll scroll-3">
-                    <div className="d-flex align-items-center justify-content-between gap-3 mx-3 my-2">
-                        <h6 className="fs-14">Choose Device</h6>
-                        <DropdownButton
-                            id="gateway-dropdown"
-                            title={sim || "Choose SIM"}
-                            aria-label="Choose SIM"
-                            className="gateway-dropdown"
-                            ref={dropdownRef}
-                        >
-                            <div className="dropdown-content">
-                                {Array.from({ length: 3 }).map((_, ind) => (
-                                    <Dropdown.Item
-                                        key={ind}
-                                        eventKey={ind}
-                                        onClick={handleSelectSim}
-                                    >
-                                        {`SIM ${ind}`}
-                                    </Dropdown.Item>
-                                ))}
+                    <div className="px-3 py-2">
+                        <div className="d-flex align-items-center justify-content-between gap-3">
+                            <h6 className="fs-14">Choose Device</h6>
+                            <DropdownButton
+                                id="gateway-dropdown"
+                                title={sim || "Choose Device"}
+                                aria-label="Choose Device"
+                                className="gateway-dropdown"
+                                ref={dropdownRef}
+                                autoClose="outside"
+                            >
+                                <div className="dropdown-content">
+                                    {Object.entries(devises).map(
+                                        ([key, value], ind) => (
+                                            <Dropdown.Item
+                                                as={"button"}
+                                                key={`${key}-${ind}`}
+                                                onClick={handleSelectSim}
+                                                className="p-0 w-100"
+                                            >
+                                                <DropdownButton
+                                                    id="sim-dropdown"
+                                                    title={keyToValue(key)}
+                                                    className="gateway-dropdown w-100"
+                                                >
+                                                    {value.map((sim) => (
+                                                        <Dropdown.Item
+                                                            as="button"
+                                                            key={`${key}-${sim}`}
+                                                        >
+                                                            {sim}
+                                                        </Dropdown.Item>
+                                                    ))}
+                                                </DropdownButton>
+                                            </Dropdown.Item>
+                                        )
+                                    )}
+                                </div>
+                            </DropdownButton>
+                        </div>
+
+                        <div className="mt-2">
+                            <div className="contact-search">
+                                <div className="px-2 flex-shrink-0">
+                                    <LuSearch className="fs-18" />
+                                </div>
+                                <input
+                                    type="text"
+                                    className="flex-grow-1"
+                                    placeholder="Search contacts..."
+                                    // value={searchQuery}
+                                    // onChange={(e) =>
+                                    //     setSearchQuery(
+                                    //         e.target.value
+                                    //     )
+                                    // }
+                                />
+
+                                <Button
+                                    iconBtn={true}
+                                    icon={LuX}
+                                    className="fs-16 text-danger"
+                                    // onClick={handleClearSearch}
+                                />
                             </div>
-                        </DropdownButton>
+                        </div>
                     </div>
 
                     <Tab.Content>
-                        <Tab.Pane eventKey="1" transition={true}>
-                            <div className="contact-list">
-                                {Array.from({ length: 7 }).map((_, ind) => (
-                                    <Link
-                                        to="#"
-                                        key={ind}
-                                        className={`contact-link ${
-                                            ind === 1 ? "active" : ""
-                                        }`}
-                                        onClick={handleHideContact}
-                                    >
-                                        <div className="contact-item">
-                                            <div className="contact-info">
-                                                <div className="contact-avatar">
-                                                    <img src={userOne} alt="" />
-                                                    <span className="online-status">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="10"
-                                                            height="10"
-                                                            viewBox="0 0 10 10"
-                                                            fill="none"
-                                                        >
-                                                            <circle
-                                                                cx="5.5"
-                                                                cy="5"
-                                                                r="5"
-                                                                fill="#fff"
-                                                            />
-                                                            <circle
-                                                                cx="5.49967"
-                                                                cy="5.00065"
-                                                                r="4.16667"
-                                                                fill="currentColor"
-                                                            />
-                                                        </svg>
-                                                    </span>
+                        {tabMenus.map((menu) => (
+                            <Tab.Pane eventKey={menu} transition={true}>
+                                <div className="contact-list">
+                                    {Array.from({ length: 7 }).map((_, ind) => (
+                                        <Link
+                                            to="#"
+                                            key={ind}
+                                            className={`contact-link ${
+                                                ind === 1 ? "active" : ""
+                                            }`}
+                                            onClick={handleHideContact}
+                                        >
+                                            <div className="contact-item">
+                                                <div className="contact-info">
+                                                    <div className="contact-avatar">
+                                                        <img
+                                                            src={userOne}
+                                                            alt=""
+                                                        />
+                                                        <span className="online-status">
+                                                            <svg
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                                width="10"
+                                                                height="10"
+                                                                viewBox="0 0 10 10"
+                                                                fill="none"
+                                                            >
+                                                                <circle
+                                                                    cx="5.5"
+                                                                    cy="5"
+                                                                    r="5"
+                                                                    fill="#fff"
+                                                                />
+                                                                <circle
+                                                                    cx="5.49967"
+                                                                    cy="5.00065"
+                                                                    r="4.16667"
+                                                                    fill="currentColor"
+                                                                />
+                                                            </svg>
+                                                        </span>
+                                                    </div>
+
+                                                    <div>
+                                                        <h6 className="line-clamp-1">
+                                                            Jane Doe
+                                                        </h6>
+                                                        <p className="mt-1 line-clamp-1">
+                                                            Hi, i want make
+                                                            enquiries
+                                                        </p>
+                                                    </div>
                                                 </div>
 
-                                                <div>
-                                                    <h6 className="line-clamp-1">
-                                                        Jane Doe
-                                                    </h6>
-                                                    <p className="mt-1 line-clamp-1">
-                                                        Hi, i want make
-                                                        enquiries
+                                                <div className="text-end flex-shrink-0">
+                                                    <span className="i-badge pill info-soft fs-10">
+                                                        SMS
+                                                    </span>
+                                                    <p className="fs-12 mt-1">
+                                                        12.55 am
                                                     </p>
                                                 </div>
                                             </div>
-
-                                            <div className="text-end flex-shrink-0">
-                                                <span className="i-badge pill info-soft fs-10">
-                                                    SMS
-                                                </span>
-                                                <p className="fs-12 mt-1">
-                                                    12.55 am
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </Tab.Pane>
-
-                        <Tab.Pane eventKey="2" transition={true}>
-                            <div className="contact-list">
-                                {Array.from({ length: 6 }).map((_, ind) => (
-                                    <Link
-                                        to="#"
-                                        key={ind}
-                                        className={`contact-link ${
-                                            ind === 3 ? "active" : ""
-                                        }`}
-                                        onClick={handleHideContact}
-                                    >
-                                        <div className="contact-item">
-                                            <div className="contact-info">
-                                                <div className="contact-avatar">
-                                                    <img src={userOne} alt="" />
-                                                    <span className="online-status text-success">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="10"
-                                                            height="10"
-                                                            viewBox="0 0 10 10"
-                                                            fill="none"
-                                                        >
-                                                            <circle
-                                                                cx="5.5"
-                                                                cy="5"
-                                                                r="5"
-                                                                fill="#fff"
-                                                            />
-                                                            <circle
-                                                                cx="5.49967"
-                                                                cy="5.00065"
-                                                                r="4.16667"
-                                                                fill="currentColor"
-                                                            />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-
-                                                <div>
-                                                    <h6 className="line-clamp-1">
-                                                        Jane Doe
-                                                    </h6>
-                                                    <p className="mt-1 line-clamp-1">
-                                                        Hi, i want make
-                                                        enquiries
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="text-end flex-shrink-0">
-                                                <span className="i-badge pill success-soft fs-10">
-                                                    SMS
-                                                </span>
-                                                <p className="fs-12 mt-1">
-                                                    12.55 am
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </Tab.Pane>
-
-                        <Tab.Pane eventKey="3" transition={true}>
-                            <div className="contact-list">
-                                {Array.from({ length: 10 }).map((_, ind) => (
-                                    <Link
-                                        to="#"
-                                        key={ind}
-                                        className={`contact-link ${
-                                            ind === 0 ? "active" : ""
-                                        }`}
-                                        onClick={handleHideContact}
-                                    >
-                                        <div className="contact-item">
-                                            <div className="contact-info">
-                                                <div className="contact-avatar">
-                                                    <img src={userOne} alt="" />
-                                                    <span className="online-status">
-                                                        <svg
-                                                            xmlns="http://www.w3.org/2000/svg"
-                                                            width="10"
-                                                            height="10"
-                                                            viewBox="0 0 10 10"
-                                                            fill="none"
-                                                        >
-                                                            <circle
-                                                                cx="5.5"
-                                                                cy="5"
-                                                                r="5"
-                                                                fill="#fff"
-                                                            />
-                                                            <circle
-                                                                cx="5.49967"
-                                                                cy="5.00065"
-                                                                r="4.16667"
-                                                                fill="currentColor"
-                                                            />
-                                                        </svg>
-                                                    </span>
-                                                </div>
-
-                                                <div>
-                                                    <h6 className="line-clamp-1">
-                                                        Jane Doe
-                                                    </h6>
-                                                    <p className="mt-1 line-clamp-1">
-                                                        Hi, i want make
-                                                        enquiries
-                                                    </p>
-                                                </div>
-                                            </div>
-
-                                            <div className="text-end flex-shrink-0">
-                                                <span className="i-badge pill dark-soft fs-10">
-                                                    SMS
-                                                </span>
-                                                <p className="fs-12 mt-1">
-                                                    12.55 am
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </Tab.Pane>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </Tab.Pane>
+                        ))}
                     </Tab.Content>
                 </div>
             </Tab.Container>

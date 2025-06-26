@@ -1,28 +1,33 @@
-@use "@/styles/sass/abstracts/" as *;
+@use "@/styles/sass/abstracts/"as *;
 
 .chat-body {
   position: relative;
   overflow: hidden;
-  .chat-body-bg{
+
+  .chat-body-bg {
     position: absolute;
     inset: 0;
     z-index: -1;
     width: 100%;
     height: 100%;
     background-color: rgb(239, 234, 226);
+
     [data-bs-theme="dark"] & {
       background-color: transparent;
     }
-    .whatsapp-bg-image{
+
+    .whatsapp-bg-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
       opacity: 0.6;
+
       [data-bs-theme="dark"] & {
         opacity: 0.2;
       }
     }
   }
+
   .chat-body-header {
     @include flex($align: center, $justify: space-between, $gap: 20px);
     background-color: $site-bg;
@@ -38,19 +43,28 @@
     @include md-down {
       padding-inline: 10px;
     }
+
     .chatting {
       @include flex($direction: column, $gap: 30px);
       padding-block: 10px;
+
       .message {
         &.incoming {
           .message-wrapper {
             -webkit-margin-end: auto;
             margin-inline-end: auto;
             text-align: start;
+
             .message-body {
               .message-content {
                 color: $text-primary;
                 background-color: $color-primary-light;
+                border-start-start-radius: $radius-8;
+                border-start-end-radius: $radius-8;
+                border-end-end-radius: $radius-8;
+              }
+
+              .message-file {
                 border-start-start-radius: $radius-8;
                 border-start-end-radius: $radius-8;
                 border-end-end-radius: $radius-8;
@@ -65,25 +79,34 @@
             margin-inline-start: auto;
             text-align: end;
             @include flex($direction: row-reverse);
-            .message-body {
-              .message-content {
-                background-color: $color-primary;
-                border-start-start-radius: $radius-8;
-                border-start-end-radius: $radius-8;
-                border-end-start-radius: $radius-8;
-                color: $text-light;
-              }
 
-              .message-file {
-                -webkit-margin-start: auto;
-                margin-inline-start: auto;
-                -webkit-box-orient: horizontal;
-                -webkit-box-direction: reverse;
-                -ms-flex-direction: row-reverse;
-                flex-direction: row-reverse;
-              }
-              .given-react {
-                inset-inline-start: 10px;
+            .message-body {
+              .message-container {
+                text-align: end;
+                @include flex($direction: row-reverse);
+
+                .message-content {
+                  background-color: $color-primary;
+                  border-start-start-radius: $radius-8;
+                  border-start-end-radius: $radius-8;
+                  border-end-start-radius: $radius-8;
+                  color: $text-light;
+                }
+
+                .message-file {
+                  -webkit-box-orient: horizontal;
+                  -webkit-box-direction: reverse;
+                  -ms-flex-direction: row-reverse;
+                  flex-direction: row-reverse;
+                  border-start-start-radius: $radius-8;
+                  border-start-end-radius: $radius-8;
+                  border-end-start-radius: $radius-8;
+                }
+
+                .given-react {
+                  inset-inline-start: 10px;
+                }
+
               }
 
               .message-time {
@@ -99,6 +122,7 @@
         .message-wrapper {
           @include flex($align: start, $gap: 10px);
           max-width: 65%;
+
           @include sxxl-down {
             max-width: 75%;
           }
@@ -124,58 +148,66 @@
             width: -moz-max-content;
             width: max-content;
             position: relative;
-            .message-content {
-              padding: 12px;
-              font-size: 14px;
-              line-height: 1.6;
-              @include md-down {
-                padding: 10px;
-                font-size: 14px;
-              }
-            }
+            @include flex($direction:column, $gap: 10px);
 
-            .message-file {
-              max-width: 350px;
-              width: 100%;
-              background-color: $color-primary-light;
-              border-radius: $radius-8;
-              @include flex($align: center, $gap: 15px);
-              padding: 15px;
-              &-type {
-                -ms-flex-negative: 0;
-                flex-shrink: 0;
-                font-size: 30px;
-                line-height: 1;
-              }
-              &-info {
-                line-height: 1.1;
-                > h6 {
+            .message-container {
+              @include flex($align: start, $gap: 5px);
+
+              .message-content {
+                padding: 12px;
+                font-size: 14px;
+                line-height: 1.6;
+
+                @include md-down {
+                  padding: 10px;
                   font-size: 14px;
                 }
+              }
 
-                > span {
-                  font-size: 12px;
+              .message-file {
+                max-width: 350px;
+                width: 100%;
+                background-color: $color-primary-light;
+                @include flex($align: center, $gap: 15px);
+                padding: 15px;
+
+                &-type {
+                  -ms-flex-negative: 0;
+                  flex-shrink: 0;
+                  font-size: 30px;
+                  line-height: 1;
+                }
+
+                &-info {
+                  line-height: 1.1;
+
+                  >h6 {
+                    font-size: 14px;
+                  }
+
+                  >span {
+                    font-size: 12px;
+                  }
                 }
               }
-            }
 
-            .given-react {
-              position: absolute;
-              inset-inline-end: 10px;
-              inset-block-end: 6px;
-              width: 34px;
-              height: 24px;
-              font-size: 12px;
-              line-height: 1;
-              background-color: $color-white;
-              border: 1px solid $border-primary;
-              @include item-center;
-              border-radius: $radius-pill;
+              .given-react {
+                position: absolute;
+                inset-inline-end: 10px;
+                inset-block-end: -8px;
+                width: 30px;
+                height: 20px;
+                font-size: 12px;
+                line-height: 1;
+                background-color: $color-white;
+                border: 1px solid $border-primary;
+                @include item-center;
+                border-radius: $radius-pill;
+              }
             }
 
             .message-time {
               @include flex($align: center, $gap: 5px);
-              margin-top: 8px;
               line-height: 1;
               color: $text-secondary;
             }
@@ -198,7 +230,8 @@
       -webkit-transition: 0.3s ease-in-out;
       -o-transition: 0.3s ease-in-out;
       transition: 0.3s ease-in-out;
-      > span {
+
+      >span {
         background-color: $color-white;
         -webkit-box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px,
           rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
@@ -209,6 +242,7 @@
         font-size: 12px;
         padding-block: 4px;
         padding-inline: 15px;
+
         [data-bs-theme="dark"] & {
           -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 24px 0px,
             rgba(255, 255, 255, 0.2) 0px 0px 0px 1px;
@@ -224,6 +258,7 @@
     padding-inline: 20px;
     height: 80px;
     background-color: $site-bg;
+
     @include md-down {
       padding-inline: 15px;
     }

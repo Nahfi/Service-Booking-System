@@ -98,6 +98,7 @@ const ConversationSidebar: React.FC = () => {
                                 to={menu?.to}
                                 key={ind}
                                 className="chat-menu-link"
+                                viewTransition
                             >
                                 <span className="chat-menu-icon">
                                     {menu?.icon}

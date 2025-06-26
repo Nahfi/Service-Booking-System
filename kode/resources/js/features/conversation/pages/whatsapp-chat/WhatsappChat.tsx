@@ -14,7 +14,7 @@ const WhatsappChat: React.FC = () => {
     const [showProfile, setShowProfile] = useState<boolean>(false);
     const isXXLDown = useMediaQuery({ query: "(max-width: 1399.98px)" });
 
-    const [chatInit, setChatInit] = useState<boolean>(false);
+    const [chatInit, setChatInit] = useState<boolean>(true);
 
     const { showModal, modalConfig, openModal, closeModal } = useContext(
         ModalContext
