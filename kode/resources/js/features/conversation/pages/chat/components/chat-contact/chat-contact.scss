@@ -1,8 +1,9 @@
-@use "@/styles/sass/abstracts/" as *;
+@use "@/styles/sass/abstracts/"as *;
 
 .chat-contacts {
   .contact-header {
     @include flex($align: center, $justify: space-between);
+
     .contact-tab {
       .nav-link {
         padding: 10px 10px;
@@ -10,6 +11,7 @@
         font-size: 14px;
         font-weight: 600;
         color: $text-ternary;
+
         &:is(.active) {
           color: $color-primary;
           background-color: $color-primary-light;
@@ -19,31 +21,96 @@
   }
 
   .contact-tab-content {
+    .device-setup {
+        position: relative;
+        display: inline-block;
+
+      .device-setup-btn {
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+
+      /* Main menu */
+      .device-setup-menu {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+        border: 1px solid #ccc;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        display: none;
+        min-width: 160px;
+        z-index: 1000;
+      }
+
+      /* Show menu on hover */
+      .device-setup:hover .device-setup-menu {
+        display: block;
+      }
+
+      /* Menu items */
+      .device-setup-menu li {
+        padding: 10px;
+        position: relative;
+        white-space: nowrap;
+        background-color: #fff;
+      }
+
+      .device-setup-menu li:hover {
+        background-color: #f0f0f0;
+      }
+
+      /* Submenu */
+      .submenu {
+        list-style: none;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        display: none;
+        margin: 0;
+        padding: 0;
+        min-width: 160px;
+        background: #fff;
+        border: 1px solid #ccc;
+        z-index: 1000;
+      }
+
+      /* Show submenu on hover */
+      .has-submenu:hover .submenu {
+        display: block;
+      }
+
+    }
+
     .gateway-dropdown {
-      > .btn {
+      >.btn {
         background: $color-primary-light;
         color: $color-primary;
         font-size: 14px;
         padding: var(--bs-btn-padding-y);
         line-height: 1;
       }
+
       .dropdown-content {
         padding-inline: 8px;
       }
     }
 
-    .contact-search{
+    .contact-search {
       background-color: $light-bg;
       padding: 4px;
       border-radius: $radius-8;
       @include flex($align:center);
-      > input{
+
+      >input {
         border: none;
         background-color: transparent;
         padding-inline: 5px;
       }
     }
-    
+
     .contact-list {
       .contact-link {
         display: inline-block;
@@ -51,9 +118,11 @@
         -webkit-transition: 0.3s ease-in-out;
         -o-transition: 0.3s ease-in-out;
         transition: 0.3s ease-in-out;
+
         &:is(.active) {
           background-color: $light-bg;
           position: relative;
+
           &::after {
             content: "";
             position: absolute;
@@ -68,25 +137,31 @@
         &:hover {
           background-color: $light-bg;
         }
+
         .contact-item {
           @include flex($align: center, $justify: space-between, $gap: 10px);
           padding: 15px;
           color: $text-ternary;
+
           .contact-info {
             @include flex($align: center, $justify: space-between, $gap: 20px);
+
             @include xxl-down {
               gap: 10px;
             }
+
             .contact-avatar {
               @include square(40px);
               -ms-flex-negative: 0;
-                  flex-shrink: 0;
+              flex-shrink: 0;
               position: relative;
-              > img {
+
+              >img {
                 @include square(100%, $radius-rounded);
                 -o-object-fit: cover;
-                   object-fit: cover;
+                object-fit: cover;
               }
+
               .online-status {
                 position: absolute;
                 inset-block-start: 0;
@@ -100,6 +175,7 @@
             h6 {
               font-size: 14px;
             }
+
             p {
               font-size: 14px;
             }

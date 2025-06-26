@@ -1,6 +1,5 @@
 import { useContext, useRef, useState } from "react";
 
-import Dropdown from "react-bootstrap/Dropdown";
 import Nav from "react-bootstrap/Nav";
 import Tab from "react-bootstrap/Tab";
 import { Link } from "react-router-dom";
@@ -9,18 +8,20 @@ import userOne from "@/assets/images/user/user-1.png";
 import Button from "@/components/common/button/Button";
 import { ThemeContext } from "@/context";
 
-import { DropdownButton } from "react-bootstrap";
+import { Dropdown, DropdownButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { LuSearch, LuUserPlus, LuX } from "react-icons/lu";
 import { keyToValue, valueToKey } from "../../../../../../utils/helper";
-import type { ThemeContextType } from "../../../../../../utils/types";
+import type { OpenModalFn, ThemeContextType } from "../../../../../../utils/types";
 import "./chat-contact.scss";
 
 interface ChatContactsProps {
     contactAction: {
         handleHideContact: () => void;
         showContact: boolean;
+        openModal: OpenModalFn;
     };
+    type: string;
 }
 
 
@@ -45,25 +46,30 @@ const devises = {
     devise_four: ["sim_one", "sim_two"],
 };
 
-const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
+const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction, type }) => {
+    const { handleHideContact, showContact, openModal } = contactAction;
 
-    const { handleHideContact, showContact } = contactAction;
-
-    const { t } = useTranslation()
+    const { t } = useTranslation();
 
     const [showSearch, setShowSearch] = useState<boolean>(true);
-    const [sim, setSim] = useState<string | null>(null);
+
+    const [selectedSim, setSelectedSim] = useState(null);
+
+    const handleSelectSim = (gateway, sim) => {
+        setSelectedSim(`${gateway}: ${sim}`);
+    };
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
 
-    const handleSelectSim = (event: React.MouseEvent<HTMLElement>) => {
-        setSim(event.target.innerText);
-        if (dropdownRef?.current) {
-            dropdownRef?.current?.click();
-        }
-        event?.stopPropagation();
-    };
+
+    // const handleSelectSim = (event: React.MouseEvent<HTMLElement>) => {
+    //     setSim(event.target.innerText);
+    //     if (dropdownRef?.current) {
+    //         dropdownRef?.current?.click();
+    //     }
+    //     event?.stopPropagation();
+    // };
 
     return (
         <div
@@ -91,6 +97,9 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                 icon={LuUserPlus}
                                 tooltipText="Add user"
                                 className="dark-soft btn-ghost btn-sm fs-18 circle"
+                                onClick={() =>
+                                    openModal("ADD_USER", "Add User", "md")
+                                }
                             />
 
                             {/* <Dropdown className="icon-dropdown">
@@ -124,34 +133,83 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
 
                 <div className="contact-tab-content scroll scroll-3">
                     <div className="px-3 py-2">
-                        <div className="d-flex align-items-center justify-content-between gap-3">
-                            <h6 className="fs-14">Choose Device</h6>
-                            <DropdownButton
-                                id="gateway-dropdown"
-                                title={sim || "Choose Device"}
-                                aria-label="Choose Device"
-                                className="gateway-dropdown"
-                                ref={dropdownRef}
-                                autoClose="outside"
-                            >
-                                <div className="dropdown-content">
+                        {type === "sms" && (
+                            <div className="d-flex align-items-center justify-content-between gap-3 mb-2">
+                                <h6 className="fs-14">Choose Device</h6>
+
+                                {/* <DeviceSetup /> */}
+
+                                {/* <DropdownButton
+                                    id="gateway-dropdown"
+                                    title={sim || "Choose Device"}
+                                    aria-label="Choose Device"
+                                    className="gateway-dropdown"
+                                    ref={dropdownRef}
+                                    autoClose="outside"
+                                >
+                                    <div className="dropdown-content">
+                                        {Object.entries(devises).map(
+                                            ([key, value], ind) => (
+                                                <Dropdown.Item
+                                                    as={"button"}
+                                                    key={`${key}-${ind}`}
+                                                    onClick={handleSelectSim}
+                                                    className="p-0 w-100"
+                                                >
+                                                    <DropdownButton
+                                                        id="sim-dropdown"
+                                                        title={keyToValue(key)}
+                                                        className="gateway-dropdown w-100"
+                                                    >
+                                                        {value.map((sim) => (
+                                                            <Dropdown.Item
+                                                                as="button"
+                                                                key={`${key}-${sim}`}
+                                                            >
+                                                                {sim}
+                                                            </Dropdown.Item>
+                                                        ))}
+                                                    </DropdownButton>
+                                                </Dropdown.Item>
+                                            )
+                                        )}
+                                    </div>
+                                </DropdownButton> */}
+
+                                <DropdownButton
+                                    id="gateway-dropdown"
+                                    title={selectedSim || "Choose Device"}
+                                    aria-label="Choose Device"
+                                    className="gateway-dropdown"
+                                    ref={dropdownRef}
+                                    autoClose="outside"
+                                    variant="primary"
+                                >
                                     {Object.entries(devises).map(
-                                        ([key, value], ind) => (
+                                        ([gateway, sims], index) => (
                                             <Dropdown.Item
-                                                as={"button"}
-                                                key={`${key}-${ind}`}
-                                                onClick={handleSelectSim}
-                                                className="p-0 w-100"
+                                                as="div"
+                                                key={`${gateway}-${index}`}
+                                                className="p-0 w-100 nested-dropdown"
                                             >
                                                 <DropdownButton
-                                                    id="sim-dropdown"
-                                                    title={keyToValue(key)}
-                                                    className="gateway-dropdown w-100"
+                                                    id={`sim-dropdown-${gateway}`}
+                                                    title={keyToValue(gateway)}
+                                                    className="w-100"
+                                                    variant="light"
+                                                    autoClose="outside"
                                                 >
-                                                    {value.map((sim) => (
+                                                    {sims.map((sim) => (
                                                         <Dropdown.Item
                                                             as="button"
-                                                            key={`${key}-${sim}`}
+                                                            key={`${gateway}-${sim}`}
+                                                            onClick={() =>
+                                                                handleSelectSim(
+                                                                    gateway,
+                                                                    sim
+                                                                )
+                                                            }
+                                                            className="py-2"
                                                         >
                                                             {sim}
                                                         </Dropdown.Item>
@@ -160,11 +218,11 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                                             </Dropdown.Item>
                                         )
                                     )}
-                                </div>
-                            </DropdownButton>
-                        </div>
+                                </DropdownButton>
+                            </div>
+                        )}
 
-                        <div className="mt-2">
+                        <div>
                             <div className="contact-search">
                                 <div className="px-2 flex-shrink-0">
                                     <LuSearch className="fs-18" />

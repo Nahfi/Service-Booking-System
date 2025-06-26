@@ -4,15 +4,21 @@ import ModalWrapper, { DeleteModal } from "../../../../components/common/modal";
 import { ModalContext } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
 
+import { useLocation } from "react-router";
 import "./chat-wrapper.scss";
 import ChatBody from "./components/chat-body/ChatBody";
 import ChatContacts from "./components/chat-contact/ChatContacts";
 import ChatProfile from "./components/chat-profile/ChatProfile";
 import AddNote from "./components/modals/AddNote";
+import AddUser from "./components/modals/AddUser";
 
 
 
 const ChatWrapper: React.FC = () => {
+
+  const location = useLocation();
+  const pathValue = location.pathname.split("/").pop();
+
   const [showContact, setShowContact] = useState<boolean>(true);
   const [showProfile, setShowProfile] = useState<boolean>(false);
   const isXXLDown = useMediaQuery({ query: "(max-width: 1399.98px)" });
@@ -41,9 +47,13 @@ const ChatWrapper: React.FC = () => {
       <>
           <div className="chat-wrapper">
               <div className="row g-0">
-                  <ChatContacts contactAction={{ handleHideContact }} />
+                  <ChatContacts
+                      contactAction={{ handleHideContact, openModal }}
+                      type={pathValue}
+                  />
                   <ChatBody
                       onHandle={{ handleShowContact, handleShowProfile }}
+                      type={pathValue}
                   />
                   <ChatProfile
                       profileAction={{
@@ -51,6 +61,7 @@ const ChatWrapper: React.FC = () => {
                           showProfile,
                           openModal,
                       }}
+                      type={pathValue}
                   />
               </div>
           </div>
@@ -65,13 +76,15 @@ const ChatWrapper: React.FC = () => {
           >
               {(modalConfig?.type === "ADD_NOTE" ||
                   modalConfig?.type === "EDIT_NOTE") && (
-                  <AddNote onClose={closeModal} />
+                  <AddNote onHide={closeModal} />
               )}
 
               {modalConfig?.type === "DELETE" && (
-                  <DeleteModal
-                      onHide={closeModal}
-                  />
+                  <DeleteModal onHide={closeModal} />
+              )}
+
+              {modalConfig?.type === "ADD_USER" && (
+                  <AddUser onHide={closeModal} />
               )}
           </ModalWrapper>
       </>

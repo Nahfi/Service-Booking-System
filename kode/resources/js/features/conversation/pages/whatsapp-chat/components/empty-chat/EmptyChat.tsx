@@ -6,7 +6,7 @@ const EmptyChat: React.FC = () => {
         <div className="col empty-chat">
             <div className="empty-chat-content">
                 <div className="message-icon-animation">
-                    <div class="message-icon chat-animate">
+                    <div className="message-icon chat-animate">
                         <i>
                             <i></i>
                             <i></i>
