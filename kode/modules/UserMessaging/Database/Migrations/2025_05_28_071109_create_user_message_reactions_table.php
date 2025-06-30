@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Modules\User\Enums\ReactionType;
 
 return new class extends Migration
 {
@@ -17,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('message_id')->index()->constrained(table: 'user_messages');
             $table->unsignedBigInteger('user_id')->index()->constrained(table: 'users');
-            $table->string('reaction', 50);
+            $table->enum('reaction',ReactionType::getValues());
             $table->timestamps();
         });
     }

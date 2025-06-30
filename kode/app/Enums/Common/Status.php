@@ -1,5 +1,5 @@
 <?php
-  
+
 namespace App\Enums\Common;
 
 use App\Enums\EnumTrait;
@@ -20,7 +20,7 @@ enum Status :String {
      */
     public function values(): string
     {
-        return match($this) 
+        return match($this)
         {
             self::ACTIVE   => 'Active',
             self::INACTIVE => 'Inactive',
@@ -37,7 +37,7 @@ enum Status :String {
     public function badge(): void
     {
 
-        
+
         $color = match($this) {
             self::ACTIVE    => 'success',
             self::INACTIVE  => 'danger',

@@ -30,11 +30,13 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
             ]);
 
 
-            #CUSTOM PROFILE ROUTE
+            #CUSTOM MESSAGES ROUTE
             Route::controller(MessageController::class)->prefix('messages/')->group(function () {
 
-                Route::post('/mute/conversation/{id}', 'toggleMute');
-                Route::post('/block/conversation/{id}', 'toggleBlock');
+                Route::post('/toggle-reaction/{conversationId}/{messageId}', 'toggleReaction');
+                Route::post('/toggle-mute/conversation/{conversationId}', 'toggleMute');
+                Route::post('/toggle-block/conversation/{conversationId}', 'toggleBlock');
+                Route::delete('/destory/conversation/{conversationId}', 'destoryConversation');
 
             });
 

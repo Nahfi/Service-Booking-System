@@ -5,27 +5,27 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
-{
-    /**
+{  /**
      * Run the migrations.
      *
      * @return void
      */
     public function up()
     {
-        Schema::create('user_conversations', function (Blueprint $table) {
+        Schema::create('user_conversation_preferences', function (Blueprint $table) {
 
             $table->id();
 
-            $table->unsignedBigInteger('user_one_id')
+            $table->unsignedBigInteger('user_conversation_id')
                             ->index()
-                            ->nullable()
-                            ->constrained(table: 'users');
+                            ->constrained(table: 'user_conversations');
 
-            $table->unsignedBigInteger('user_two_id')
+            $table->unsignedBigInteger('user_id')
                              ->index()
-                             ->nullable()
                              ->constrained(table: 'users');
+
+            $table->boolean('is_blocked')->default(false);
+            $table->boolean('is_muted')->default(false);
 
             $table->timestamps();
         });
@@ -38,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_conversations');
+        Schema::dropIfExists('user_conversation_preferences');
     }
 };

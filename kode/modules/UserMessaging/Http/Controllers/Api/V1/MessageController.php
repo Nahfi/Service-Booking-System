@@ -3,12 +3,13 @@
 namespace Modules\UserMessaging\Http\Controllers\Api\V1;
 
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
+use Modules\UserMessaging\Http\Requests\UserMessageReactionRequest;
 use Modules\UserMessaging\Http\Requests\UserMessageRequest;
 use Modules\UserMessaging\Http\Requests\UserMessageUpdateRequest;
 use Modules\UserMessaging\Http\Services\MessageService;
+
 
 class MessageController extends Controller
 {
@@ -26,7 +27,6 @@ class MessageController extends Controller
      */
     public function index(): JsonResponse
     {
-
         return $this->messageService->getConversationList();
     }
 
@@ -41,6 +41,7 @@ class MessageController extends Controller
     {
         return $this->messageService->save($request);
     }
+
 
 
 
@@ -64,7 +65,6 @@ class MessageController extends Controller
      */
     public function show(int | string $id ): JsonResponse
     {
-
         $userId = request()->input('user_id');
         return $this->messageService->getConversationMessages($id  ,  $userId);
     }
@@ -79,5 +79,54 @@ class MessageController extends Controller
     public function destroy(int | string $id): JsonResponse
     {
         return $this->messageService->destroy($id);
+    }
+
+
+
+
+    /**
+     * Summary of toggleReaction
+     * @param \Modules\UserMessaging\Http\Requests\UserMessageReactionRequest $request
+     * @param int|string $conversationId
+     * @param int|string $messageId
+     * @return JsonResponse
+     */
+    public  function toggleReaction(UserMessageReactionRequest $request , int | string $conversationId , int | string $messageId): JsonResponse{
+
+        return $this->messageService->toggleReaction($request , $conversationId , $messageId);
+
+    }
+
+
+
+    /**
+     * Summary of toggleMute
+     * @param int $conversationId
+     * @return JsonResponse
+     */
+    public function toggleMute(int $conversationId): JsonResponse{
+        return $this->messageService->toggleMute($conversationId);
+    }
+
+
+    /**
+     * Summary of toggleBlock
+     * @param int $conversationId
+     * @return JsonResponse
+     */
+    public function toggleBlock(int  $conversationId): JsonResponse{
+        return $this->messageService->toggleBlock($conversationId);
+    }
+
+
+
+
+    /**
+     * Summary of destoryConversation
+     * @param int $conversationId
+     * @return JsonResponse
+     */
+    public function destoryConversation(int $conversationId): JsonResponse{
+        return $this->messageService->destoryConversation($conversationId);
     }
 }

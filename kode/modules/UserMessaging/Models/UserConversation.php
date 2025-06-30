@@ -9,13 +9,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 
 class UserConversation extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+
+    /**
+     * Summary of getUsersAttribute
+     * @return Collection<TKey, mixed>
+     */
+    public function getUsersAttribute(): Collection{
+        return collect([$this->userOne, $this->userTwo])->filter();
+    }
 
 
     /**
@@ -28,15 +39,21 @@ class UserConversation extends Model
 
 
     /**
-     * Summary of users
-     * @return BelongsToMany<User, UserConversation>
+     * Summary of userOne
+     * @return BelongsTo<User, UserConversation>
      */
-    public function users(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'user_conversations', 'id', 'user_one_id')
-                    ->orWhere('user_two_id', $this->id);
+    public function userOne(): BelongsTo{
+        return $this->belongsTo(User::class, 'user_one_id');
     }
 
+
+    /**
+     * Summary of userTwo
+     * @return BelongsTo<User, UserConversation>
+     */
+    public function userTwo(): BelongsTo{
+        return $this->belongsTo(User::class, 'user_two_id');
+    }
 
     /**
      * Summary of latestMessage
@@ -47,6 +64,16 @@ class UserConversation extends Model
         return $this->hasOne(UserMessage::class,'conversation_id')->latestOfMany();
     }
 
+
+
+
+    /**
+     * Summary of conversationPreferences
+     * @return HasMany<UserConversationPreference, UserConversation>
+     */
+    public function conversationPreferences(): HasMany{
+        return $this->hasMany(UserConversationPreference::class,'user_conversation_id');
+    }
 
 
 

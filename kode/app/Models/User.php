@@ -24,6 +24,7 @@ use Modules\Settings\Models\Settings;
 use Modules\User\Models\Role;
 use Modules\User\Models\UserSession;
 use Modules\User\Models\VerificationCode;
+use Modules\UserMessaging\Models\UserConversation;
 
 class User extends Authenticatable
 {
@@ -61,7 +62,7 @@ class User extends Authenticatable
             'meta_data'         => 'object',
             'last_login_time'   => 'datetime',
             'email_verified_at' => 'datetime'
-        
+
         ];
     }
 
@@ -74,7 +75,7 @@ class User extends Authenticatable
     protected function hidden(): array
     {
         return [
-            'password'        
+            'password'
         ];
     }
 
@@ -88,6 +89,36 @@ class User extends Authenticatable
         static::creating(callback: function (Model $model): void {
             $model->uid = Str::uuid();
         });
+    }
+
+
+    /**
+     * Summary of conversationAsUserOne
+     * @return HasOne<UserConversation, User>
+     */
+    public function conversationAsUserOne(): HasOne{
+        return $this->hasOne(UserConversation::class, 'user_one_id');
+    }
+
+
+    /**
+     * Summary of conversationAsUserTwo
+     * @return HasOne<UserConversation, User>
+     */
+    public function conversationAsUserTwo(): HasOne{
+        return $this->hasOne(UserConversation::class, 'user_two_id');
+    }
+
+
+
+
+    /**
+     * Summary of getConversationAttribute
+     * @return HasOne<UserConversation, User>
+     */
+    public function getConversationAttribute(): UserConversation | HasOne | null
+    {
+        return $this->conversationAsUserOne ?? $this->conversationAsUserTwo;
     }
 
 
@@ -107,10 +138,10 @@ class User extends Authenticatable
      * @return HasMany<Settings, User>
      */
     public function settings(): HasMany{
-         return $this->hasMany(Settings::class,'user_id'); 
+         return $this->hasMany(Settings::class,'user_id');
     }
 
-    
+
     /**
      * Summary of file
      * @return MorphOne<File, User>
@@ -149,7 +180,7 @@ class User extends Authenticatable
         return $this->MorphMany(VerificationCode::class, 'otpable');
     }
 
-    
+
 
 
     /**
@@ -160,10 +191,10 @@ class User extends Authenticatable
     public function scopeActive(Builder $q): Builder{
         return  $q->where('status',Status::ACTIVE);
     }
-    
 
 
-  
+
+
     /**
      * Summary of scopeChild
      * @param \Illuminate\Database\Eloquent\Builder $q
@@ -212,7 +243,7 @@ class User extends Authenticatable
     }
 
 
-    
+
 
 
 }
