@@ -72,6 +72,7 @@
 
     .contact-wrapper {
       width: 100%;
+      height: 100%;
       max-height: calc(100dvh - calc($header-h + $chat-header + 85px));
       overflow-y: auto;
       overflow-x: hidden;
@@ -85,6 +86,24 @@
       @include md-down {
         max-height: calc(100dvh - calc($chat-header + 85px));
         min-height: calc(100dvh - calc($chat-header + 85px));
+      }
+    }
+
+    .choose-contact-list{
+      width: 100%;
+      max-height: calc(100dvh - calc($header-h + $chat-header + 92px));
+      overflow-y: auto;
+      overflow-x: hidden;
+      min-height: calc(100dvh - calc($header-h + $chat-header + 92px));
+
+      @include lg-down {
+        max-height: calc(100dvh - calc($header-h + $chat-header + $sidebar-height + 92px));
+        min-height: calc(100dvh - calc($header-h + $chat-header + $sidebar-height + 92px));
+      }
+
+      @include md-down {
+        max-height: calc(100dvh - calc($chat-header + 92px));
+        min-height: calc(100dvh - calc($chat-header + 92px));
       }
     }
   }
@@ -408,4 +427,10 @@
     }
   }
 
+  .chat-loader{
+    max-width: calc(100% - $contact-sidebar);
+    width: 100%;
+    @include flex($align:center,$justify:center);
+    background-color: $light-bg;
+  }
 }

@@ -1,24 +1,32 @@
 import type React from "react";
 import { useTranslation } from "react-i18next";
+import { LuUserPlus } from "react-icons/lu";
 import Button from "../../../../../../components/common/button/Button";
 import Field from "../../../../../../components/common/from/Field";
+import SelectBox from "../../../../../../components/common/from/SelectBox";
 import { valueToKey } from "../../../../../../utils/helper";
 
 
-const AddNote: React.FC = ({ onHide }) => {
+const options = [
+    { value: "emma", label: "Emma" },
+    { value: "liam", label: "Liam" },
+    { value: "olivia", label: "Olivia" },
+];
+
+const AddUser: React.FC = ({ onHide }) => {
     const { t } = useTranslation();
     return (
         <form action="">
-            <Field label="Note" required>
-                <textarea
-                    name="note"
-                    id="note"
-                    placeholder="Enter note here"
-                    className="form-control"
-                    rows={6}
-                    required
-                ></textarea>
-            </Field>
+            <div>
+                <Field label={"Choose Audience"}>
+                    <SelectBox
+                        options={options}
+                        icon={<LuUserPlus />}
+                        name="multiUser"
+                        placeholder={"Add Audience"}
+                    />
+                </Field>
+            </div>
 
             <div className="modal-custom-footer mt-4">
                 <Button
@@ -40,4 +48,4 @@ const AddNote: React.FC = ({ onHide }) => {
     );
 };
 
-export default AddNote
+export default AddUser

@@ -35,6 +35,7 @@ const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
         size: "",
         data: null,
     });
+    
 
     const openModal = useCallback(
         (

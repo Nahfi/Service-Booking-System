@@ -58,13 +58,6 @@ const menuList: MenuItem[] = [
         label: "Templates",
         recent: null,
     },
-    // {
-    //     icon: <LuCalendarRange />,
-    //     to: "/conversation/subscriptions",
-    //     label: "Subscription",
-    //     recent: 5,
-    //     allCount: "50k",
-    // },
     {
         icon: <LuChartArea />,
         to: "/conversation/report",

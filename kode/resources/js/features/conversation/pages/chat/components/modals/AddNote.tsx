@@ -3,7 +3,7 @@ import Button from '../../../../../../components/common/button/Button';
 import Field from '../../../../../../components/common/from/Field';
 import { valueToKey } from '../../../../../../utils/helper';
 
-const AddNote = ({ onClose }) => {
+const AddNote = ({ onHide }) => {
     const { t } = useTranslation();
     return (
         <form action="">
@@ -11,7 +11,7 @@ const AddNote = ({ onClose }) => {
                 <textarea
                     name="note"
                     id="note"
-                    placeholder='Enter note here'
+                    placeholder="Enter note here"
                     className="form-control"
                     rows={6}
                     required
@@ -22,7 +22,7 @@ const AddNote = ({ onClose }) => {
                 <Button
                     type="button"
                     className="btn--dark btn--lg outline rounded-3"
-                    onClick={onClose}
+                    onClick={onHide}
                 >
                     {t(valueToKey("Cancel"), "Cancel")}
                 </Button>

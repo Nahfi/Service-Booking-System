@@ -5,7 +5,7 @@ import Button from "../../../../../../components/common/button/Button"
 import { valueToKey } from "../../../../../../utils/helper"
 
 
-const EmptyContact: React.FC = ({ handleShowNewChat }) => {
+const EmptyContact: React.FC = ({ openModal }) => {
     const { t } = useTranslation();
     return (
         <div className="empty-contact">
@@ -33,10 +33,10 @@ const EmptyContact: React.FC = ({ handleShowNewChat }) => {
 
             <Button
                 className="btn--primary btn--lg outline rounded-3"
-                onClick={handleShowNewChat}
+                onClick={() => openModal("ADD_USER", "Add User", "md")}
             >
                 <LuPlus className="fs-18" />
-                {t(valueToKey("New Chat"), "New Chat")}
+                {t(valueToKey("Add user"), "Add user")}
             </Button>
         </div>
     );

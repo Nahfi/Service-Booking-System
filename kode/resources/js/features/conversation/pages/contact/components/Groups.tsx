@@ -1,232 +1,72 @@
-import { useRef, useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import {
-    BsBan,
-    BsPencilSquare,
-    BsThreeDotsVertical,
-    BsTrash3,
-    BsVolumeMute,
-} from "react-icons/bs";
 
-import empty from "@/assets/images/empty.svg";
-import { LuUser } from "react-icons/lu";
+import { useContext, useRef } from "react";
+import { LuPlus } from "react-icons/lu";
 import Button from "../../../../../components/common/button/Button";
 import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
+import ModalWrapper, { DeleteModal } from "../../../../../components/common/modal";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
 import TableWrapper from "../../../../../components/common/table/TableWrapper";
+import { ModalContext } from "../../../../../context";
+import type { ModalContextType } from "../../../../../utils/types";
+import SaveGroup from "./modals/SaveGroup";
+import GroupTable from "./tables/GroupTable";
 
 const Groups: React.FC = () => {
-  const [contactData, setContactData] = useState(null);
-  const [selectedContacts, setSelectedContacts] = useState([]);
-  const selectAllContact = useRef<HTMLInputElement>(null);
 
-  const handleSelectAll = () => {
-    const isChecked = selectAllContact?.current?.checked;
-    if (isChecked === undefined) return;
-    const checkboxes = document.querySelectorAll(
-      "input[name='contactCheckbox']"
+    const modalRef = useRef();
+    const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
+
+    return (
+        <>
+            <div>
+                <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+                    <FilterWrapper className="mb-0" />
+
+                    <div className="d-flex align-items-center gap-3">
+                        <Button
+                            className="btn--primary btn--md rounded-3"
+                            onClick={() =>
+                                openModal(
+                                    "CREATE_GROUP",
+                                    "Create new contact",
+                                    "lg"
+                                )
+                            }
+                        >
+                            <LuPlus className="fs-18" /> Create Group
+                        </Button>
+                    </div>
+                </div>
+
+                <TableWrapper>
+                    <GroupTable />
+                </TableWrapper>
+
+                <div className="mt-4">
+                    <PaginationWrapper />
+                </div>`
+            </div>
+
+            <ModalWrapper
+                ref={modalRef}
+                title={modalConfig?.title}
+                onHide={closeModal}
+                show={showModal}
+                size={modalConfig?.size}
+                scrollable
+                centered
+            >
+                {(modalConfig?.type === "CREATE_GROUP" ||
+                    modalConfig?.type === "EDIT_GROUP") && (
+                    <SaveGroup onHide={closeModal}/>
+                    )}
+
+                {modalConfig?.type === "DELETE" && (
+                    <DeleteModal onHide={closeModal} />
+                )}
+            </ModalWrapper>
+        </>
     );
-    checkboxes.forEach((checkbox) => {
-      checkbox.checked = isChecked;
-    });
-    if (isChecked) {
-      setSelectedContacts(Array.from({ length: 7 }, (_, i) => i));
-    } else {
-      setSelectedContacts([]);
-    }
-  };
-
-  const handleCheckboxChange = (e, contactId) => {
-    if (e.target.checked) {
-      setSelectedContacts([...selectedContacts, contactId]);
-    } else {
-      setSelectedContacts(selectedContacts.filter((id) => id !== contactId));
-    }
-  };
-
-
-  return (
-      <>
-          {contactData === "null" ? (
-              <div className="h-100 d-flex align-items-center justify-content-center flex-column mt-120 gap-4">
-                  <div>
-                      <img src={empty} alt="Empty Group" />
-                  </div>
-
-                  <div className="text-center">
-                      <h5 className="mb-2">You don’t have any group!</h5>
-                      <p>
-                          Add new group and continue enriching your contact
-                          database.
-                      </p>
-                  </div>
-              </div>
-          ) : (
-              <>
-                  <div className="mb-4">
-                      <FilterWrapper />
-                  </div>
-
-                  <TableWrapper>
-                      <thead>
-                          <tr>
-                              <th>
-                                  <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
-                                      <input
-                                          type="checkbox"
-                                          ref={selectAllContact}
-                                          onChange={handleSelectAll}
-                                      />
-                                      No
-                                  </div>
-                              </th>
-                              <th>Group Name</th>
-                              <th>Contacts </th>
-                              <th>Status</th>
-                              <th>Actions</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {Array.from({ length: 7 }).map((_, ind) => (
-                              <tr key={ind}>
-                                  <td>
-                                      <div className="d-flex justify-content-start align-items-start gap-3">
-                                          <input
-                                              type="checkbox"
-                                              name="contactCheckbox"
-                                              id={ind}
-                                              onChange={(e) =>
-                                                  handleCheckboxChange(e, ind)
-                                              }
-                                          />
-                                          <h6 className="fs-15">{ind + 1}</h6>
-                                      </div>
-                                  </td>
-
-                                  <td>
-                                      <span className="text--primary">
-                                          Team {ind + 1}
-                                      </span>
-                                  </td>
-
-                                  <td>
-                                      <span className="i-badge pill success-soft">
-                                          View All
-                                      </span>
-                                  </td>
-
-                                  <td>
-                                      <div className="form-check form-switch">
-                                          <input
-                                              className="form-check-input"
-                                              type="checkbox"
-                                              role="switch"
-                                              id={`switch-${ind + 1}`}
-                                          />
-                                      </div>
-                                  </td>
-
-                                  <td>
-                                      <div className="d-flex align-items-center justify-content-end gap-1">
-                                          <Button className="icon-btn warning-soft btn-ghost hover btn-md rounded-3 fs-18">
-                                              <BsPencilSquare />
-                                          </Button>
-
-                                          <Dropdown className="icon-dropdown">
-                                              <Dropdown.Toggle
-                                                  id="dropdown-5"
-                                                  className="icon-btn dark-soft btn-ghost hover btn-md fs-18 rounded-3 p-0"
-                                              >
-                                                  <BsThreeDotsVertical />
-                                              </Dropdown.Toggle>
-
-                                              <Dropdown.Menu align={`end`}>
-                                                  <ul className="dropdown-content">
-                                                      <li className="d-xxl-none">
-                                                          <Dropdown.Item>
-                                                              <LuUser />
-                                                              Profile
-                                                          </Dropdown.Item>
-                                                      </li>
-
-                                                      <li>
-                                                          <Dropdown.Item>
-                                                              <BsVolumeMute />
-                                                              Mute
-                                                          </Dropdown.Item>
-                                                      </li>
-
-                                                      <li>
-                                                          <Dropdown.Item>
-                                                              <BsBan />
-                                                              Blocked
-                                                          </Dropdown.Item>
-                                                      </li>
-
-                                                      <li>
-                                                          <Dropdown.Item>
-                                                              <BsTrash3 />
-                                                              Delete Chat
-                                                          </Dropdown.Item>
-                                                      </li>
-                                                  </ul>
-                                              </Dropdown.Menu>
-                                          </Dropdown>
-                                      </div>
-                                  </td>
-                              </tr>
-                          ))}
-                      </tbody>
-                  </TableWrapper>
-
-                  <div className="mt-4">
-                      <PaginationWrapper />
-                  </div>
-              </>
-          )}
-
-          {/* <ModalWrapper
-              title={modalConfig?.title}
-              onHide={closeModal}
-              show={showModal}
-              size={modalConfig?.size}
-              scrollable
-              centered
-          >
-              {(modalConfig?.type === "CREATE" ||
-                  modalConfig?.type === "EDIT") && (
-                  <form action="#">
-                      <Field label={"Group Name"}>
-                          <input
-                              type="text"
-                              id="search"
-                              placeholder="Enter group name"
-                              className="form-control"
-                          />
-                      </Field>
-                      <p className="mt-2">Enter the name to create a group.</p>
-
-                      <div className="d-flex align-items-center gap-3 mt-5">
-                          <button className="i-btn btn--dark outline btn--lg rounded-3">
-                              Cancel
-                          </button>
-
-                          <button
-                              type="submit"
-                              className="i-btn btn--primary btn--lg rounded-3"
-                          >
-                              Save
-                          </button>
-                      </div>
-                  </form>
-              )}
-
-              {modalConfig?.type === "DELETE" && (
-                  <DeleteModal onHide={closeModal} />
-              )}
-          </ModalWrapper> */}
-      </>
-  );
 };
 
 export default Groups;
