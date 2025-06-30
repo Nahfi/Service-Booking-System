@@ -25,7 +25,7 @@ const ChatWrapper: React.FC = () => {
     const [showProfile, setShowProfile] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     
-  const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedUser, setSelectedUser] = useState(null);
  
   const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
 

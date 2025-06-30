@@ -1,29 +1,30 @@
 import { useRef } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
-  BsCheck2All,
-  BsEmojiSmile,
-  BsEmojiSurprise,
-  BsEmojiTear,
-  BsFiletypePdf,
-  BsThreeDotsVertical
+    BsCheck2All,
+    BsEmojiSmile,
+    BsEmojiSurprise,
+    BsEmojiTear,
+    BsFiletypePdf,
+    BsThreeDotsVertical
 } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
 import {
-  LuCopy,
-  LuHeart,
-  LuMessageSquareDashed,
-  LuRedo2,
-  LuThumbsDown,
-  LuThumbsUp,
-  LuTrash2,
-  LuUndo2
+    LuCopy,
+    LuHeart,
+    LuMessageSquareDashed,
+    LuRedo2,
+    LuThumbsDown,
+    LuThumbsUp,
+    LuTrash2,
+    LuUndo2
 } from "react-icons/lu";
 
 import userOne from "@/assets/images/user/user-1.png";
 
 const Message = ({ ...props }) => {
-  const modalRef = useRef();
+    const modalRef = useRef();
+    
   const attributes = {
     ...props,
     className: `message ${props.className || ""}`,

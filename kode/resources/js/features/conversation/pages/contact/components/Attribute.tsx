@@ -7,6 +7,7 @@ import {
   BsTrash3,
   BsVolumeMute,
 } from "react-icons/bs";
+import { LuPlus } from "react-icons/lu";
 import Button from "../../../../../components/common/button/Button";
 import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
 import PaginationWrapper from "../../../../../components/common/pagination/PaginationWrapper";
@@ -44,9 +45,24 @@ const Attribute: React.FC = () => {
 
   return (
     <>
-        <div className="mb-4">
-          <FilterWrapper />
+      <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+        <FilterWrapper className="mb-0" />
+
+        <div className="d-flex align-items-center gap-3">
+          <Button
+            className="btn--primary btn--md rounded-3"
+            onClick={() =>
+              openModal(
+                "CREATE",
+                "Create new contact",
+                "lg"
+              )
+            }
+          >
+            <LuPlus className="fs-18" /> Create Attribute
+          </Button>
         </div>
+      </div>
 
         <Table>
           <thead>

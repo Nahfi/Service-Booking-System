@@ -90,12 +90,14 @@
 }
 
 .form-switch {
-  // padding-inline-start: -3.5em !important;
   cursor: pointer;
   .form-check-input {
     width: 3em;
     -webkit-margin-end: -3.5em;
     margin-inline-end: -3.5em;
+    &:focus{
+      box-shadow: none !important;
+    }
   }
 }
 input::-webkit-outer-spin-button,

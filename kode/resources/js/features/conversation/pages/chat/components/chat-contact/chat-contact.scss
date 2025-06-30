@@ -20,6 +20,94 @@
   }
 
   .contact-tab-content {
+    .device-dropdown-wrapper {
+      position: relative;
+
+      .dropdown-toggle {
+        font-size: 14px;
+        padding: 8px;
+        font-weight: 500;
+        background-color: transparent;
+        &.device-dropdown-toggle{
+          padding: 0;
+          @include flex($align:center,$gap:15px)
+        }
+        &::after {
+          display: none;
+        }
+      }
+      
+      .main-dropdown {
+        min-width: 150px;
+        z-index: 1050;
+        padding-inline: 8px;
+        .dropdown-item {
+          padding: 8px;
+          font-size: 13px;
+          &:hover {
+            background-color: $light-bg; 
+            color: $color-primary;
+          }
+          
+          &:active {
+            background-color: $color-primary-light;
+            color: $color-primary;
+          }
+        }
+      }
+      
+      .dropdown-submenu-wrapper {
+        position: relative;
+        .dropdown-submenu-toggle {
+          cursor: pointer;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px;
+          margin: 0;
+          background: transparent;
+          border: none;
+          width: 100%;
+          text-align: left;
+          &:hover {
+            background-color: $light-bg;
+            color: $color-primary;
+          }
+          
+          .float-end {
+            font-weight: bold;
+            color: $text-ternary;
+          }
+        }
+        .submenu {
+          position: absolute;
+          top: 0;
+          right: calc(100% + 8px);
+          min-width: 150px;
+          background: white;
+          border: 1px solid rgba(0, 0, 0, 0.15);
+          border-radius: 0.375rem;
+          box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+          z-index: 1051;
+          padding: 0.5rem 0;
+          padding-inline: 8px;
+          .dropdown-item {
+            padding: 8px;
+            font-size: 13px;
+            &:hover {
+              background-color: $light-bg;
+              color: $color-primary;
+            }
+            
+            &:active {
+              background-color: $color-primary-light;
+              color: $color-primary;
+            }
+          }
+        }
+      }
+    }
+
     .gateway-dropdown {
       >.btn {
         background: $color-primary-light;
@@ -140,7 +228,5 @@
         font-size: 36px;
       }
     }
-
-  
   }
 }

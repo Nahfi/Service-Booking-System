@@ -808,6 +808,7 @@
 
 .animate-fade-in {
   animation: fade-in 0.3s ease-in-out;
+  -webkit-animation: fade-out 0.3s ease-in-out;
 
   @keyframes fade-in {
     from {
@@ -822,9 +823,35 @@
   }
 }
 
+.fade-in {
+  -webkit-animation: fade-in 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+  animation: fade-in 0.8s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+
+  @-webkit-keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+}
+
 .fade-out {
-  -webkit-animation: fade-out 0.4s ease-out both;
-  animation: fade-out 0.4s ease-out both;
+  -webkit-animation: fade-out 0.3s ease-out both;
+  animation: fade-out 0.3s ease-out both;
 
   @-webkit-keyframes fade-out {
     0% {

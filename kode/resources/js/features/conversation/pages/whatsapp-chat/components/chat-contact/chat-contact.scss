@@ -19,31 +19,22 @@
   }
 
   .whatsapp-tab {
-    .gateway-dropdown {
-      > .btn {
-        background: $color-primary-light;
-        color: $color-primary;
-        font-size: 14px;
-        padding: var(--bs-btn-padding-y);
-        line-height: 1;
-      }
-      .dropdown-content {
-        padding-inline: 8px;
-      }
-    }
 
-    .contact-search{
-      background-color: $light-bg;
-      padding: 4px;
-      border-radius: $radius-8;
-      @include flex($align:center);
-      > input{
-        border: none;
-        background-color: transparent;
-        padding-inline: 5px;
+    @at-root{
+      .contact-search{
+        background-color: $light-bg;
+        padding: 4px;
+        border-radius: $radius-8;
+        @include flex($align:center);
+        > input{
+          border: none;
+          background-color: transparent;
+          padding-inline: 5px;
+        }
       }
+  
     }
-
+ 
     .whatsapp-contact-tab-container{
       .whatsapp-contact-tab {
         .nav-link {
@@ -59,6 +50,7 @@
           }
         }
       }
+      
       .contact-wrapper{
           .contact-list {
             .contact-link {
@@ -95,6 +87,14 @@
                 @include flex($align: center, $justify: space-between, $gap: 10px);
                 padding: 12px 15px;
                 color: $text-ternary;
+                &.unread{
+                  .contact-info{
+                   p {
+                     font-weight: 600;
+                     color: $text-primary;
+                   }
+                  }
+                 }
                 .contact-info {
                   @include flex($align: center, $justify: space-between, $gap: 20px);
                   @include xxl-down {
@@ -148,6 +148,52 @@
         background-image: linear-gradient(to bottom right, $color-primary-light, #e9d5ff);
         color: $color-primary;
         font-size: 36px;
+      }
+    }
+
+    .choose-contact-wrapper{
+      .choose-contact-list{
+        .contact-item {
+          @include flex($align: center, $justify: space-between, $gap: 10px);
+          padding: 12px 15px;
+          color: $text-ternary;
+          cursor: pointer;
+          &:hover {
+            background-color: $light-bg;
+          }
+          .contact-info {
+            @include flex($align: center, $justify: space-between, $gap: 20px);
+            @include xxl-down {
+              gap: 10px;
+            }
+            .contact-avatar {
+              @include square(40px);
+              -ms-flex-negative: 0;
+                  flex-shrink: 0;
+              position: relative;
+              > img {
+                @include square(100%, $radius-rounded);
+                -o-object-fit: cover;
+                   object-fit: cover;
+              }
+              .online-status {
+                position: absolute;
+                inset-block-start: 0;
+                inset-inline-end: 0;
+                width: 10px;
+                height: 10px;
+                @include item-center;
+              }
+            }
+
+            h6 {
+              font-size: 14px;
+            }
+            p {
+              font-size: 12px;
+            }
+          }
+        }
       }
     }
   }
