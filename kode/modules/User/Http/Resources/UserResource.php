@@ -38,35 +38,35 @@ class UserResource extends JsonResource
             'google2fa_secret'   => $this->google2fa_secret,
             'recovery_codes'     => $this->recovery_codes,
             'two_factor_enabled' => (bool) $this->two_factor_enabled,
-            'two_factor_confirmed_at' => $this->two_factor_confirmed_at 
-                                            ? get_date_time($this->two_factor_confirmed_at) 
+            'two_factor_confirmed_at' => $this->two_factor_confirmed_at
+                                            ? get_date_time($this->two_factor_confirmed_at)
                                             : null,
 
-            'last_login_time'        => $this->last_login_time 
-                                        ? get_date_time($this->last_login_time) 
+            'last_login_time'        => $this->last_login_time
+                                        ? get_date_time($this->last_login_time)
                                         : null,
 
 
-            'is_online' => $this->last_login_time 
+            'is_online' => $this->last_login_time
                                             ? $this->last_login_time->diffInMinutes(now()) < 2 && $this->show_online_status
                                             : false,
 
-                                    
+
             'show_online_status' => (bool) $this->show_online_status,
 
-                                                                                         
+
             'created_at'         => get_date_time($this->created_at),
             'deleted_at'         => $this->deleted_at ? get_date_time($this->deleted_at) : null,
         ];
 
 
-          
-        if ($this->relationLoaded('role') 
+
+        if ($this->relationLoaded('role')
                 && $this->role) {
             $data['role'] = new RoleResource($this->role);
         }
-        
-        
+
+
         return $data;
     }
 }

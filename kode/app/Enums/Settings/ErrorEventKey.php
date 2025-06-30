@@ -10,6 +10,7 @@ enum ErrorEventKey: string
 
     case UNAUTHORIZED_REQUEST           = "unauthorized_request";
     case NPM_ERROR                      = "npm_error";
+    case USER_BLOCKED                   = "user_blocked";
 
 
 }

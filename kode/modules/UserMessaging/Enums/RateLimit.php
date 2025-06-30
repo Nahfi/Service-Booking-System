@@ -4,7 +4,7 @@ namespace Modules\UserMessaging\Enums;
 enum RateLimit: string
 {
 
-    case MESSAGING = '10,2'; 
+    case MESSAGING = '100,2';
 
 
     public function attempts(): int
