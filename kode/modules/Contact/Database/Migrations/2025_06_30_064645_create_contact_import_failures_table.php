@@ -14,8 +14,11 @@ class CreateContactImportFailuresTable extends Migration
     public function up()
     {
         Schema::create('contact_import_failures', function (Blueprint $table) {
-            $table->bigIncrements('id');
-
+            $table->id();
+            $table->unsignedBigInteger('contact_import_id')->index();
+            $table->bigInteger('row_number')->nullable();
+            $table->longText('row_data')->nullable();
+            $table->text('error')->nullable();
             $table->timestamps();
         });
     }

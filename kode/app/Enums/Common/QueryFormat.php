@@ -2,7 +2,7 @@
 
 
 
-namespace App\Enums\Settings;
+namespace App\Enums\Common;
 
 use App\Enums\EnumTrait;
 

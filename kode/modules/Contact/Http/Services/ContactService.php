@@ -42,8 +42,7 @@ class ContactService
       */
      public function getContacts(string|null $uid = null): JsonResponse {
 
-          $log = Contact::apply()
-                              ->recycle()
+          $log = Contact::recycle()
                               ->filter(['group:uid', 'status', 'channel'])
                               ->search(['name', 'phone', 'email'])
                               ->date()
@@ -255,8 +254,7 @@ class ContactService
       */
      public function restoreContact(string|null $uid = null): JsonResponse {
 
-          $user = Contact::apply()
-                              ->onlyTrashed()
+          $user = Contact::onlyTrashed()
                               ->where('uid', $uid)
                               ->firstOrFail();
 
@@ -287,7 +285,7 @@ class ContactService
                                    ->latest()
                                    ->with(['contacts'])
                                    ->when($uid, 
-                                        fn(Builder $query): Contact | null 
+                                        fn(Builder $query): ContactGroup | null
                                              => $query->where('uid', $uid)->firstOrFail(),
                                         fn(Builder $query): LengthAwarePaginator|Collection 
                                              => $query->fetchWithFormat());
@@ -402,8 +400,7 @@ class ContactService
 
      public function restoreContactGroup(string|null $uid = null): JsonResponse {
 
-          $user = ContactGroup::apply()
-                                   ->onlyTrashed()
+          $user = ContactGroup::onlyTrashed()
                                    ->where('uid', $uid)
                                    ->firstOrFail();
 

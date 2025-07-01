@@ -2,7 +2,7 @@
 
 namespace App\Traits\Common;
 
-use App\Enums\Settings\QueryFormat;
+use App\Enums\Common\QueryFormat;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -173,8 +173,7 @@ trait Filterable
     {
         $useCollection = request()->query($paramKey, QueryFormat::PAGINATED->value) == $paramValue;
         
-        return $query->apply()
-                        ->when($useCollection,
+        return $query->when($useCollection,
                             fn(Builder $q): Collection => $q->get(),
                             fn(Builder $q): LengthAwarePaginator => $q->paginate(paginateNumber())->appends(request()->all()));
     }
