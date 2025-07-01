@@ -398,6 +398,13 @@ class ContactService
                                 ->build();
      }
 
+     /**
+      * restoreContactGroup
+      *
+      * @param string|null|null $uid
+      * 
+      * @return JsonResponse
+      */
      public function restoreContactGroup(string|null $uid = null): JsonResponse {
 
           $user = ContactGroup::onlyTrashed()

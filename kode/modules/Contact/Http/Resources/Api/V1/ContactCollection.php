@@ -14,6 +14,8 @@ class ContactCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return $this->collection->map(function ($contact) {
+            return new ContactResource($contact);
+        })->all();
     }
 }

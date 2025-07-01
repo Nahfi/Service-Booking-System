@@ -23,7 +23,6 @@ class CreateContactGroupsTable extends Migration
             $table->string('name')->index();
             $table->enum('status', Status::getValues())->default(Status::ACTIVE->value)->index();
             $table->longText('attribute_configurations')->nullable();
-            $table->boolean('is_permanently_deleted')->nullable()->index();
             $table->softDeletes();
             $table->timestamps();
         });

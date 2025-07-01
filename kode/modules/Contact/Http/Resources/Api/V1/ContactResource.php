@@ -36,12 +36,18 @@ class ContactResource extends JsonResource
             'is_favorite'       => $this->is_favorite ? true : false,
             'status'            => $this->status,
 
-            'deleted_at'        => get_date_time(date: $this->deleted_at),
-            'raw_deleted_at'        => $this->deleted_at,
-            'created_at'        => get_date_time(date: $this->created_at),
-            'raw_created_at'        => $this->created_at,
-            'updated_at'        => get_date_time(date: $this->updated_at),
-            'raw_updated_at'        => $this->updated_at,
+            'deleted_at'        => $this->deleted_at 
+                                    ? get_date_time(date: $this->deleted_at)
+                                    : null,
+            'raw_deleted_at'    => $this->deleted_at,
+            'created_at'        => $this->created_at 
+                                    ? get_date_time(date: $this->created_at)
+                                    : null,
+            'raw_created_at'    => $this->created_at,
+            'updated_at'        => $this->updated_at 
+                                    ? get_date_time(date: $this->updated_at)
+                                    : null,
+            'raw_updated_at'    => $this->updated_at,
         ];
 
         if ($this->relationLoaded('contactGroups') 
