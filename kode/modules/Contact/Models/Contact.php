@@ -31,7 +31,6 @@ class Contact extends Model
             $parentUser = parent_user();
             $model->uid = Str::uuid();
             if($parentUser) $model->user_id = parent_user()->id;
-            
         });
     }
 

@@ -2,9 +2,19 @@
 
 namespace Modules\Contact\Http\Controllers\Api\V1;
 
+use App\Enums\Common\Status;
+use App\Facades\ApiResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use App\Traits\Common\ModelAction;
 use Illuminate\Routing\Controller;
+use App\Traits\Common\ModelAction;
+use Modules\Contact\Models\Contact;
+use Illuminate\Validation\Rules\Enum;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+use Modules\Contact\Http\Requests\Api\V1\ContactFavoriteRequest;
+use Modules\Contact\Http\Requests\Api\V1\ContactGroupAttachmentRequest;
 use Modules\Contact\Http\Services\ContactService;
 use Modules\Contact\Http\Requests\Api\V1\ContactRequest;
 
@@ -14,13 +24,12 @@ class ContactController extends Controller
 
     public function __construct(protected ContactService $contactService)
     {
-        //todo: Check Model Action function under permission
         $this->middleware('user.permission.check:view_contact')
                 ->only(['index', 'show']);
         $this->middleware('user.permission.check:save_contact')
-                ->only(['store', 'update', 'updateStatus', 'bulkAction']);
+                ->only(['store', 'update', 'updateStatus', 'updateFavorites', 'updateContactGroupAttachments', 'bulk']);
         $this->middleware('user.permission.check:destroy_contact')
-                ->only('destroy');
+                ->only(['destroy', 'restore']);
     }
 
     /**
@@ -70,10 +79,67 @@ class ContactController extends Controller
         return $this->contactService->saveContact(request: $request, uid: $uid);
     }
 
-    //todo: Make Contact Status Update functionality
-    //todo: Make Contact Favorite functionality
-    //todo: Make Contact Bulk functionality
-    //todo: Make Contact Attach/Detach Group functionality
+    /**
+     * updateStatus
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request): JsonResponse{
+        
+        $validator = Validator::make($request->all(), rules: [
+            'uid'   => 'required|exists:contacts,uid',
+            'value' => ['required', new Enum(Status::class)],
+        ]);
+
+        if ($validator->fails())  
+            throw new ValidationException(validator: $validator,response: ApiResponse::error(
+                data: ['errors' => $validator->errors()],
+                code: Response::HTTP_BAD_REQUEST
+            ));
+
+        return $this->changeStatus(request: $request->except(keys: "_token"), actionData: [
+            "model"                 => new Contact(),
+            "filterable_attributes" => ['uid' => $request->input(key: 'uid'), 'user_id' => parent_user()->id],
+        ]);
+    }
+
+    /**
+     * updateFavorites
+     *
+     * @param ContactFavoriteRequest $request
+     * 
+     * @return JsonResponse
+     */
+    public function updateFavorites(ContactFavoriteRequest $request): JsonResponse{
+        
+        return $this->contactService->updateContactFavorites(request: $request);
+    }
+
+    /**
+     * bulk
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function bulk(Request $request): JsonResponse{
+
+        return $this->contactService->handleContactBulkRequest(request: $request);
+    }
+
+    /**
+     * updateContactGroupAttachments
+     *
+     * @param ContactGroupAttachmentRequest $request
+     * 
+     * @return JsonResponse
+     */
+    public function updateContactGroupAttachments(ContactGroupAttachmentRequest $request): JsonResponse{
+
+        return $this->contactService->updateContactGroupAttachments(request: $request);
+    }
 
     /**
      * destroy
@@ -87,5 +153,15 @@ class ContactController extends Controller
         return $this->contactService->destroyContact(uid: $uid);
     }
 
-    //todo: Make Contact restore functionality
+    /**
+     * restore
+     *
+     * @param string|null $uid
+     * 
+     * @return JsonResponse
+     */
+    public function restore(string|null $uid = null): JsonResponse
+    {
+        return $this->contactService->restoreContact($uid);
+    }
 }

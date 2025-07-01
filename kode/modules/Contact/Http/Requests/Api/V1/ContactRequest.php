@@ -16,12 +16,13 @@ class ContactRequest extends BaseRequest
     public function rules()
     {
         $rules = [
-            'contact_group_uid' => 'nullable|integer|exists:contact_groups,uid',
-            'channel'           => ['nullable', Rule::in(ContactChannelEnum::toArray())],
-            'name'              => 'required|string',
-            'phone_number'      => 'nullable|string',
-            'email'             => 'nullable|email',
-            'is_favorite'       => 'nullable|boolean',
+            'contact_group_uids'    => ['nullable', 'array'],
+            'contact_group_uids.*'  => 'nullable|string|exists:contact_groups,uid',
+            'channel'               => ['nullable', Rule::in(ContactChannelEnum::toArray())],
+            'name'                  => 'required|string',
+            'phone_number'          => 'nullable|string',
+            'email'                 => 'nullable|email',
+            'is_favorite'           => 'nullable|boolean',
         ];
 
         return $rules;
