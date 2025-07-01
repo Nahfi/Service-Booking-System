@@ -4,7 +4,7 @@ use App\Enums\Common\Status;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use modules\Contact\Enums\ChannelEnum;
+use modules\Contact\Enums\ContactChannelEnum;
 
 class CreateContactGroupsTable extends Migration
 {
@@ -19,9 +19,9 @@ class CreateContactGroupsTable extends Migration
             $table->id();
             $table->string('uid')->unique()->index();
             $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->enum('channel', ChannelEnum::getValues())->default(ChannelEnum::ALL)->index()->index();
-            $table->string('name')->nullable()->index();
-            $table->enum('status', Status::getValues())->default(Status::ACTIVE)->index();
+            $table->enum('channel', ContactChannelEnum::toArray())->default(ContactChannelEnum::ALL->value)->index()->index();
+            $table->string('name')->index();
+            $table->enum('status', Status::getValues())->default(Status::ACTIVE->value)->index();
             $table->longText('attribute_configurations')->nullable();
             $table->boolean('is_permanently_deleted')->nullable()->index();
             $table->softDeletes();

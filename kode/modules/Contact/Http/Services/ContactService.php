@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\Common\ModelAction;
 use Modules\Contact\Models\Contact;
 use App\Enums\Settings\GlobalConfig;
-use modules\Contact\Enums\ChannelEnum;
+use modules\Contact\Enums\ContactChannelEnum;
 use Modules\Contact\Models\ContactGroup;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Modules\Contact\Http\Requests\Api\V1\ContactRequest;
 use Modules\Contact\Http\Resources\Api\V1\ContactResource;
@@ -24,29 +26,31 @@ class ContactService
 {
      use Fileable, ModelAction;
 
-     // ============================== //
-     // Contact crud related functions //
-     // ============================== //
+     ## ============================== ##
+     ## Contact crud related functions ##
+     ## ============================== ##
 
      /**
       * getContacts
       *
-      * @param bool $isTrashed
+      * @param string|null $uid
       * 
       * @return JsonResponse
       */
-     public function getContacts(bool $isTrashed = false): JsonResponse {
+     public function getContacts(string|null $uid = null): JsonResponse {
 
-          $log = Contact::when($isTrashed, 
-                                   fn(Builder $query): Builder 
-                                        => $query->onlyTrashed())
+          $log = Contact::recycle()
+                              ->filter(['group:uid', 'status', 'channel'])
                               ->search(['name', 'phone', 'email'])
-                              ->filter(['status', 'contact_group_id', 'channel'])
                               ->date()
                               ->latest()
-                              ->loadRelations(['group', 'file'])
-                              ->indexQuery();
-
+                              ->with(['contactGroups', 'file'])
+                              ->when($uid, 
+                                   fn(Builder $query): Contact | null 
+                                        => $query->where('uid', $uid)->firstOrFail(),
+                                   fn(Builder $query): LengthAwarePaginator|Collection 
+                                        => $query->fetchWithFormat());
+                              
           return ApiResponse::asSuccess()
                                 ->withData(resource: $log,resourceNamespace: ContactResource::class)
                                 ->build();
@@ -78,8 +82,7 @@ class ContactService
                $log = Contact::updateOrCreate(
                     ['uid' => $uid],
                     [
-                         'contact_group_id' => $contactGroup?->id,
-                         'channel'          => $request->get('channel', ChannelEnum::ALL),
+                         'channel'          => $request->get('channel', ContactChannelEnum::ALL),
                          'name'             => $request->get('name'),
                          'phone_number'     => $request->get('phone_number'),
                          'email'            => $request->get('email'),
@@ -108,13 +111,13 @@ class ContactService
      }
 
      /**
-      * deleteContact
+      * destroyContact
       *
-      * @param string|null|null $uid
+      * @param string|null $uid
       * 
       * @return JsonResponse
       */
-     public function deleteContact(string|null $uid = null) : JsonResponse {
+     public function destroyContact(string|null $uid = null) : JsonResponse {
 
           if(!$uid) throw new Exception(
                             translate('Invalid Contact'),
@@ -130,13 +133,19 @@ class ContactService
 
           DB::transaction(function () use ($log) {
 
-               if($log->file){
-                    $this->unlink(
-                         location: GlobalConfig::FILE_PATH['contact']['path'],
-                         file: $log->file
-                    );
+               if(request()->has('is_trash')){
+                    if($log->file){
+                         $this->unlink(
+                              location: GlobalConfig::FILE_PATH['contact']['path'],
+                              file: $log->file
+                         );
+                    }
+                    $log->forceDelete();
+
+               } else {
+               
+                    $log->delete();
                }
-               $log->delete();
           });
 
           return ApiResponse::asSuccess()
@@ -144,31 +153,33 @@ class ContactService
                                 ->build();
      }
 
-     // ==================================== //
-     // Contact Group crud related functions //
-     // ==================================== //
+     ## ==================================== ##
+     ## Contact Group crud related functions ##
+     ## ==================================== ##
 
      /**
       * getContactGroups
       *
-      * @param bool $isTrashed
+      * @param string|null|null $uid
       * 
       * @return JsonResponse
       */
-     public function getContactGroups(bool $isTrashed = false): JsonResponse {
+     public function getContactGroups(string|null $uid = null): JsonResponse {
 
-          $log = ContactGroup::when($isTrashed, 
-                                   fn(Builder $query): Builder 
-                                        => $query->onlyTrashed())
-                              ->search(['name'])
-                              ->filter(['status', 'channel'])
-                              ->date()
-                              ->latest()
-                              ->loadRelations(['contacts'])
-                              ->indexQuery();
+          $log = ContactGroup::recycle()
+                                   ->search(['name'])
+                                   ->filter(['status', 'channel'])
+                                   ->date()
+                                   ->latest()
+                                   ->with(['contacts'])
+                                   ->when($uid, 
+                                        fn(Builder $query): Contact | null 
+                                             => $query->where('uid', $uid)->firstOrFail(),
+                                        fn(Builder $query): LengthAwarePaginator|Collection 
+                                             => $query->fetchWithFormat());
 
           return ApiResponse::asSuccess()
-                                ->withData(resource: $log,resourceNamespace: ContactResource::class)
+                                ->withData(resource: $log, resourceNamespace: ContactGroupResource::class)
                                 ->build();
      }
 
@@ -186,7 +197,7 @@ class ContactService
                ['uid' => $uid],
                [
                     'name'                        => $request->get('name'),
-                    'channel'                     => $request->get('channel', ChannelEnum::ALL->value),
+                    'channel'                     => $request->get('channel', ContactChannelEnum::ALL->value),
                     'attribute_configurations'    => $request->get('attribute_configurations'),
                ]
           );
@@ -197,26 +208,49 @@ class ContactService
      }
 
      /**
-      * deleteContactGroup
+      * destroyContactGroup
       *
-      * @param string|null|null $uid
+      * @param string|null $uid
       * 
       * @return JsonResponse
       */
-     public function deleteContactGroup(string|null $uid = null) : JsonResponse {
+     public function destroyContactGroup(string|null $uid = null) : JsonResponse {
 
           if(!$uid) throw new Exception(
                             translate('Invalid Contact Group'),
                             Response::HTTP_NOT_FOUND);   
 
           $log = ContactGroup::where('uid', $uid)
-                              ->first();
+                                   ->with(['contacts', 'contacts.file'])
+                                   ->first();
 
           if(!$log) throw new Exception(
                             translate('Invalid Contact Group'),
                             Response::HTTP_NOT_FOUND);  
 
-          $log->delete();
+          if(request()->has('is_trash')) {
+
+               if($log->contacts()->count() > 0) {
+                    
+                    $log->contacts()
+                              ->each(function(Contact $contact) {
+
+                         if($contact->file){
+                              $this->unlink(
+                                   location: GlobalConfig::FILE_PATH['contact']['path'],
+                                   file: $contact->file
+                              );
+                         }
+                         $contact->forceDelete();
+                    });
+               }
+
+               
+               $log->forceDelete();
+          } else {
+               
+               $log->delete();
+          }
 
           return ApiResponse::asSuccess()
                                 ->withMessage(translate("Contact Group deleted successfully"))
@@ -224,7 +258,7 @@ class ContactService
      }
 
 
-     // ================================== //
-     // Additional Common Helper Functions //
-     // ================================== //
+     ## ================================== ##
+     ## Additional Common Helper Functions ##
+     ## ================================== ##
 }

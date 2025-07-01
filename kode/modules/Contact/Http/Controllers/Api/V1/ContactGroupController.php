@@ -26,13 +26,11 @@ class ContactGroupController extends Controller
     /**
      * index
      *
-     * @param string|null $is_trashed
-     * 
      * @return JsonResponse
      */
-    public function index(string|null $is_trashed): JsonResponse{
+    public function index(): JsonResponse{
 
-        return $this->contactService->getContactGroups(isTrashed: !is_null($is_trashed));
+        return $this->contactService->getContactGroups();
     }
 
     /**
@@ -44,7 +42,19 @@ class ContactGroupController extends Controller
      */
     public function store(ContactGroupRequest $request): JsonResponse {
 
-        return $this->contactService->saveContactGroup($request);
+        return $this->contactService->saveContactGroup(request: $request);
+    }
+
+    /**
+     * show
+     *
+     * @param string|null $uid
+     * 
+     * @return JsonResponse
+     */
+    public function show(string|null $uid = null): JsonResponse
+    {
+        return $this->contactService->getContactGroups(uid: $uid);
     }
 
     /**
@@ -57,13 +67,12 @@ class ContactGroupController extends Controller
      */
     public function update(ContactGroupRequest $request, string|null $uid = null): JsonResponse {
 
-        return $this->contactService->saveContactGroup($request, $uid);
+        return $this->contactService->saveContactGroup(request: $request, uid: $uid);
     }
 
-    //todo: Make Contact Status Update functionality
-    //todo: Make Contact Favorite functionality
-    //todo: Make Contact Bulk functionality
-    //todo: Make Contact Attach/Detach Group functionality
+    //todo: Make Contact Group Status Update functionality
+    //todo: Make Contact Group Bulk functionality
+    //todo: Make Contact Group Detach functionality
 
     /**
      * destroy
@@ -74,9 +83,8 @@ class ContactGroupController extends Controller
      */
     public function destroy(string|null $uid): JsonResponse {
 
-        return $this->contactService->deleteContactGroup($uid);
+        return $this->contactService->destroyContactGroup($uid);
     }
 
     //todo: Make Contact restore functionality
-    //todo: Make Contact permanenetly delete functionality
 }

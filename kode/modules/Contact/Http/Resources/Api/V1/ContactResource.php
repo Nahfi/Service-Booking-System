@@ -2,15 +2,23 @@
 
 namespace Modules\Contact\Http\Resources\Api\V1;
 
-use App\Enums\Settings\GlobalConfig;
 use App\Traits\Common\Fileable;
+use App\Enums\Settings\GlobalConfig;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Modules\User\Http\Resources\UserResource;
 
 class ContactResource extends JsonResource
 {
     use Fileable;
 
-    public function toArray(Request $request): array
+    /**
+     * toArray
+     *
+     * @param mixed $request
+     * 
+     * @return array
+     */
+    public function toArray($request): array
     {
         
         $data = [
@@ -28,16 +36,22 @@ class ContactResource extends JsonResource
             'is_favorite'       => $this->is_favorite ? true : false,
             'status'            => $this->status,
 
-            'deleted_at'        => get_date_time($this->deleted_at),
+            'deleted_at'        => get_date_time(date: $this->deleted_at),
             'raw_deleted_at'        => $this->deleted_at,
-            'created_at'        => get_date_time($this->created_at),
+            'created_at'        => get_date_time(date: $this->created_at),
             'raw_created_at'        => $this->created_at,
-            'updated_at'        => get_date_time($this->updated_at),
+            'updated_at'        => get_date_time(date: $this->updated_at),
             'raw_updated_at'        => $this->updated_at,
         ];
 
-        if ($this->relationLoaded('group') && $this->group) {
-            $data['group'] = new ContactGroupResource(resource: $this->group);
+        if ($this->relationLoaded('contactGroups') 
+            && $this->contactGroups) {
+            $data['contact_groups'] = new ContactGroupCollection(resource: $this->contactGroups);
+        }
+
+        if ($this->relationLoaded('user') 
+            && $this->user) {
+            $data['user'] = new UserResource(resource: $this->user);
         }
         
         return $data;

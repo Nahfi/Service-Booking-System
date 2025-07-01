@@ -4,7 +4,7 @@ namespace Modules\Contact\Http\Requests\Api\V1;
 
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
-use modules\Contact\Enums\ChannelEnum;
+use modules\Contact\Enums\ContactChannelEnum;
 
 class ContactRequest extends BaseRequest
 {
@@ -17,7 +17,7 @@ class ContactRequest extends BaseRequest
     {
         $rules = [
             'contact_group_uid' => 'nullable|integer|exists:contact_groups,uid',
-            'channel'           => ['nullable', Rule::in(ChannelEnum::toArray())],
+            'channel'           => ['nullable', Rule::in(ContactChannelEnum::toArray())],
             'name'              => 'required|string',
             'phone_number'      => 'nullable|string',
             'email'             => 'nullable|email',

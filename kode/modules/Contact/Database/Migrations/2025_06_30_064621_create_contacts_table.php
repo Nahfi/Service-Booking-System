@@ -2,7 +2,7 @@
 
 use App\Enums\Common\Status;
 use Illuminate\Support\Facades\Schema;
-use modules\Contact\Enums\ChannelEnum;
+use modules\Contact\Enums\ContactChannelEnum;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -19,14 +19,13 @@ class CreateContactsTable extends Migration
             $table->id();
             $table->string('uid')->unique()->index();
             $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->unsignedBigInteger('contact_group_id')->nullable()->index();
-            $table->enum('channel', ChannelEnum::getValues())->default(ChannelEnum::ALL)->index();
-            $table->string('name')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->string('email')->nullable();
+            $table->enum('channel', ContactChannelEnum::toArray())->default(ContactChannelEnum::ALL->value)->index();
+            $table->string('name')->nullable()->index();
+            $table->string('phone_number')->nullable()->index();
+            $table->string('email')->nullable()->index();
             $table->longText('custom_attributes')->nullable();
-            $table->boolean('is_favorite')->default(false)->index();
-            $table->enum('status', Status::getValues())->default(Status::ACTIVE)->index();
+            $table->boolean('is_favorite')->default(false);
+            $table->enum('status', Status::getValues())->default(Status::ACTIVE->value)->index();
             $table->softDeletes();
             $table->timestamps();
         });

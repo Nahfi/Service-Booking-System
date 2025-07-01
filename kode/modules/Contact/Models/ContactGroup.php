@@ -3,19 +3,20 @@
 namespace Modules\Contact\Models;
 
 use Illuminate\Support\Str;
-use App\Traits\Common\Loadable;
-use App\Traits\Common\Queryable;
 use App\Traits\Common\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ContactGroup extends Model
 {
-    use HasFactory, Filterable, Loadable, Queryable, SoftDeletes;
+    use HasFactory, Filterable, SoftDeletes;
 
-    //Model Configuration
+    ## =================== ##
+    ## Model Configuration ##
+    ## =================== ##
+
     protected $guarded = [];
 
     protected $casts = ['attribute_configurations' => 'array'];
@@ -27,15 +28,17 @@ class ContactGroup extends Model
         });
     }
 
-    //Model Relations
+    ## =============== ##
+    ## Model Relations ##
+    ## =============== ##
 
     /**
      * contacts
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function contacts(): HasMany
+    public function contacts(): BelongsToMany
     {
-        return $this->hasMany(Contact::class, 'contact_group_id', 'id');
+        return $this->belongsToMany(Contact::class, 'contact_group_contacts', 'contact_group_id', 'contact_id');
     }
 }
