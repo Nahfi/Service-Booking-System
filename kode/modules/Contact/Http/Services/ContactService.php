@@ -163,12 +163,14 @@ class ContactService
                                         ]
                                    ]);
           if(!$response)
-                    throw new Exception(
-                              translate('Something went wrong'),
-                              Response::HTTP_UNAUTHORIZED);   
+               throw new Exception(
+                    translate('Something went wrong'),
+                    Response::HTTP_UNAUTHORIZED);   
                
 
-          return ApiResponse::asSuccess()->build();
+          return ApiResponse::asSuccess()
+                                   ->withMessage(translate("Bulk action completed successfully"))
+                                   ->build();
      }
 
      /**
@@ -320,6 +322,39 @@ class ContactService
      }
 
      /**
+      * handleContactGroupBulkRequest
+      *
+      * @param Request $request
+      * 
+      * @return JsonResponse
+      */
+     public function handleContactGroupBulkRequest(Request $request): JsonResponse{
+
+          $contactGroupModel  = new ContactGroup();
+          $parentUser         = parent_user();
+
+          $this->validateBulkActonRequest(request: $request, model: $contactGroupModel);
+          
+          $contactGroups = ContactGroup::where('user_id', $parentUser->id)
+                                             ->whereIn('id', $request->input('bulk_ids'));
+
+          $response = $this->bulkAction(request: $request, 
+                              actionData: [
+                                   "model" => $contactGroupModel,
+                                   'query' => $contactGroups,
+                              ]);
+          if(!$response)
+               throw new Exception(
+                    translate('Something went wrong'),
+                    Response::HTTP_UNAUTHORIZED);   
+               
+
+          return ApiResponse::asSuccess()
+                                   ->withMessage(translate("Bulk action completed successfully"))
+                                   ->build();
+     }
+
+     /**
       * destroyContactGroup
       *
       * @param string|null $uid
@@ -363,6 +398,20 @@ class ContactService
           return ApiResponse::asSuccess()
                                 ->withMessage(translate("Contact Group deleted successfully"))
                                 ->build();
+     }
+
+     public function restoreContactGroup(string|null $uid = null): JsonResponse {
+
+          $user = ContactGroup::apply()
+                                   ->onlyTrashed()
+                                   ->where('uid', $uid)
+                                   ->firstOrFail();
+
+          $user->restore();
+          return ApiResponse::asSuccess()
+                                   ->withMessage(translate("Contact group restored successfully"))
+                                   ->build();
+
      }
 
 

@@ -2,9 +2,17 @@
 
 namespace Modules\Contact\Http\Controllers\Api\V1;
 
+use App\Enums\Common\Status;
+use App\Facades\ApiResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Traits\Common\ModelAction;
 use Illuminate\Routing\Controller;
+use Illuminate\Validation\Rules\Enum;
+use Modules\Contact\Models\ContactGroup;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Modules\Contact\Http\Services\ContactService;
 use Modules\Contact\Http\Requests\Api\V1\ContactGroupRequest;
 
@@ -14,13 +22,12 @@ class ContactGroupController extends Controller
 
     public function __construct(protected ContactService $contactService)
     {
-        //todo: Check Model Action function under permission
         $this->middleware('user.permission.check:view_contact_group')
-                ->only(['index']);
+                ->only(['index', 'show']);
         $this->middleware('user.permission.check:save_contact_group')
-                ->only(['store', 'update', 'updateStatus', 'bulkAction']);
+                ->only(['store', 'update', 'updateStatus', 'bulk']);
         $this->middleware('user.permission.check:destroy_contact_group')
-                ->only('destroy');
+                ->only(['destroy', 'restore']);
     }
 
     /**
@@ -70,9 +77,43 @@ class ContactGroupController extends Controller
         return $this->contactService->saveContactGroup(request: $request, uid: $uid);
     }
 
-    //todo: Make Contact Group Status Update functionality
-    //todo: Make Contact Group Bulk functionality
-    //todo: Make Contact Group Detach functionality
+    /**
+     * updateStatus
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function updateStatus(Request $request): JsonResponse{
+        
+        $validator = Validator::make($request->all(), rules: [
+            'uid'   => 'required|exists:contact_groups,uid',
+            'value' => ['required', new Enum(Status::class)],
+        ]);
+
+        if ($validator->fails())  
+            throw new ValidationException(validator: $validator,response: ApiResponse::error(
+                data: ['errors' => $validator->errors()],
+                code: Response::HTTP_BAD_REQUEST
+            ));
+
+        return $this->changeStatus(request: $request->except(keys: "_token"), actionData: [
+            "model"                 => new ContactGroup(),
+            "filterable_attributes" => ['uid' => $request->input(key: 'uid'), 'user_id' => parent_user()->id],
+        ]);
+    }
+
+    /**
+     * bulk
+     *
+     * @param Request $request
+     * 
+     * @return JsonResponse
+     */
+    public function bulk(Request $request): JsonResponse{
+
+        return $this->contactService->handleContactGroupBulkRequest(request: $request);
+    }
 
     /**
      * destroy
@@ -86,5 +127,15 @@ class ContactGroupController extends Controller
         return $this->contactService->destroyContactGroup($uid);
     }
 
-    //todo: Make Contact restore functionality
+    /**
+     * restore
+     *
+     * @param string|null|null $uid
+     * 
+     * @return JsonResponse
+     */
+    public function restore(string|null $uid = null): JsonResponse
+    {
+        return $this->contactService->restoreContactGroup($uid);
+    }
 }

@@ -13,10 +13,10 @@ use Modules\Contact\Models\Contact;
 use Illuminate\Validation\Rules\Enum;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Modules\Contact\Http\Requests\Api\V1\ContactFavoriteRequest;
-use Modules\Contact\Http\Requests\Api\V1\ContactGroupAttachmentRequest;
 use Modules\Contact\Http\Services\ContactService;
 use Modules\Contact\Http\Requests\Api\V1\ContactRequest;
+use Modules\Contact\Http\Requests\Api\V1\ContactFavoriteRequest;
+use Modules\Contact\Http\Requests\Api\V1\ContactGroupAttachmentRequest;
 
 class ContactController extends Controller
 {
