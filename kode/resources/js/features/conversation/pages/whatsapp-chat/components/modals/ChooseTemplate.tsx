@@ -28,6 +28,14 @@ const ChooseTemplate: React.FC = ({ onHide }) => {
                         placeholder={"Choose Template"}
                     />
                 </Field>
+
+                <div className="mt-3">
+                    <h6 className="mb-2">Template name</h6>
+
+                    <div className="p-3 border rounded-4">
+
+                    </div>
+                </div>
             </div>
 
             <div className="modal-custom-footer mt-4">

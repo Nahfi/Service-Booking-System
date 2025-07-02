@@ -6,12 +6,16 @@ import { valueToKey } from "../../../utils/helper";
 interface CardHeaderProps extends PropsWithChildren {
     cardTitle?: string;
     description?: string | null;
+    icon?: React.ElementType;
+    iconClassName?: string;
 }
 
 const CardHeader: React.FC<CardHeaderProps> = ({
     children,
     cardTitle,
-    description=null,
+    icon: Icon,
+    description = null,
+    iconClassName=null,
 }) => {
 
     const { t } = useTranslation();
@@ -26,6 +30,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
                 <div>
                     {cardTitle && (
                         <h4 className="card-title">
+                            {Icon && <Icon className={`fs-28 me-3 ${iconClassName}`} />}
                             {t(valueToKey(cardTitle), cardTitle)}
                         </h4>
                     )}

@@ -7,7 +7,7 @@ import ImageUpload from "../../../../components/common/from/ImageUpload";
 import type { InputChangeEvent } from "../../../../utils/types";
 import MessagePreview from "./MessagePreview";
 
-type SmsType = "text" | "unicode" | "mms";
+type SmsType = "text" | "unicode";
 
 const Compose: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -101,16 +101,6 @@ const Compose: React.FC = () => {
                                     id="unicode"
                                     value="unicode"
                                     checked={smsType === "unicode"}
-                                    onChange={handleSmsTypeChange}
-                                />
-                            </Field>
-                            <Field label="MMS">
-                                <input
-                                    type="radio"
-                                    name="smsType"
-                                    id="mms"
-                                    value="mms"
-                                    checked={smsType === "mms"}
                                     onChange={handleSmsTypeChange}
                                 />
                             </Field>

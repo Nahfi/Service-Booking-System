@@ -117,7 +117,7 @@ const SaveSmsGatewayModal: React.FC<SaveSmsGatewayModalProps> = ({
 
                 <div className="col-12">
                     <Field label="API URL" required>
-                        <div className="input-group overflow-hidden">
+                        <div className="input-group overflow-hidden border rounded-3">
                             <span
                                 className="input-group-text border-0 py-0 px-1"
                                 id="apiUrl"
@@ -135,7 +135,7 @@ const SaveSmsGatewayModal: React.FC<SaveSmsGatewayModalProps> = ({
                             <input
                                 type="text"
                                 name="custom_api_url"
-                                className="form-control"
+                                className="form-control border-0"
                                 placeholder="URL"
                             />
                         </div>
@@ -187,33 +187,35 @@ const SaveSmsGatewayModal: React.FC<SaveSmsGatewayModalProps> = ({
                 <div className="col-12">
                     <div className="row g-3 mt-1">
                         {["header", "body"].map((type) => (
-                            <div className="p-3 border rounded-4" key={type}>
-                                <div className="d-flex align-items-center justify-content-between gap-4">
-                                    <h6 className="fs-14">
-                                        {type.charAt(0).toUpperCase() +
-                                            type.slice(1)}
-                                    </h6>
-                                    <Button
-                                        iconBtn
-                                        tooltipText="Add"
-                                        icon={LuPlus}
-                                        type="button"
-                                        className="dark-soft hover btn-sm rounded-circle fs-18"
-                                        onClick={() =>
-                                            handleAddItem(type as InputType)
-                                        }
-                                    />
-                                </div>
-                                <div
-                                    className={`d-flex flex-column gap-3 ${
-                                        inputs.filter(
-                                            (item) => item.type === type
-                                        ).length > 0
-                                            ? "mt-3"
-                                            : ""
-                                    }`}
-                                >
-                                    {renderItems(type as InputType)}
+                            <div className="col-12" key={type}>
+                                <div className="p-3 border rounded-4">
+                                    <div className="d-flex align-items-center justify-content-between gap-4">
+                                        <h6 className="fs-14">
+                                            {type.charAt(0).toUpperCase() +
+                                                type.slice(1)}
+                                        </h6>
+                                        <Button
+                                            iconBtn
+                                            tooltipText="Add"
+                                            icon={LuPlus}
+                                            type="button"
+                                            className="dark-soft hover btn-sm rounded-circle fs-18"
+                                            onClick={() =>
+                                                handleAddItem(type as InputType)
+                                            }
+                                        />
+                                    </div>
+                                    <div
+                                        className={`d-flex flex-column gap-3 ${
+                                            inputs.filter(
+                                                (item) => item.type === type
+                                            ).length > 0
+                                                ? "mt-3"
+                                                : ""
+                                        }`}
+                                    >
+                                        {renderItems(type as InputType)}
+                                    </div>
                                 </div>
                             </div>
                         ))}

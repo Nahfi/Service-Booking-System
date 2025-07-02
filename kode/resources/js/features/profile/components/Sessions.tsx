@@ -1,133 +1,166 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { LuActivity, LuFileWarning, LuLogIn, LuLogOut, LuMapPin, LuMonitor } from "react-icons/lu";
+import { LuActivity, LuLogIn, LuLogOut, LuMapPin, LuMonitor } from "react-icons/lu";
 import Button from "../../../components/common/button/Button";
 import Card from "../../../components/common/card/Card";
 import CardBody from "../../../components/common/card/CardBody";
 import CardHeader from "../../../components/common/card/CardHeader";
+import ModalWrapper, { DeleteModal } from "../../../components/common/modal";
+import { useModal } from "../../../context";
 import { valueToKey } from "../../../utils/helper";
+import type { ModalContextType } from "../../../utils/types";
 import useGetUserSession from "../api/hooks/useGetUserSession";
 
 const Sessions: React.FC = () => {
-    const {t}=useTranslation()
+    const { t } = useTranslation()
 
     const { data, refetch, isLoading } = useGetUserSession();
-    
-    const sessionData = data?.data ||[];
-    console.log(data);
-    
+    const sessionData = data?.data || [];
+
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "twoFactorModal"
+
     return (
-        <Card>
-            <CardHeader
-                cardTitle="Active Sessions"
-                description={"Manage where you're signed in across all devices"}
-            />
-            <CardBody>
-                <div className="row g-4 session-list">
-                    {sessionData?.length > 0 &&
-                        sessionData.map((session) => (
-                            <div className="col-lg-4" key={session?.id}>
-                                <div className="p-3 border rounded-3 d-flex align-items-md-center justify-content-between flex-wrap gap-3 flex-md-row  flex-column-reverse  h-100 session-item">
-                                    <div>
-                                        <div>
-                                            <h6 className="mb-2">
-                                                {session?.device_name}
+        <>
+            <Card>
+                <CardHeader
+                    cardTitle="Active Sessions"
+                    description={"Manage where you're signed in across all devices"}
+                >
+                    <Button className="btn--danger btn--lg rounded-3 outline flex-shrink-0" onClick={() => {
+                        openModal(
+                            modalUid,
+                            "LOGOUT_ALL_SESSION",
+                            "",
+                            "md"
+                        );
+                    }}>
+                        <LuLogOut className="fs-18" /> Log out from other devices
+                    </Button>
+                </CardHeader>
 
-                                                {session?.is_current_device && (
-                                                    <span className="i-badge pill success-soft ms-3">
-                                                        Current
-                                                    </span>
-                                                )}
-                                            </h6>
-
-                                            <div className="d-flex flex-column gap-1">
-                                                <div className="d-flex align-items-center gap-2 fs-14">
-                                                    <div className="d-flex align-items-center gap-2">
-                                                        <LuLogIn />
-                                                        {t(
-                                                            valueToKey(
-                                                                "Created At"
-                                                            ),
-                                                            "Created At"
-                                                        )}
-                                                        :
-                                                    </div>
-                                                    <p className="text-muted">
-                                                        {session?.created_at}
-                                                    </p>
-                                                </div>
-
-                                                <div className="d-flex align-items-center gap-2 fs-14">
-                                                    <div className="d-flex align-items-center gap-2">
-                                                        <LuActivity />
-                                                        {t(
-                                                            valueToKey(
-                                                                "Latest Activity"
-                                                            ),
-                                                            "Latest Activity"
-                                                        )}
-                                                        :
-                                                    </div>
-                                                    <p className="text-muted">
-                                                        {
-                                                            session?.last_active_at
-                                                        }
-                                                    </p>
-                                                </div>
-
-                                                <div className="d-flex align-items-center gap-2 fs-14">
-                                                    <div className="d-flex align-items-center gap-2">
-                                                        <LuMapPin />
-                                                        IP :
-                                                    </div>
-                                                    <p className="text-muted">
-                                                        {session?.ip_address}
-                                                    </p>
-                                                </div>
-                                            </div>
+                <CardBody>
+                    <div className="row g-4 session-list">
+                        {sessionData?.length > 0 &&
+                            sessionData.map((session) => (
+                                <div className="col-lg-4 col-md-6" key={session?.id}>
+                                    <div className="p-3 border rounded-3 d-flex align-items-start  gap-3 flex-column  h-100 session-item">
+                                        <div className="icon-btn dark-soft btn-xxl rounded-circle cursor-none flex-shrink-0">
+                                            <LuMonitor />
                                         </div>
 
-                                        <Button className="btn--danger btn--md outline rounded-3 flex-shrink-0 mt-3">
-                                            <LuLogOut />{" "}
-                                            {t(
-                                                valueToKey("Log out"),
-                                                "Log out"
-                                            )}
-                                        </Button>
+                                        <div>
+                                            <div>
+                                                <h6 className="mb-2">
+                                                    {session?.device_name}
+
+                                                    {session?.is_current_device && (
+                                                        <span className="i-badge pill success-soft ms-3">
+                                                            Current
+                                                        </span>
+                                                    )}
+                                                </h6>
+
+                                                <div className="d-flex flex-column gap-1">
+                                                    <div className="d-flex align-items-center gap-2 fs-14">
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <LuLogIn />
+                                                            {t(
+                                                                valueToKey(
+                                                                    "Created At"
+                                                                ),
+                                                                "Created At"
+                                                            )}
+                                                            :
+                                                        </div>
+                                                        <p className="text-muted">
+                                                            {session?.created_at}
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="d-flex align-items-center gap-2 fs-14">
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <LuActivity />
+                                                            {t(
+                                                                valueToKey(
+                                                                    "Latest Activity"
+                                                                ),
+                                                                "Latest Activity"
+                                                            )}
+                                                            :
+                                                        </div>
+                                                        <p className="text-muted">
+                                                            {
+                                                                session?.last_active_at
+                                                            }
+                                                        </p>
+                                                    </div>
+
+                                                    <div className="d-flex align-items-center gap-2 fs-14">
+                                                        <div className="d-flex align-items-center gap-2">
+                                                            <LuMapPin />
+                                                            IP :
+                                                        </div>
+                                                        <p className="text-muted">
+                                                            {session?.ip_address}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <Button className="btn--danger btn--md outline rounded-3 flex-shrink-0 mt-3"
+                                                onClick={() => {
+                                                    openModal(
+                                                        modalUid,
+                                                        "LOGOUT_SESSION",
+                                                        "",
+                                                        "md"
+                                                    );
+                                                }}
+                                            >
+                                                <LuLogOut className="fs-18" />
+                                                {t(
+                                                    valueToKey("Log out"),
+                                                    "Log out"
+                                                )}
+                                            </Button>
+                                        </div>
                                     </div>
-
-                                    <div className="icon-btn dark-soft hover btn-xl rounded-circle flex-shrink-0">
-                                        <LuMonitor />
-                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
 
-                    <div className="col-12">
-                        <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 flex-wrap p-3 fade alert alert-danger show rounded-3">
-                            <div className="d-flex align-items-center justify-content-start flex-wrap gap-3 flex-wrap">
-                                <div className="icon-btn danger-soft  hover btn-xl rounded-circle flex-shrink-0">
-                                    <LuFileWarning />
-                                </div>
-                                <div>
-                                    <h6 className="alert-heading">
-                                        Sign out everywhere else
-                                    </h6>
-                                    <p className="fs-14 text-muted">
-                                        End all other sessions except this one
-                                        for security
-                                    </p>
-                                </div>
-                            </div>
-
-                            <Button className="btn--danger btn--md rounded-3 flex-shrink-0">
-                                <LuLogOut /> Sign Out All Others
-                            </Button>
-                        </div>
                     </div>
-                </div>
-            </CardBody>
-        </Card>
+                </CardBody>
+            </Card>
+
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {modalConfig?.type === "LOGOUT_SESSION" && (
+                        <DeleteModal onHide={closeModal}
+                            message={` Are you sure you want to log out?`}
+                            description={`You will be signed out of your current session.
+                                Make sure you've saved any unsaved work.`}
+                            buttonLabel={`Log Out`}
+                        />
+                    )}
+
+                    {modalConfig?.type === "LOGOUT_ALL_SESSION" && (
+                        <DeleteModal onHide={closeModal}
+                            message={`Are you sure you want to log out from other devices?`}
+                            description={`This will sign you out from all other devices and browsers where your account is currently active.Make sure this action is intentional.`}
+                            buttonLabel={`Log out other devices`}
+                        />
+                    )}
+                </ModalWrapper>
+            )}
+        </>
     );
 };
 

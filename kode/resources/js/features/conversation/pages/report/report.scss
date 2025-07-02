@@ -22,10 +22,12 @@
       }
     }
   }
-  .campaign-progress {
-    .progress,
-    .progress-stacked {
-      --bs-progress-height: 7px;
+  @at-root{
+    .campaign-progress {
+      .progress,
+      .progress-stacked {
+        --bs-progress-height: 7px;
+      }
     }
   }
 

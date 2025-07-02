@@ -1,38 +1,68 @@
 import Button from "@/components/common/button/Button";
 import PaginationWrapper from "@/components/common/pagination/PaginationWrapper";
 import TableWrapper from "@/components/common/table/TableWrapper";
-import { BsPlusLg } from "react-icons/bs";
+import { LuPlus } from "react-icons/lu";
 import FilterWrapper from "../../../../../components/common/filter/FilterWrapper";
-import GatewayTable from "./GatewayTable";
+import ModalWrapper, { DeleteModal } from "../../../../../components/common/modal";
+import { useModal } from "../../../../../context";
+import type { ModalContextType } from "../../../../../utils/types";
+import SaveMailGatewayModal from "./modals/SaveMailGatewayModal";
+import GatewayTable from "./tables/GatewayTable";
 
 interface MailGatewayProps {
     openModal: OpenModalFn;
 }
 
 
-const MailGateway: React.FC<MailGatewayProps> = ({ openModal }) => {
+const MailGateway: React.FC<MailGatewayProps> = () => {
+
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "mailGatewayModal";
+    
     return (
         <>
-            <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
-                <FilterWrapper className={"mb-0"} />
+            <div>
+                <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
+                    <FilterWrapper className={"mb-0"} />
 
-                <Button
-                    className="btn--primary btn--md rounded-3 flex-shrink-0"
-                    onClick={() =>
-                        openModal("CREATE_MAIL", "Create mail gateway", "lg")
-                    }
+                    <Button
+                        className="btn--primary btn--md rounded-3 flex-shrink-0"
+                        onClick={() =>
+                            openModal(modalUid,"CREATE_MAIL", "Create mail gateway", "lg")
+                        }
+                    >
+                        <LuPlus className="fs-20" /> Add gateway
+                    </Button>
+                </div>
+
+                <TableWrapper>
+                    <GatewayTable openModal={openModal} type={"mail"} />
+                </TableWrapper>
+
+                <div className="mt-4">
+                    <PaginationWrapper />
+                </div>
+            </div>
+
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
                 >
-                    <BsPlusLg className="fs-18" /> Add
-                </Button>
-            </div>
+                    {(modalConfig?.type === "CREATE_MAIL" ||
+                        modalConfig?.type === "EDIT_MAIL") && (
+                            <SaveMailGatewayModal closeModal={closeModal} />
+                        )}
 
-            <TableWrapper>
-                <GatewayTable openModal={openModal} type={"mail"} />
-            </TableWrapper>
-
-            <div className="mt-4">
-                <PaginationWrapper />
-            </div>
+                    {modalConfig?.type === "DELETE" && (
+                        <DeleteModal onHide={closeModal} />
+                    )}
+                </ModalWrapper>
+            )}
         </>
     );
 };

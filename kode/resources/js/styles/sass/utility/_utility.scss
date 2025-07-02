@@ -136,6 +136,9 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.cursor-none {
+  cursor: unset !important;
+}
 
 .card-height-100 {
   height: 100%;
@@ -798,6 +801,9 @@
 
           &.active {
             background-color: $color-white;
+          }
+          @include md-down{
+            padding: 5px 15px;
           }
         }
       }

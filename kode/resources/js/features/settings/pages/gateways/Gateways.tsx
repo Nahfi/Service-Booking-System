@@ -1,16 +1,10 @@
-import ModalWrapper, { DeleteModal } from "@/components/common/modal";
 import PageHeader from "@/components/common/Page-header/PageHeader";
-import { ModalContext } from "@/context";
-import React, { useContext } from "react";
+import React from "react";
 import { Tab, Tabs } from "react-bootstrap";
-import type { ModalContextType } from "../../../../utils/types";
 import MailGateway from "./components/MailGateway";
-import SaveMailGatewayModal from "./components/SaveMailGatewayModal";
-import SaveSmsGatewayModal from "./components/SaveSmsGatewayModal";
 import SmsGateway from "./components/SmsGateway";
 
 const Gateways: React.FC = () => {
-    const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
 
     return (
         <>
@@ -30,36 +24,13 @@ const Gateways: React.FC = () => {
                 className="mb-4 style-1"
             >
                 <Tab eventKey="sms-gateway" title="SMS Gateway">
-                    <SmsGateway openModal={openModal} />
+                    <SmsGateway />
                 </Tab>
 
                 <Tab eventKey="mail-gateway" title="Mail Gateway">
-                    <MailGateway openModal={openModal} />
+                    <MailGateway />
                 </Tab>
             </Tabs>
-
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {(modalConfig?.type === "CREATE_SMS" ||
-                    modalConfig?.type === "EDIT_SMS") && (
-                        <SaveSmsGatewayModal closeModal={closeModal} />
-                    )}
-
-                {(modalConfig?.type === "CREATE_MAIL" ||
-                    modalConfig?.type === "EDIT_MAIL") && (
-                        <SaveMailGatewayModal closeModal={closeModal} />
-                    )}
-
-                {modalConfig?.type === "DELETE" && (
-                    <DeleteModal onHide={closeModal} />
-                )}
-            </ModalWrapper>
         </>
     );
 }

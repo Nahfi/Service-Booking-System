@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import {
     LuEye,
     LuQrCode,
@@ -9,7 +9,7 @@ import Card from "../../../components/common/card/Card";
 import CardBody from "../../../components/common/card/CardBody";
 import CardHeader from "../../../components/common/card/CardHeader";
 import ModalWrapper from "../../../components/common/modal";
-import { ModalContext } from "../../../context";
+import { useModal } from "../../../context";
 import type { ModalContextType } from "../../../utils/types";
 import AddTwoFactor from "./modals/AddTwoFactor";
 import UpdateTwoFactor from "./modals/UpdateTwoFactor";
@@ -17,27 +17,12 @@ import UpdateTwoFactor from "./modals/UpdateTwoFactor";
 
 const TwoFactorAuthentication: React.FC = () => {
 
-    const { showModal, modalConfig, openModal, closeModal } = useContext(
-        ModalContext
-    ) as ModalContextType;
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid ="twoFactorModal"
 
     const [isEnable, setIsEnable] = useState<boolean>(false);
 
-    const handleOpenAddModal = () => {
-        openModal(
-            "TWO-FACTOR-AUTHENTICATION",
-            "Setup Two-Factor Authentication",
-            "md"
-        );
-    };
 
-    const handleOpenUpdateModal = () => {
-        openModal(
-            "UPDATE-TWO-FACTOR",
-            "Setup Two-Factor Authentication",
-            "lg"
-        );
-    };
     return (
         <>
             <Card>
@@ -51,7 +36,7 @@ const TwoFactorAuthentication: React.FC = () => {
                 <CardBody>
                     <div className="d-flex align-items-center justify-content-between flex-wrap gap-4 flex-wrap p-3 bg--light rounded-3">
                         <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
-                            <div className="icon-btn dark-soft  hover btn-xl rounded-circle flex-shrink-0">
+                            <div className="icon-btn dark-soft btn-xl rounded-circle flex-shrink-0 cursor-none">
                                 <LuShield />
                             </div>
                             <div>
@@ -74,14 +59,28 @@ const TwoFactorAuthentication: React.FC = () => {
                         {!isEnable ? (
                             <Button
                                 className="btn--dark btn--md rounded-3 mt-3"
-                                onClick={handleOpenAddModal}
+                                onClick={() => {
+                                    openModal(
+                                        modalUid,
+                                        "TWO-FACTOR-AUTHENTICATION",
+                                        "Setup Two-Factor Authentication",
+                                        "md"
+                                    );
+                                }}
                             >
                                 <LuQrCode /> Enable 2FA
                             </Button>
                         ) : (
                             <Button
                                 className="btn--info btn--md rounded-3 mt-3"
-                                onClick={handleOpenUpdateModal}
+                                    onClick={() => {
+                                        openModal(
+                                            modalUid,
+                                            "UPDATE-TWO-FACTOR",
+                                            "Setup Two-Factor Authentication",
+                                            "lg"
+                                        );
+                                }}
                             >
                                 <LuEye />
                                 View authentication
@@ -91,25 +90,27 @@ const TwoFactorAuthentication: React.FC = () => {
                 </CardBody>
             </Card>
 
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {modalConfig?.type === "TWO-FACTOR-AUTHENTICATION" && (
-                    <AddTwoFactor
-                        onModalClose={closeModal}
-                        setIsEnable={setIsEnable}
-                    />
-                )}
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {modalConfig?.type === "TWO-FACTOR-AUTHENTICATION" && (
+                        <AddTwoFactor
+                            onModalClose={closeModal}
+                            setIsEnable={setIsEnable}
+                        />
+                    )}
 
-                {modalConfig?.type === "UPDATE-TWO-FACTOR" && (
-                    <UpdateTwoFactor onModalClose={closeModal} />
-                )}
-            </ModalWrapper>
+                    {modalConfig?.type === "UPDATE-TWO-FACTOR" && (
+                        <UpdateTwoFactor onModalClose={closeModal} />
+                    )}
+                </ModalWrapper>
+            )}
         </>
     );
 };

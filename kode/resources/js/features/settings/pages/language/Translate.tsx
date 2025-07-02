@@ -1,3 +1,5 @@
+
+
 import ModalWrapper, { DeleteModal } from "@/components/common/modal";
 import PageHeader from "@/components/common/Page-header/PageHeader";
 import PaginationWrapper from "@/components/common/pagination/PaginationWrapper";
@@ -6,35 +8,40 @@ import React from "react";
 import FilterWrapper from "../../../../components/common/filter/FilterWrapper";
 import { useModal } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
-import NotificationTable from "./components/NotificationTable";
+import TranslateTable from "./components/tables/TranslateTable";
 
-const NotificationTemplates: React.FC = () => {
+const Translate: React.FC = () => {
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid = "notificationModal"
-    
+    const modalUid = "translateModal"
+
     return (
         <>
-            <PageHeader
-                title={"Notification Templates"}
-                breadcrumbs={[
-                    { title: "Settings", path: "/setting/general" },
-                    {
-                        title: "Notification Templates",
-                    },
-                ]}
-            />
-
             <div>
-                <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
-                    <FilterWrapper className={"mb-0"} />
+                <PageHeader
+                    title={"Language translate"}
+                    breadcrumbs={[
+                        { title: "Settings", path: "/setting/general" },
+                        {
+                            title: "Manage Language",
+                            path: "/setting/language"
+                        },
+                        {
+                            title: "Translate"
+                        },
+                    ]}
+                />
+
+                <div>
+                    <FilterWrapper />
+
+                    <TableWrapper>
+                        <TranslateTable actions={{
+                            modal: { fn: openModal, modalUid },
+                        }} />
+                    </TableWrapper>
+
+                    <PaginationWrapper />
                 </div>
-
-                <TableWrapper>
-                    <NotificationTable />
-                </TableWrapper>
-
-                <PaginationWrapper />
-                
             </div>
 
             {showModal && modalConfig?.modalUid === modalUid && (
@@ -55,4 +62,4 @@ const NotificationTemplates: React.FC = () => {
     );
 }
 
-export default NotificationTemplates
+export default Translate;

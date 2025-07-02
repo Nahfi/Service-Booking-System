@@ -11,7 +11,7 @@ import Card from "../../../components/common/card/Card";
 import CardHeader from "../../../components/common/card/CardHeader";
 import Field from "../../../components/common/from/Field";
 import ImageUpload, { type UploadedFile } from "../../../components/common/from/ImageUpload";
-import ModalWrapper from "../../../components/common/modal";
+import ModalWrapper, { DeleteModal } from "../../../components/common/modal";
 import { useModal } from "../../../context";
 import { setUser } from "../../../redux/slices/userSlice";
 import { valueToKey } from "../../../utils/helper";
@@ -368,7 +368,7 @@ const ProfileInformation: React.FC = ({ user }) => {
                                         openModal(
                                         modalUid,
                                         "PROFILE_DELETE",
-                                        "Profile Delete",
+                                        "",
                                         "md"
                                     )}
                                 >
@@ -393,7 +393,9 @@ const ProfileInformation: React.FC = ({ user }) => {
                     scrollable
                     centered
                 >
-                    {modalConfig?.type === "PROFILE_DELETE" && "556"}
+                    {modalConfig?.type === "PROFILE_DELETE" && (
+                        <DeleteModal onHide={closeModal}/>
+                    )}
                 </ModalWrapper>
             )}
         </>

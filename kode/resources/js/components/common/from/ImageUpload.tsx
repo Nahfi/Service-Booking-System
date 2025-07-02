@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { LuX } from "react-icons/lu";
 import type { InputChangeEvent } from "../../../utils/types";
 import Button from "../button/Button";
 import Field from "./Field";
@@ -32,7 +33,6 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
 }) => {
     const [files, setFiles] = useState<UploadedFile[]>([]);
 
-    // Convert defaultFiles to a stable string for deep comparison
     const defaultFilesKey = useMemo(() => {
         return JSON.stringify(
             defaultFiles.map((file) =>
@@ -116,6 +116,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                     accept={accept}
                 />
             </Field>
+
             {files.length > 0 && (
                 <div className="selected-image mt-3">
                     {files.map((file, index) => (
@@ -125,8 +126,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                                 type="button"
                                 onClick={() => handleDelete(index)}
                             >
-                                ✕
+                                <LuX/>
                             </Button>
+
                             {file.type.startsWith("image/") ? (
                                 <img
                                     src={file.data as string}

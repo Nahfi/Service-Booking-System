@@ -10,6 +10,8 @@ import ChooseCampaign from "../features/campaign/ChooseCampaign";
 import CreateSmsCampaign from "../features/campaign/CreateSmsCampaign";
 import CreateWhatsappCampaign from "../features/campaign/CreateWhatsappCampaign";
 import Conversation from "../features/conversation/Conversation";
+import SmsChannel from "../features/conversation/pages/channels/SmsChannel";
+import WhatsappChannel from "../features/conversation/pages/channels/WhatsappChannel";
 import ChatWrapper from "../features/conversation/pages/chat/ChatWrapper";
 import Contact from "../features/conversation/pages/contact/Contact";
 import Report from "../features/conversation/pages/report/Report";
@@ -29,8 +31,10 @@ import ManageRole from "../features/role-permission/ManageRole";
 import UpdateRole from "../features/role-permission/UpdateRole";
 import Gateways from "../features/settings/pages/gateways/Gateways";
 import General from "../features/settings/pages/general/General";
+import Language from "../features/settings/pages/language/Language";
+import Translate from "../features/settings/pages/language/Translate";
 import NotificationTemplates from "../features/settings/pages/notifications/NotificationTemplates";
-import SaveNotificationTemplates from "../features/settings/pages/notifications/SaveNotificationTemplates";
+import TemplateDetails from "../features/settings/pages/notifications/TemplateDetails";
 import WhatsappSetting from "../features/settings/pages/whatsapp/WhatsappSetting";
 import Settings from "../features/settings/Settings";
 import AuthRoute from "./AuthRoute";
@@ -100,6 +104,14 @@ const router: RouteObject[] = createBrowserRouter(
                         {
                             path: "templates/create",
                             element: <CreateTemplate />,
+                        },
+                        {
+                            path: "channel/sms",
+                            element: <SmsChannel/>,
+                        },
+                        {
+                            path: "channel/whatsapp",
+                            element: <WhatsappChannel />,
                         },
                     ],
                 },
@@ -181,8 +193,16 @@ const router: RouteObject[] = createBrowserRouter(
                             element: <NotificationTemplates />,
                         },
                         {
-                            path: "notification-templates/create",
-                            element: <SaveNotificationTemplates />,
+                            path: "notification-templates/:templateId",
+                            element: <TemplateDetails />,
+                        },
+                        {
+                            path: "language",
+                            element: <Language />,
+                        },
+                        {
+                            path: "language/:langId",
+                            element: <Translate />,
                         },
                     ],
                 },
