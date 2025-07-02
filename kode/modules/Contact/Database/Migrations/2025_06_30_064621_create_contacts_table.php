@@ -2,7 +2,7 @@
 
 use App\Enums\Common\Status;
 use Illuminate\Support\Facades\Schema;
-use modules\Contact\Enums\ContactChannelEnum;
+use App\Enums\Contact\ContactChannelEnum;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 

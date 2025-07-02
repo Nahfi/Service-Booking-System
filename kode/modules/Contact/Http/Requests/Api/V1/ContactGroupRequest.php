@@ -4,7 +4,7 @@ namespace Modules\Contact\Http\Requests\Api\V1;
 
 use Illuminate\Validation\Rule;
 use App\Http\Requests\BaseRequest;
-use modules\Contact\Enums\ContactChannelEnum;
+use App\Enums\Contact\ContactChannelEnum;
 
 class ContactGroupRequest extends BaseRequest
 {

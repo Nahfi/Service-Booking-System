@@ -20,7 +20,6 @@ class ContactResource extends JsonResource
      */
     public function toArray($request): array
     {
-        
         $data = [
             'uid'               => $this->uid,
             'name'              => $this->name,

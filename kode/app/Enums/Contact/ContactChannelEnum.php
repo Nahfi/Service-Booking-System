@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\Contact\Enums;
+namespace App\Enums\Contact;
 
 use App\Enums\EnumTrait;
 

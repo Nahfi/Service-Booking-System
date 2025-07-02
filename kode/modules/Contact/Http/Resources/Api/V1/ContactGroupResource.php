@@ -16,6 +16,7 @@ class ContactGroupResource extends JsonResource
     public function toArray($request)
     {
          $data = [
+            'id'                        => $this->id,
             'uid'                       => $this->uid,
             'name'                      => $this->name,
             'channel'                   => $this->channel,
@@ -37,7 +38,8 @@ class ContactGroupResource extends JsonResource
         ];
 
         if ($this->relationLoaded('contacts') 
-            && $this->contacts) {
+            && $this->contacts
+            && $this->contacts->isNotEmpty()) {
             $data['contacts'] = new ContactCollection(resource: $this->contacts);
         }
 

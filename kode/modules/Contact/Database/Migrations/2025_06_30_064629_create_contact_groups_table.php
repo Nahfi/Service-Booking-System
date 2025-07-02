@@ -4,7 +4,7 @@ use App\Enums\Common\Status;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use modules\Contact\Enums\ContactChannelEnum;
+use App\Enums\Contact\ContactChannelEnum;
 
 class CreateContactGroupsTable extends Migration
 {

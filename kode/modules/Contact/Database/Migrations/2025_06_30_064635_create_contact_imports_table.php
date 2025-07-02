@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
-use modules\Contact\Enums\ContactImportEnum;
+use App\Enums\Contact\ContactJobEnum;
 
 class CreateContactImportsTable extends Migration
 {
@@ -17,12 +17,13 @@ class CreateContactImportsTable extends Migration
         Schema::create('contact_imports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable()->index();
-            $table->unsignedBigInteger('contact_group_id')->nullable();
             $table->longText('column_map')->nullable();
-            $table->enum('status', ContactImportEnum::toArray())->default(ContactImportEnum::PENDING->value)->index();
-            $table->bigInteger('total_rows')->nullable();
-            $table->bigInteger('imported_rows')->nullable();
-            $table->bigInteger('failed_rows')->nullable();
+            $table->longText('meta_data')->nullable();
+            $table->enum('status', ContactJobEnum::toArray())->default(ContactJobEnum::PENDING->value)->index();
+            $table->unsignedBigInteger('total_rows')->nullable();
+            $table->unsignedBigInteger('imported_rows')->nullable();
+            $table->unsignedBigInteger('failed_rows')->nullable();
+            $table->boolean('include_first_row')->default(false);
             $table->boolean('is_paused')->default(false);
             $table->text('error_message')->nullable();
             $table->timestamps();

@@ -762,6 +762,9 @@ enum GlobalConfig {
         'contact' => [
             'path' => self::IMAGE_PATH_PREFIX.'/contact',
         ],
+        'contact_imports' => [
+            'path' => self::FILE_PATH_PREFIX.'contact_imports',
+        ],
     ];
 
 
@@ -823,6 +826,12 @@ enum GlobalConfig {
             "view_contact_group",
             "save_contact_group",
             "destroy_contact_group"
+        ],
+
+        "contact_import" => [ 
+            "view_contact_import",
+            "save_contact_import",
+            "destroy_contact_import"
         ],
     ];
 
