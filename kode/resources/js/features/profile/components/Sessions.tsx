@@ -26,7 +26,7 @@ const Sessions: React.FC = () => {
                 <div className="row g-4 session-list">
                     {sessionData?.length > 0 &&
                         sessionData.map((session) => (
-                            <div className="col-lg-6" key={session?.id}>
+                            <div className="col-lg-4" key={session?.id}>
                                 <div className="p-3 border rounded-3 d-flex align-items-md-center justify-content-between flex-wrap gap-3 flex-md-row  flex-column-reverse  h-100 session-item">
                                     <div>
                                         <div>
@@ -87,7 +87,7 @@ const Sessions: React.FC = () => {
                                             </div>
                                         </div>
 
-                                        <Button className="btn--dark btn--md outline rounded-3 flex-shrink-0 mt-3">
+                                        <Button className="btn--danger btn--md outline rounded-3 flex-shrink-0 mt-3">
                                             <LuLogOut />{" "}
                                             {t(
                                                 valueToKey("Log out"),

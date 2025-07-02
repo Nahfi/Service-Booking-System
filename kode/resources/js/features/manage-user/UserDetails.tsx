@@ -5,13 +5,12 @@ import BaseLayout from '../../components/layouts/BaseLayout';
 
 import profileImage from "../../assets/images/user/user-1.png";
 
-import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuClock, LuEyeOff, LuMail, LuPen, LuPhone, LuShieldOff } from 'react-icons/lu';
 import Button from '../../components/common/button/Button';
 import CardHeader from '../../components/common/card/CardHeader';
 import ModalWrapper from '../../components/common/modal';
-import { ModalContext } from '../../context';
+import { useModal } from '../../context';
 import { keyToValue, valueToKey } from '../../utils/helper';
 import type { ModalContextType } from '../../utils/types';
 import SaveUserModal from './components/SaveUserModal';
@@ -39,9 +38,9 @@ const permissions = {
 const UserDetails = () => {
     const { t } = useTranslation();
 
-    const { showModal, modalConfig, openModal, closeModal } = useContext(
-        ModalContext
-    ) as ModalContextType;
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "userDetailsModal"
+
     return (
         <>
             <BaseLayout>
@@ -90,10 +89,10 @@ const UserDetails = () => {
                                         className="btn--info outline btn--md rounded-3"
                                         onClick={() =>
                                             openModal(
+                                                modalUid,
                                                 "EDIT",
                                                 "Update User",
                                                 "lg",
-                                                
                                             )
                                         }
                                     >

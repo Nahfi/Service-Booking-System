@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import {
     BsArrowLeft,
@@ -8,7 +8,7 @@ import {
     BsVolumeMute,
 } from "react-icons/bs";
 import { LuUser } from "react-icons/lu";
-import { ThemeContext } from "../../../../../../context";
+import { useTheme } from "../../../../../../context";
 import "./chat-body.scss";
 import ChatComposer from "./ChatComposer";
 import Message from "./Message";
@@ -18,8 +18,8 @@ import Button from "@/components/common/button/Button";
 import type { ThemeContextType } from "../../../../../../utils/types";
 
 const ChatBody = ({ chatActions }) => {
-    const { handleShowContact, handleShowProfile, openModal } = chatActions;
-    const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
+    const { handleShowContact, handleShowProfile, modal } = chatActions;
+    const { themeSettings } = useTheme() as ThemeContextType;
     const [template, setTemplate] = useState(null);
 
 
@@ -137,7 +137,8 @@ const ChatBody = ({ chatActions }) => {
                                     <Button
                                         className="btn--primary btn--md rounded-3"
                                         onClick={() =>
-                                            openModal(
+                                            modal.openModal(
+                                                modal.modalUid,
                                                 "CHOOSE_TEMPLATE",
                                                 "Choose Template",
                                                 ""

@@ -1,6 +1,6 @@
 
 import type React from "react";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { CardBody } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -12,7 +12,7 @@ import CardHeader from "../../../components/common/card/CardHeader";
 import Field from "../../../components/common/from/Field";
 import ImageUpload, { type UploadedFile } from "../../../components/common/from/ImageUpload";
 import ModalWrapper from "../../../components/common/modal";
-import { ModalContext } from "../../../context";
+import { useModal } from "../../../context";
 import { setUser } from "../../../redux/slices/userSlice";
 import { valueToKey } from "../../../utils/helper";
 import type { ModalContextType } from "../../../utils/types";
@@ -24,7 +24,8 @@ const ProfileInformation: React.FC = ({ user }) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const  modalUid = "profileInfoModal"
 
     const [images, setImages] = useState<UploadedFile[]>([]);
 
@@ -49,13 +50,7 @@ const ProfileInformation: React.FC = ({ user }) => {
         });
     }
 
-    const handleOpenProfileDeleteModal = () => {
-        openModal(
-            "PROFILE_DELETE",
-            "Profile Delete",
-            "md"
-        );
-    }
+
 
     const handleUpdateOnlineStatus = () => {
 
@@ -369,7 +364,13 @@ const ProfileInformation: React.FC = ({ user }) => {
 
                                 <Button
                                     className="btn--danger btn--md rounded-3 flex-shrink-0"
-                                    onClick={handleOpenProfileDeleteModal}
+                                    onClick={() =>
+                                        openModal(
+                                        modalUid,
+                                        "PROFILE_DELETE",
+                                        "Profile Delete",
+                                        "md"
+                                    )}
                                 >
                                     <LuTrash2 />
                                     {t(
@@ -383,16 +384,18 @@ const ProfileInformation: React.FC = ({ user }) => {
                 </div>
             </div>
 
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {modalConfig?.type === "PROFILE_DELETE" && "556"}
-            </ModalWrapper>
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {modalConfig?.type === "PROFILE_DELETE" && "556"}
+                </ModalWrapper>
+            )}
         </>
     );
 };

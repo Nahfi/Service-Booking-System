@@ -26,17 +26,20 @@ export interface OpenModalFn {
     (type: ModalType, title?: string, size?: ModalSize, data?: any): void;
 }
 
-export interface ModalConfig {
+export interface ModalConfigType {
+    modalUid: string;
     type?: ModalType;
     title?: string;
     size?: ModalSize;
     data?: any;
 }
 
+
 export interface ModalContextType {
     showModal: boolean;
-    modalConfig: ModalConfig;
+    modalConfig: ModalConfigType;
     openModal: (
+        modalUid: string,
         type: ModalType,
         title: string,
         size: ModalSize,

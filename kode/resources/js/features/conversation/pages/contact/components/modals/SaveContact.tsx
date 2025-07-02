@@ -1,9 +1,10 @@
+import type React from 'react'
 import Button from '../../../../../../components/common/button/Button'
 import Field from '../../../../../../components/common/from/Field'
 import ImageUpload from '../../../../../../components/common/from/ImageUpload'
 import SelectBox from '../../../../../../components/common/from/SelectBox'
 
-const SaveContact = ({ onHide }) => {
+const SaveContact: React.FC = ({ onHide }) => {
   return (
       <form action="#">
           <div className="row g-3">

@@ -1,7 +1,8 @@
 import Field from "@/components/common/from/Field";
 import type React from "react";
+import Button from "../../../../../../components/common/button/Button";
 
-const SmsTemplate: React.FC = () => {
+const SaveSmsTemplate: React.FC = ({onHide}) => {
   return (
       <form action="">
           <div className="row g-3">
@@ -24,13 +25,30 @@ const SmsTemplate: React.FC = () => {
                           id=""
                           className="form-control"
                           placeholder="Write massage body here"
-                          readonly
+                          rows={6}
                       ></textarea>
                   </Field>
               </div>
+          </div>
+
+          <div className="modal-custom-footer mt-4">
+              <Button
+                  className="i-btn btn--dark outline btn--lg rounded-3"
+                  type="button"
+                  onClick={onHide}
+              >
+                  Cancel
+              </Button>
+
+              <Button
+                  type="submit"
+                  className="i-btn btn--primary btn--lg rounded-3"
+              >
+                  Save
+              </Button>
           </div>
       </form>
   );
 }
 
-export default SmsTemplate
+export default SaveSmsTemplate

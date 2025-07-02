@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import ModalWrapper, { DeleteModal } from "../../../../components/common/modal";
-import { ModalContext } from "../../../../context";
+import { useModal } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
 import "./chat-wrapper.scss";
 import ChatBody from "./components/chat-body/ChatBody";
@@ -22,9 +22,8 @@ const WhatsappChat: React.FC = () => {
 
     const [chatInit, setChatInit] = useState<boolean>(true);
 
-    const { showModal, modalConfig, openModal, closeModal } = useContext(
-        ModalContext
-    ) as ModalContextType;
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "whatsappChatModal";
 
     const handleShowContact = () => {
         setShowContact((prev) => prev = true);
@@ -73,7 +72,7 @@ const WhatsappChat: React.FC = () => {
                                 chatActions={{
                                     handleShowContact,
                                     handleShowProfile,
-                                    openModal,
+                                    modal: { openModal, modalUid },
                                 }}
                                 user={selectedUser}
                             />
@@ -81,7 +80,7 @@ const WhatsappChat: React.FC = () => {
                                 profileAction={{
                                     handleHideProfile,
                                     showProfile,
-                                    openModal,
+                                    modal: { openModal, modalUid },
                                 }}
                                 user={selectedUser}
                             />
@@ -90,27 +89,29 @@ const WhatsappChat: React.FC = () => {
                 </div>
             </div>
 
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {(modalConfig?.type === "ADD_NOTE" ||
-                    modalConfig?.type === "EDIT_NOTE") && (
-                    <AddNote onHide={closeModal} />
-                )}
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {(modalConfig?.type === "ADD_NOTE" ||
+                        modalConfig?.type === "EDIT_NOTE") && (
+                        <AddNote onHide={closeModal} />
+                    )}
 
-                {modalConfig?.type === "CHOOSE_TEMPLATE" && (
-                    <ChooseTemplate onHide={closeModal} />
-                )}
+                    {modalConfig?.type === "CHOOSE_TEMPLATE" && (
+                        <ChooseTemplate onHide={closeModal} />
+                    )}
 
-                {modalConfig?.type === "DELETE" && (
-                    <DeleteModal onHide={closeModal} />
-                )}
-            </ModalWrapper>
+                    {modalConfig?.type === "DELETE" && (
+                        <DeleteModal onHide={closeModal} />
+                    )}
+                </ModalWrapper>
+            )}
         </>
     );
 };

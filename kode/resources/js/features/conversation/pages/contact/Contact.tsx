@@ -1,17 +1,15 @@
 import PageHeader from "@/components/common/Page-header/PageHeader";
-import { ModalContext } from "@/context";
-import React, { useContext } from "react";
+import React from "react";
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import AllContacts from "./components/AllContacts";
 import Attribute from "./components/Attribute";
 import Groups from "./components/Groups";
 
-import type { ModalContextType } from "../../../../utils/types";
 import "./contact.scss";
 
 const Contact: React.FC = () => {
-    const { showModal, modalConfig, openModal, closeModal } =useContext(ModalContext) as ModalContextType;
+
     return (
         <>
             <div className="conversation-content-body">

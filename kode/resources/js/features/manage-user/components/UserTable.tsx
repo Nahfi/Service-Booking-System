@@ -40,7 +40,6 @@ interface UserTableProps {
 const UserTable: FC<UserTableProps> = ({
     openModal,
     usersData,
-    isPending,
     bulkActions,
     actions = {},
 }) => {
@@ -97,7 +96,7 @@ const UserTable: FC<UserTableProps> = ({
             </thead>
 
             <tbody>
-                {!isPending && usersData?.length > 0 ? (
+                {usersData?.length > 0 ? (
                     usersData?.map((user) => (
                         <tr key={user?.id}>
                             <td>
@@ -188,7 +187,8 @@ const UserTable: FC<UserTableProps> = ({
                                                 <Dropdown.Item
                                                     as={"button"}
                                                     onClick={() =>
-                                                        openModal(
+                                                        actions?.modal?.fn(
+                                                            actions?.modal?.modalUid,
                                                             "EDIT",
                                                             "Update User",
                                                             "lg",
@@ -207,6 +207,7 @@ const UserTable: FC<UserTableProps> = ({
                                                     as={"button"}
                                                     onClick={() =>
                                                         actions?.modal?.fn(
+                                                            actions?.modal?.modalUid,
                                                             "DELETE",
                                                             "",
                                                             "",

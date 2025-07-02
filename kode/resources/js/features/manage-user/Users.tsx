@@ -1,9 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 
 
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { LuPlus, LuRecycle, LuTrash2 } from "react-icons/lu";
+import { LuPlus, LuTrash2 } from "react-icons/lu";
 import Button from "../../components/common/button/Button";
 import FilterWrapper from "../../components/common/filter/FilterWrapper";
 import { DeleteModal } from "../../components/common/modal";
@@ -13,7 +13,7 @@ import PaginationWrapper from "../../components/common/pagination/PaginationWrap
 import SEO from "../../components/common/seo/SEO";
 import TableWrapper from "../../components/common/table/TableWrapper";
 import BaseLayout from "../../components/layouts/BaseLayout";
-import { ModalContext } from "../../context";
+import { useModal } from "../../context";
 import { handlePageChange, valueToKey } from "../../utils/helper";
 import type { FormSubmitEvent, ModalContextType } from "../../utils/types";
 import useGetRoles from "../role-permission/api/hooks/useGetRoles";
@@ -27,13 +27,15 @@ import type { ModalConfigType, RoleType, UserType } from "./utils/type";
 
 
 const Users: React.FC = () => {
-    const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
+    
     const { t } = useTranslation();
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "userModal"
 
     const [filters, setFilters] = useState({});
     const [selectedId, setSelectedId] = useState<number[]>([]);
 
-    const { data, refetch, isPending } = useGetUsers();
+    const { data, refetch, isLoading } = useGetUsers();
 
     const usersData: UserType[] = data?.data || [];
     const paginationData = data?.pagination_meta || null;
@@ -103,7 +105,7 @@ const Users: React.FC = () => {
                     <>
                         <Button
                             onClick={() =>
-                                openModal("CREATE", "Create User", "lg")
+                                openModal(modalUid,"CREATE", "Create User", "lg")
                             }
                             className="btn--primary btn--md rounded-3"
                         >
@@ -124,6 +126,7 @@ const Users: React.FC = () => {
                                 <Button
                                     onClick={() =>
                                         openModal(
+                                            modalUid,
                                             "DELETE_BULK",
                                             "",
                                             "",
@@ -140,22 +143,21 @@ const Users: React.FC = () => {
                                 </Button>
                             )}
 
-                            <Button className="btn--dark btn--md rounded-3">
+                            {/* <Button className="btn--dark btn--md rounded-3">
                                 <LuRecycle className="fs-18" />
                                 {t(valueToKey("Recycle Bin"), "Recycle Bin")}
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
 
-                    <TableWrapper loader={isPending}>
+                    <TableWrapper loader={isLoading}>
                         <UserTable
                             openModal={openModal}
                             usersData={usersData}
-                            isPending={isPending}
                             bulkActions={{ selectedId, setSelectedId }}
                             actions={{
                                 status: { fn: handleStatusChange },
-                                modal: { fn: openModal },
+                                modal: { fn: openModal, modalUid },
                             }}
                         />
                     </TableWrapper>
@@ -163,40 +165,42 @@ const Users: React.FC = () => {
                     <PaginationWrapper
                         pagination_data={paginationData}
                         handlePageChange={onPageChange}
-                        loader={isPending}
+                        loader={isLoading}
                     />
                 </div>
             </BaseLayout>
 
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {(modalConfig?.type === "CREATE" ||
-                    modalConfig?.type === "EDIT") && (
-                    <SaveUserModal
-                        closeModal={closeModal}
-                        modalConfig={modalConfig as ModalConfigType}
-                        refetchFn={refetch}
-                    />
-                )}
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {(modalConfig?.type === "CREATE" ||
+                        modalConfig?.type === "EDIT") && (
+                        <SaveUserModal
+                            closeModal={closeModal}
+                            modalConfig={modalConfig as ModalConfigType}
+                            refetchFn={refetch}
+                        />
+                    )}
 
-                {modalConfig?.type === "DELETE" && (
-                    <DeleteModal
-                        onHide={closeModal}
-                        onDelete={handleResourceDelete}
-                        isLoading={deleteButtonLoader}
-                    />
-                )}
+                    {modalConfig?.type === "DELETE" && (
+                        <DeleteModal
+                            onHide={closeModal}
+                            onDelete={handleResourceDelete}
+                            isLoading={deleteButtonLoader}
+                        />
+                    )}
 
-                {modalConfig?.type === "DELETE_BULK" && (
-                    <DeleteModal onHide={closeModal} />
-                )}
-            </ModalWrapper>
+                    {modalConfig?.type === "DELETE_BULK" && (
+                        <DeleteModal onHide={closeModal} />
+                    )}
+                </ModalWrapper>
+            )}
         </>
     );
 };
