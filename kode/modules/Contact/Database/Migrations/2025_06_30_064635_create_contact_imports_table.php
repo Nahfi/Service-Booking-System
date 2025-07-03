@@ -20,9 +20,9 @@ class CreateContactImportsTable extends Migration
             $table->longText('column_map')->nullable();
             $table->longText('meta_data')->nullable();
             $table->enum('status', ContactJobEnum::toArray())->default(ContactJobEnum::PENDING->value)->index();
-            $table->unsignedBigInteger('total_rows')->nullable();
-            $table->unsignedBigInteger('imported_rows')->nullable();
-            $table->unsignedBigInteger('failed_rows')->nullable();
+            $table->unsignedBigInteger('total_rows')->default(0);
+            $table->unsignedBigInteger('imported_rows')->default(0);
+            $table->unsignedBigInteger('failed_rows')->default(0);
             $table->boolean('include_first_row')->default(false);
             $table->boolean('is_paused')->default(false);
             $table->text('error_message')->nullable();

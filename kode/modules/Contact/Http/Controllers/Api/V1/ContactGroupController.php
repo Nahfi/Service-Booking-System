@@ -104,18 +104,6 @@ class ContactGroupController extends Controller
     }
 
     /**
-     * bulk
-     *
-     * @param Request $request
-     * 
-     * @return JsonResponse
-     */
-    public function bulk(Request $request): JsonResponse{
-
-        return $this->contactService->handleContactGroupBulkRequest(request: $request);
-    }
-
-    /**
      * destroy
      *
      * @param string|null $uid

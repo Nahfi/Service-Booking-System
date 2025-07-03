@@ -51,10 +51,10 @@ class ContactGroup extends Model
     /**
      * contactImports
      *
-     * @return HasMany
+     * @return BelongsToMany
      */
-    public function contactImports(): HasMany
+    public function contactImports(): BelongsToMany
     {
-        return $this->hasMany(ContactImport::class, 'contact_group_id', 'id');
+        return $this->belongsToMany(ContactImport::class, 'contact_import_groups', 'contact_group_id', 'contact_import_id');
     }
 }

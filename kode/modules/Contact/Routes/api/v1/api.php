@@ -20,7 +20,6 @@ use Modules\Contact\Http\Controllers\Api\V1\ContactImportController;
 
 Route::group(['middleware' => ['sanitization', 'exception.handler']], function () {
 
-
      Route::group(['middleware' => ['auth:sanctum', 'user.api.token']], function () {
 
           Route::group(['middleware' => ['throttle:' .RateLimit::MESSAGING->toThrottleString()]], function () {
@@ -55,7 +54,6 @@ Route::group(['middleware' => ['sanitization', 'exception.handler']], function (
                          ->group(function () {
 
                     Route::post('update-status', 'updateStatus')->name('update.status');
-                    Route::post('bulk', 'bulk')->name('bulk');
                     Route::get('restore/{uid?}', 'restore')->name('restore');
                });
                

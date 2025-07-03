@@ -16,8 +16,8 @@ class ContactGroupAttachmentRequest extends BaseRequest
         return [
             'contact_ids'           => ['required' ,'array'],
             'contact_ids.*'         => ["required",'exists:contacts,id'],
-            'contact_group_ids'     => ['required' ,'array'],
-            'contact_group_ids.*'   => ["required",'exists:contact_groups,id'],
+            'contact_group_ids'     => ['nullable' ,'array'],
+            'contact_group_ids.*'   => ["nullable",'exists:contact_groups,id'],
         ];
     }
 

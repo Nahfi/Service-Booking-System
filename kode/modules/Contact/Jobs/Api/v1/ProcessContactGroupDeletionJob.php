@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Contact\Jobs;
+namespace Modules\Contact\Jobs\Api\v1;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,12 +18,12 @@ class ProcessContactGroupDeletionJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $contactGroup;
-    protected $deletionJob;
+    protected $contactGroupDeletion;
 
-    public function __construct(ContactGroup $contactGroup, ContactGroupDeletion $deletionJob)
+    public function __construct(ContactGroup $contactGroup, ContactGroupDeletion $contactGroupDeletion)
     {
         $this->contactGroup = $contactGroup;
-        $this->deletionJob  = $deletionJob;
+        $this->contactGroupDeletion  = $contactGroupDeletion;
     }
 
     /**
@@ -35,21 +35,21 @@ class ProcessContactGroupDeletionJob implements ShouldQueue
      */
     public function handle(ContactService $service): void
     {
-        if ($this->deletionJob->status === ContactJobEnum::FAILED->value 
-            || $this->deletionJob->status === ContactJobEnum::COMPLETED->value) return;
+        if ($this->contactGroupDeletion->status === ContactJobEnum::FAILED->value 
+            || $this->contactGroupDeletion->status === ContactJobEnum::COMPLETED->value) return;
         
-        $this->deletionJob->update(['status' => ContactJobEnum::PROCESSING->value]);
+        $this->contactGroupDeletion->update(['status' => ContactJobEnum::PROCESSING->value]);
 
-        $service->deleteContactGroupAndContacts($this->contactGroup, true, $this->deletionJob);
+        $service->deleteContactGroupAndContacts($this->contactGroup, $this->contactGroupDeletion);
+        $this->contactGroup->refresh();
+        if ($this->contactGroupDeletion->processed_contacts < $this->contactGroupDeletion->total_contacts) {
 
-        if ($this->deletionJob->processed_contacts < $this->deletionJob->total_contacts) {
-
-            self::dispatch($this->contactGroup, $this->deletionJob)
+            self::dispatch($this->contactGroup, $this->contactGroupDeletion)
                     ->onQueue('deletions')
                     ->delay(now()->addSeconds(5));
         } else {
 
-            $this->deletionJob->update(['status' => ContactJobEnum::COMPLETED->value]);
+            $this->contactGroupDeletion->update(['status' => ContactJobEnum::COMPLETED->value]);
         }
     }
 

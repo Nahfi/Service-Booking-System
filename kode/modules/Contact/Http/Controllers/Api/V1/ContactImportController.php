@@ -75,7 +75,7 @@ class ContactImportController extends Controller
      */
     public function toggleImportPause(int|string|null $id = null): JsonResponse
     {
-        return $this->contactService->pauseResumeImport($id);
+        return $this->contactService->pauseResumeImport(id: $id);
     }
 
     /**
@@ -85,8 +85,8 @@ class ContactImportController extends Controller
      * 
      * @return JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int|string|null $id = null): JsonResponse
     {
-        return $this->contactService->deleteImport($id);
+        return $this->contactService->destroyImport(id: $id);
     }
 }

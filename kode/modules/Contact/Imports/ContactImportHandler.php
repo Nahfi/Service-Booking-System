@@ -5,7 +5,6 @@ namespace Modules\Contact\Imports;
 use Exception;
 use Throwable;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
 use Modules\Contact\Models\Contact;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Validators\Failure;
@@ -29,7 +28,7 @@ class ContactImportHandler implements ToModel, WithChunkReading, SkipsOnError, S
         bool $includeFirstRow, 
         array $columnMap, 
         ContactService $service, 
-        int $startRow = 0)
+        int|null $startRow = 0)
     {
         $this->import           = $import;
         $this->includeFirstRow  = $includeFirstRow;
@@ -40,6 +39,9 @@ class ContactImportHandler implements ToModel, WithChunkReading, SkipsOnError, S
 
     public function model(array $row)
     {
+        $this->import->refresh(); 
+        if ($this->import->is_paused) return null; 
+        
         if(!Arr::has($this->import->meta_data, "header_data")) {
 
             $headerData = [
@@ -53,20 +55,20 @@ class ContactImportHandler implements ToModel, WithChunkReading, SkipsOnError, S
         
         try {
 
-            DB::transaction(function () use ($row) {
+            $contactData    = $this->service->mapImportRow(row: $row, 
+                                                columnMap: $this->columnMap, 
+                                                includeFirstRow: $this->import->include_first_row, 
+                                                headerData: Arr::get($this->import->meta_data, "header_data", []));
 
-                $contactData    = $this->service->mapImportRow(row: $row, 
-                                                    columnMap: $this->columnMap, 
-                                                    includeFirstRow: $this->import->include_first_row, 
-                                                    headerData: Arr::get($this->import->meta_data, "header_data", []));
+            $contact        = Contact::updateOrCreate([
+                                    'phone_number'  => Arr::get($contactData, "phone_number", null), 
+                                    'user_id'       => $this->import->user_id], 
+                                $contactData);
 
-                $contact        = Contact::updateOrCreate([
-                                        'phone_number'  => Arr::get($contactData, "phone_number", null), 
-                                        'user_id'       => parent_user()->id],
-                                    $contactData);
-                $this->service->syncContactGroups($contact, $this->import);
-                $this->import->increment(column: 'imported_rows');
-            });
+            $this->service->syncContactGroups($contact, $this->import);
+            
+            $this->import->imported_rows = ($this->import->imported_rows ?? 0) + 1;
+            $this->import->save();
         } catch (Exception $e) {
 
             $this->service->logImportFailure(
@@ -86,7 +88,7 @@ class ContactImportHandler implements ToModel, WithChunkReading, SkipsOnError, S
 
     public function chunkSize(): int
     {
-        return 1000;
+        return 1000; //todo: Chunk size affecting thepause functionality
     }
 
     /**
@@ -121,7 +123,9 @@ class ContactImportHandler implements ToModel, WithChunkReading, SkipsOnError, S
     public function onFailure(Failure ...$failures): void
     {
         collect($failures)->each(function ($failure) {
+
             $this->service->logImportFailure(
+                
                 import: $this->import,
                 rowNumber: $failure->row() + $this->startRow,
                 row: $failure->values(),

@@ -2,6 +2,7 @@
 
 namespace Modules\Contact\Jobs\Api\v1;
 
+use App\Http\Middleware\UserApiAuthMiddleware;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,13 +21,15 @@ class ProcessContactImportJob implements ShouldQueue
     protected $columnMap;
     protected $startRow;
 
-    public function __construct(ContactImport $import, bool $includeFirstRow, array $columnMap, int $startRow = 0)
+    public function __construct(ContactImport $import, bool $includeFirstRow, array $columnMap, int|null $startRow = 0)
     {
         $this->import           = $import;
         $this->includeFirstRow  = $includeFirstRow;
         $this->columnMap        = $columnMap;
         $this->startRow         = $startRow;
     }
+
+    public int $timeout = 300; 
 
     /**
      * deleteJob
@@ -38,19 +41,19 @@ class ProcessContactImportJob implements ShouldQueue
     public static function deleteJob(int $importId): void
     {
         $job = DB::table('jobs')
-            ->where('queue', 'imports')
-            ->where('payload', 'like', '%"Modules\\\\Contact\\\\Models\\\\ContactImport"%')
-            ->where('payload', 'like', '%"id";i:' . $importId . ';%')
-            ->first();
+                    ->where('queue', 'imports')
+                    ->where('payload', 'like', '%"Modules\\\\Contact\\\\Models\\\\ContactImport"%')
+                    ->where('payload', 'like', '%"id";i:' . $importId . ';%')
+                    ->first();
         if ($job) {
             DB::table('jobs')->where('id', $job->id)->delete();
             return;
         }
 
         $jobs = DB::table('jobs')
-            ->where('queue', 'imports')
-            ->where('payload', 'like', '%ProcessContactImportJob%')
-            ->get();
+                        ->where('queue', 'imports')
+                        ->where('payload', 'like', '%ProcessContactImportJob%')
+                        ->get();
 
         foreach ($jobs as $job) {
             $payload = json_decode($job->payload, true);

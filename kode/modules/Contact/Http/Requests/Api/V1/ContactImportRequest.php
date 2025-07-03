@@ -20,7 +20,7 @@ class ContactImportRequest extends BaseRequest
             'contact_group_ids'     => ['nullable', 'array'],
             'contact_group_ids.*'   => ['nullable', 'string', 'exists:contact_groups,id'],
             'channel'               => ['nullable', Rule::in(ContactChannelEnum::toArray())],
-            "file"                  => ['nullable', new FileExtentionCheckRule([
+            "file"                  => ['required', new FileExtentionCheckRule([
                 'csv', 'xslx', 'xsl'
             ])],
             'column_map'            => ['nullable', 'array'],
