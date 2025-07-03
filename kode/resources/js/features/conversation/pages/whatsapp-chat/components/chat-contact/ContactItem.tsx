@@ -54,45 +54,48 @@ const ContactItem = ({
                         <p className="mt-1 line-clamp-1">{contact.message}</p>
                     </div>
                 </div>
+
                 <div className="text-end flex-shrink-0">
                     <div className="d-flex align-items-end flex-column">
                         <p className="fs-12 mb-1">{contact.time}</p>
-                        <Dropdown className="icon-dropdown contact-item-dropdown">
-                            <Dropdown.Toggle
-                                id={`contact-dropdown-${contact.id}`}
-                                className="icon-btn fs-20 bg-transparent p-0"
-                            >
-                                <LuChevronDown className="text-muted" />
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu
-                                align={themeSettings.dir === "ltr" ? "end" : ""}
-                            >
-                                <div className="dropdown-content">
-                                    <Dropdown.Item as={"button"}>
-                                        <LuArchiveX /> Archive chat
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={"button"}>
-                                        <LuBellOff /> Mute notifications
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={"button"}>
-                                        <LuPin /> Pin Chat
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={"button"}>
-                                        <LuMessageSquareDot /> Mark as unread
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={"button"}>
-                                        <LuHeart /> Add to favourites
-                                    </Dropdown.Item>
-                                    <Dropdown.Divider />
-                                    <Dropdown.Item as={"button"}>
-                                        <LuBan /> Block
-                                    </Dropdown.Item>
-                                    <Dropdown.Item as={"button"}>
-                                        <LuTrash2 /> Delete chat
-                                    </Dropdown.Item>
-                                </div>
-                            </Dropdown.Menu>
-                        </Dropdown>
+                        <div onClick={(e) => e.stopPropagation()}>
+                            <Dropdown className="icon-dropdown contact-item-dropdown">
+                                <Dropdown.Toggle
+                                    id={`contact-dropdown-${contact.id}`}
+                                    className="icon-btn fs-20 bg-transparent p-0"
+                                >
+                                    <LuChevronDown className="text-muted" />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu
+                                    align={themeSettings.dir === "ltr" ? "end" : ""}
+                                >
+                                    <div className="dropdown-content">
+                                        <Dropdown.Item as={"button"}>
+                                            <LuArchiveX /> Archive chat
+                                        </Dropdown.Item>
+                                        <Dropdown.Item as={"button"}>
+                                            <LuBellOff /> Mute notifications
+                                        </Dropdown.Item>
+                                        <Dropdown.Item as={"button"}>
+                                            <LuPin /> Pin Chat
+                                        </Dropdown.Item>
+                                        <Dropdown.Item as={"button"}>
+                                            <LuMessageSquareDot /> Mark as unread
+                                        </Dropdown.Item>
+                                        <Dropdown.Item as={"button"}>
+                                            <LuHeart /> Add to favourites
+                                        </Dropdown.Item>
+                                        <Dropdown.Divider />
+                                        <Dropdown.Item as={"button"}>
+                                            <LuBan /> Block
+                                        </Dropdown.Item>
+                                        <Dropdown.Item as={"button"}>
+                                            <LuTrash2 /> Delete chat
+                                        </Dropdown.Item>
+                                    </div>
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </div>
                     </div>
                 </div>
             </div>

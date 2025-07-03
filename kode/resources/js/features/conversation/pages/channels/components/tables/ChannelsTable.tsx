@@ -1,9 +1,13 @@
 
 
-import { Dropdown } from "react-bootstrap"
-import { LuEllipsisVertical, LuSend, LuSquarePen, LuTrash2 } from "react-icons/lu"
+import userProfile from "@/assets/images/user/user-1.png";
+import { Dropdown } from "react-bootstrap";
+import { BsPlugin } from "react-icons/bs";
+import { LuEllipsisVertical, LuLayoutTemplate, LuLink2Off, LuRefreshCw, LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { Link } from "react-router";
+import Button from "../../../../../../components/common/button/Button";
 
-const ChannelsTable: React.FC = ({ type, actions }) => {
+const ChannelsTable: React.FC = ({ actions }) => {
   
   return (
     <>
@@ -12,15 +16,12 @@ const ChannelsTable: React.FC = ({ type, actions }) => {
           <th>
             <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
               <b>#</b>
-              <span>Name</span>
+              <span>Account info</span>
             </div>
           </th>
-          {type === "sms" ? (<>
-            <th>Provider</th>
-            <th>Sender</th>
-          </>) : (<th>Contact</th>)}
-          <th>Messages send</th>
           <th>Status</th>
+          <th>Connection Status</th>
+          <th>Templates</th>
           <th>Created At</th>
           <th>Actions</th>
         </tr>
@@ -32,29 +33,20 @@ const ChannelsTable: React.FC = ({ type, actions }) => {
             <td>
               <div className="d-flex justify-content-start align-items-start gap-3">
                 <b className="fs-15">{ind + 1}.</b>
-                <span>Channel-{ind + 1}</span>
+                <div className="d-flex justify-content-start align-items-center gap-3">
+                  <div className="flex-shrink-0 avatar avatar-md circle">
+                    <img
+                      src={userProfile}
+                      alt="user profile image"
+                      className="w-100 h-100"
+                    />
+                  </div>
+
+                    <h6 className="fs-15">
+                      {`John`}
+                    </h6>
+                </div>
               </div>
-            </td>
-
-            {type === "sms" ? (<>
-              <td>
-                <span>AWS SNS</span>
-              </td>
-              <td>
-                <span>acme</span>
-              </td>
-            </>) : (
-              <td>
-              <span>+123456789{ind + 1}</span>
-            </td>
-          )}
-
-
-            <td>
-                <span className="i-badge pill success-soft lh-1 py-2">
-                    <LuSend className="me-1 fs-14" />
-                    1250
-                </span>
             </td>
 
             <td>
@@ -69,15 +61,44 @@ const ChannelsTable: React.FC = ({ type, actions }) => {
             </td>
 
             <td>
+                <span className="i-badge pill danger-soft lh-1 py-2">
+                   <LuLink2Off className="me-1 fs-14" />
+                    Disconnected
+                </span>
+            </td>
+
+            <td>
+              <div className="d-flex align-items-center gap-2">
+                <Link className="i-badge pill dark-soft lh-1 py-2" to={`/conversation/templates?type=whatsapp`}>
+                  <LuLayoutTemplate className="me-1 fs-14" />
+                  View all (12)
+                </Link>
+
+                <Button
+                  iconBtn={true}
+                  tooltipText="Sync business account template"
+                  icon={LuRefreshCw}
+                  className="info-soft btn-ghost hover btn-sm rounded-circle fs-18"
+                />
+              </div>
+            </td>
+
+            <td>
               <span>2024-01-10</span>
             </td>
 
             <td>
               <div className="d-flex align-items-center justify-content-end gap-1">
+                <Button
+                  iconBtn={true}
+                  tooltipText="Reconnect"
+                  icon={BsPlugin}
+                  className="warning-soft btn-ghost hover btn-sm rounded-circle fs-18"
+                />
                 <Dropdown className="icon-dropdown">
                   <Dropdown.Toggle
                     id="dropdown-5"
-                    className="icon-btn dark-soft btn-ghost hover btn-md fs-18 rounded-3 p-0"
+                    className="icon-btn dark-soft btn-ghost hover btn-md circle fs-18 p-0"
                   >
                     <LuEllipsisVertical />
                   </Dropdown.Toggle>

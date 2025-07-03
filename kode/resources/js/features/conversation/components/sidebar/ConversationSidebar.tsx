@@ -115,7 +115,7 @@ const ConversationSidebar: React.FC = () => {
                     {isLgUp && (
                         <div className="channel">
                             <div className="channel-title">
-                                <h5>Channels </h5>
+                                <h5>Gateways </h5>
                                 <span>
                                     <LuMessagesSquare className="fs-20"/>
                                 </span>
@@ -136,7 +136,7 @@ const ConversationSidebar: React.FC = () => {
                                 </NavLink>
 
                                 <NavLink
-                                    to={`channel/whatsapp`}
+                                    to={`gateway/whatsapp`}
                                         className="chat-menu-link"
                                         viewTransition
                                     >

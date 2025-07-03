@@ -10,7 +10,7 @@ export interface UploadedFile {
     data: string | ArrayBuffer | null;
 }
 
-interface ImageUploadProps {
+interface FileUploaderProps {
     label?: string;
     onUpload: (files: UploadedFile[]) => void;
     inputNote?: string;
@@ -21,7 +21,7 @@ interface ImageUploadProps {
     defaultFiles?: (string | File)[];
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({
+const FileUploader: React.FC<FileUploaderProps> = ({
     label,
     onUpload,
     inputNote,
@@ -145,4 +145,4 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     );
 };
 
-export default ImageUpload;
+export default FileUploader;

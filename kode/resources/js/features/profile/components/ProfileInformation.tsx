@@ -10,7 +10,7 @@ import Button from "../../../components/common/button/Button";
 import Card from "../../../components/common/card/Card";
 import CardHeader from "../../../components/common/card/CardHeader";
 import Field from "../../../components/common/from/Field";
-import ImageUpload, { type UploadedFile } from "../../../components/common/from/ImageUpload";
+import FileUploader, { type UploadedFile } from "../../../components/common/from/FileUploader";
 import ModalWrapper, { DeleteModal } from "../../../components/common/modal";
 import { useModal } from "../../../context";
 import { setUser } from "../../../redux/slices/userSlice";
@@ -140,7 +140,7 @@ const ProfileInformation: React.FC = ({ user }) => {
                                                 label="Profile photo"
                                                 htmlFor={"profile_photo"}
                                             >
-                                                <ImageUpload
+                                                <FileUploader
                                                     defaultFiles={
                                                         user?.img_url
                                                             ? [user.img_url]

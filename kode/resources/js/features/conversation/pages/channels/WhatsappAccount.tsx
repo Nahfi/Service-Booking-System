@@ -10,7 +10,7 @@ import type { ModalContextType } from '../../../../utils/types';
 import SaveChannel from './components/modals/SaveChannel';
 import ChannelsTable from './components/tables/ChannelsTable';
 
-const WhatsappChannel = () => {
+const WhatsappAccount: React.FC = () => {
 
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
     const modalUid = "allContactModal";
@@ -21,10 +21,10 @@ const WhatsappChannel = () => {
             <div className="conversation-content-body">
                 <div className="channel-page">
                     <PageHeader
-                        title="Whatsapp channels"
+                        title="Whatsapp account"
                         breadcrumbs={[
                             {
-                                title: "Whatsapp channels",
+                                title: "Whatsapp account",
                             },
                         ]}
                     />
@@ -35,14 +35,15 @@ const WhatsappChannel = () => {
                         <div className="d-flex align-items-center gap-3">
                             <Button
                                 className="btn--primary btn--md rounded-3"
-                                onClick={() => openModal(
-                                    modalUid,
-                                    "CREATE",
-                                    "Create new channel",
-                                    "lg"
-                                )}
+                                href='/conversation/gateway/whatsapp/create'
+                                // onClick={() => openModal(
+                                //     modalUid,
+                                //     "CREATE",
+                                //     "Create new channel",
+                                //     "lg"
+                                // )}
                             >
-                                <LuPlus className="fs-18" /> Create Channel
+                                <LuPlus className="fs-18" /> Add account
                             </Button>
                         </div>
                     </div>
@@ -82,4 +83,4 @@ const WhatsappChannel = () => {
     )
 }
 
-export default WhatsappChannel
+export default WhatsappAccount

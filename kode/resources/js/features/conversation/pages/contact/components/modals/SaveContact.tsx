@@ -3,7 +3,7 @@ import { Tab, Tabs } from 'react-bootstrap'
 import { LuDownload } from 'react-icons/lu'
 import Button from '../../../../../../components/common/button/Button'
 import Field from '../../../../../../components/common/from/Field'
-import ImageUpload from '../../../../../../components/common/from/ImageUpload'
+import FileUploader from '../../../../../../components/common/from/FileUploader'
 import SelectBox from '../../../../../../components/common/from/SelectBox'
 
 const SaveContact: React.FC = ({ onHide }) => {
@@ -101,7 +101,7 @@ const SaveContact: React.FC = ({ onHide }) => {
                                     </span>
                                 </div>
 
-                                <ImageUpload
+                                <FileUploader
                                     uploadText="Drag your file(s) or Browse"
                                     maxFile="Max 20 MB files are allowed"
                                 />

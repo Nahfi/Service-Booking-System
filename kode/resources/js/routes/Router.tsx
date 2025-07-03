@@ -10,8 +10,9 @@ import ChooseCampaign from "../features/campaign/ChooseCampaign";
 import CreateSmsCampaign from "../features/campaign/CreateSmsCampaign";
 import CreateWhatsappCampaign from "../features/campaign/CreateWhatsappCampaign";
 import Conversation from "../features/conversation/Conversation";
+import CreateAccount from "../features/conversation/pages/channels/CreateAccount";
 import SmsChannel from "../features/conversation/pages/channels/SmsChannel";
-import WhatsappChannel from "../features/conversation/pages/channels/WhatsappChannel";
+import WhatsappAccount from "../features/conversation/pages/channels/WhatsappAccount";
 import ChatWrapper from "../features/conversation/pages/chat/ChatWrapper";
 import Contact from "../features/conversation/pages/contact/Contact";
 import Report from "../features/conversation/pages/report/Report";
@@ -110,8 +111,12 @@ const router: RouteObject[] = createBrowserRouter(
                             element: <SmsChannel/>,
                         },
                         {
-                            path: "channel/whatsapp",
-                            element: <WhatsappChannel />,
+                            path: "gateway/whatsapp",
+                            element: <WhatsappAccount />,
+                        },
+                        {
+                            path: "gateway/whatsapp/create",
+                            element: <CreateAccount />,
                         },
                     ],
                 },

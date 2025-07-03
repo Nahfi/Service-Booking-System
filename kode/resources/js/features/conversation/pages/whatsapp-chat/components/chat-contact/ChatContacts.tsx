@@ -20,7 +20,7 @@ interface ChatContactsProps {
     };
 }
 
-const contactsData = Array.from({ length: 12 }).map((_, ind) => ({
+const contactsData = Array.from({ length: 1}).map((_, ind) => ({
     id: ind,
     name: `Jane Doe ${ind + 1}`,
     message: "Hi, I want to make enquiries",
@@ -35,12 +35,12 @@ const contactsData = Array.from({ length: 12 }).map((_, ind) => ({
 const tabMenu = ["all", "unread", "favorite", "groups"];
 
 const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
-    const { handleHideContact, showContact, handleSelectUser } = contactAction;
+    const { handleHideContact, showContact, handleSelectUser, newChatAction, modal } = contactAction;
     const [searchQuery, setSearchQuery] = useState<string>("");
     const [filteredContacts, setFilteredContacts] = useState(contactsData);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
-    const [newChat, setNewChat] = useState<boolean>(false);
+    const { handleShowNewChat, handleHideNewChat, newChat }= newChatAction
 
     const { themeSettings } = useContext(ThemeContext) as ThemeContextType;
 
@@ -83,14 +83,6 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
         }
     };
 
-    const handleShowNewChat = () => {
-        setNewChat(true);
-    }
-
-    const handleHideNewChat = () => {
-        setNewChat(false);
-    };
-
     return (
         <div className={`col-auto chat-contacts ${showContact ? "show" : ""}`}>
             <Tab.Container id="contact-tab" defaultActiveKey="1">
@@ -118,7 +110,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({ contactAction }) => {
                         defaultActiveKey="all"
                     >
                         {newChat ? (
-                            <NewChat onHide={handleHideNewChat} />
+                            <NewChat onHide={handleHideNewChat} modal={modal} />
                         ) : (
                             <div className="whatsapp-contact-tab-container fade-in">
                                 {filteredContacts?.length > 0 ? (

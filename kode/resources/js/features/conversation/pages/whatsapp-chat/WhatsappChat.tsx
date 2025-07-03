@@ -20,7 +20,7 @@ const WhatsappChat: React.FC = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
-    const [chatInit, setChatInit] = useState<boolean>(true);
+    const [newChat, setNewChat] = useState<boolean>(false);
 
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
     const modalUid = "whatsappChatModal";
@@ -50,6 +50,20 @@ const WhatsappChat: React.FC = () => {
         }, 500);
     };
 
+    const handleShowNewChat = () => {
+        setNewChat(true);
+    }
+
+    const handleHideNewChat = () => {
+        setNewChat(false);
+    };
+
+    const handleSelectTemplate = () => {
+        handleSelectUser(modalConfig?.data);
+        closeModal();
+        handleHideNewChat();
+    }
+    
     return (
         <>
             <div className="whatsapp-chat-wrapper">
@@ -59,6 +73,8 @@ const WhatsappChat: React.FC = () => {
                             handleHideContact,
                             showContact,
                             handleSelectUser,
+                            newChatAction: { handleShowNewChat, handleHideNewChat, newChat },
+                            modal: { openModal, modalUid },
                         }}
                     />
 
@@ -104,7 +120,7 @@ const WhatsappChat: React.FC = () => {
                     )}
 
                     {modalConfig?.type === "CHOOSE_TEMPLATE" && (
-                        <ChooseTemplate onHide={closeModal} />
+                        <ChooseTemplate onHide={closeModal} onTemplateSubmit={handleSelectTemplate} />
                     )}
 
                     {modalConfig?.type === "DELETE" && (

@@ -92,69 +92,34 @@ const ChatBody = ({ chatActions }) => {
             </div>
 
             <div className="chat-box scroll scroll-4">
-                {!template === null ? (
-                    <div>
-                        <div className="date-divider">
-                            <span>Today</span>
-                        </div>
-
-                        <ul className="chatting">
-                            <Message className="incoming" />
-                            <Message className="outgoing" />
-                            <Message className="incoming" />
-                            <Message className="outgoing" />
-                            <Message className="incoming" />
-                            <Message className="outgoing" />
-                        </ul>
-
-                        <div className="date-divider">
-                            <span>16 Feb, 2024</span>
-                        </div>
-
-                        <ul className="chatting">
-                            <Message className="incoming" />
-                            <Message className="outgoing" />
-                            <Message className="incoming" />
-                            <Message className="outgoing" />
-                        </ul>
+                <div>
+                    <div className="date-divider">
+                        <span>Today</span>
                     </div>
-                ) : (
-                    <div className="h-100 d-flex flex-column justify-content-center align-items-center">
-                        <div className="row g-0">
-                            <div className="col-xxl-7 col-lg-8 mx-auto">
-                                <div className="mb-0 p-3 bg--light rounded-3 border-1">
-                                    <div className="">
-                                        <h6 className="mb-2 fs-14">24-Hour Messaging Limit</h6>
-                                        <p className="bg--danger-light text--danger rounded-2 p-2 fs-13">
-                                            WhatsApp restricts message sending
-                                            to within 24 hours of a user's last
-                                            reply. To continue the conversation
-                                            after this window, you must use an
-                                            approved message template.
-                                        </p>
-                                    </div>
-                                    <hr />
-                                    <Button
-                                        className="btn--primary btn--md rounded-3"
-                                        onClick={() =>
-                                            modal.openModal(
-                                                modal.modalUid,
-                                                "CHOOSE_TEMPLATE",
-                                                "Choose Template",
-                                                ""
-                                            )
-                                        }
-                                    >
-                                        Choose template
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
+
+                    <ul className="chatting">
+                        <Message className="incoming" />
+                        <Message className="outgoing" />
+                        <Message className="incoming" />
+                        <Message className="outgoing" />
+                        <Message className="incoming" />
+                        <Message className="outgoing" />
+                    </ul>
+
+                    <div className="date-divider">
+                        <span>16 Feb, 2024</span>
                     </div>
-                )}
+
+                    <ul className="chatting">
+                        <Message className="incoming" />
+                        <Message className="outgoing" />
+                        <Message className="incoming" />
+                        <Message className="outgoing" />
+                    </ul>
+                </div>
             </div>
 
-            <ChatComposer template={template} />
+            <ChatComposer />
         </div>
     );
 };
