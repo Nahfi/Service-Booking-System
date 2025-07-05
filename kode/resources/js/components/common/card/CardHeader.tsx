@@ -30,7 +30,7 @@ const CardHeader: React.FC<CardHeaderProps> = ({
                 <div>
                     {cardTitle && (
                         <h4 className="card-title">
-                            {Icon && <Icon className={`fs-28 me-3 ${iconClassName}`} />}
+                            {Icon && <Icon className={`fs-26 me-3 ${iconClassName}`} />}
                             {t(valueToKey(cardTitle), cardTitle)}
                         </h4>
                     )}
