@@ -6,7 +6,9 @@ import type { SaveUserPayload } from "../../utils/type";
 
 const saveUser = async (postData: SaveUserPayload): Promise<ApiResponseType> => {
     try {
-        const url = postData?.id ? `/users/${postData?.id}` : `/users`;
+        const url = postData?.id
+            ? `/users/${postData?.id}`
+            : `/users`;
 
         const { data } = postData?.id
             ? await MainApi.patch(url, postData)

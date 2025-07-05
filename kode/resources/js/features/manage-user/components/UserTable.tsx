@@ -3,7 +3,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 
 import { useTranslation } from "react-i18next";
 import { LuEllipsisVertical, LuEye, LuSquarePen, LuTrash2 } from "react-icons/lu";
-import { Link } from "react-router";
 import NoDataFound from "../../../components/common/NoDataFound/NoDataFound";
 import { valueToKey } from "../../../utils/helper";
 import type { InputChangeEvent, OpenModalFn } from "../../../utils/types";
@@ -32,7 +31,7 @@ interface BulkActions {
 interface UserTableProps {
     openModal: OpenModalFn;
     usersData: UserType[];
-    isPending?: boolean;
+    loader?: boolean;
     bulkActions: BulkActions;
     actions?: ActionHandlers;
 }
@@ -42,6 +41,7 @@ const UserTable: FC<UserTableProps> = ({
     usersData,
     bulkActions,
     actions = {},
+    loader
 }) => {
     const { t } = useTranslation();
 
@@ -66,6 +66,8 @@ const UserTable: FC<UserTableProps> = ({
             setSelectedId([]);
         }
     };
+
+
 
     return (
         <>
@@ -121,17 +123,17 @@ const UserTable: FC<UserTableProps> = ({
                                         </div>
 
                                         <div>
-                                            <h6 className="fs-15">
+                                            <h6 className="fs-14">
                                                 {user?.name || "--"}
                                             </h6>
                                             <div>
-                                                <p className="fs-14 text-muted d-inline-block">
+                                                <p className="fs-13 text-muted d-inline-block">
                                                     {user?.email || "--"}
                                                 </p>
 
                                                 <p
                                                     to="tel:012345678"
-                                                    className="fs-14 text-muted d-block"
+                                                    className="fs-13 text-muted d-block"
                                                 >
                                                     {user?.phone || "--"}
                                                 </p>
@@ -172,8 +174,16 @@ const UserTable: FC<UserTableProps> = ({
                                         <Dropdown.Menu>
                                             <div className="dropdown-content">
                                                 <Dropdown.Item
-                                                    as={Link}
-                                                    to={`/users/${user?.id}`}
+                                                    as={"button"}
+                                                    onClick={() =>
+                                                        actions?.modal?.fn(
+                                                            actions?.modal?.modalUid,
+                                                            "VIEW_DETAILS",
+                                                            "Update User",
+                                                            "lg",
+                                                            user
+                                                        )
+                                                    }
                                                 >
                                                     <LuEye />
                                                     {t(
@@ -231,11 +241,13 @@ const UserTable: FC<UserTableProps> = ({
                         </tr>
                     ))
                 ) : (
-                    <tr>
-                        <td colSpan={5}>
-                            <NoDataFound />
-                        </td>
-                    </tr>
+                        !loader && (
+                            <tr>
+                                <td colSpan={5}>
+                                    <NoDataFound />
+                                </td>
+                            </tr>
+                        )
                 )}
             </tbody>
         </>

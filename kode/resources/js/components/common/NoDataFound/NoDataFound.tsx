@@ -15,7 +15,7 @@ const NoDataFound: React.FC<NoDataFoundProps> = ({
 }) => {
     const { t } = useTranslation();
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center h-100 py-5 px-4 animate-fade-in">
+        <div className="d-flex flex-column align-items-center justify-content-center h-100 py-5 px-4 fade-in">
             <span className="mb-3 p-4 bg--light rounded-circle  text-ternary">
                 {Icon ? (
                     <Icon

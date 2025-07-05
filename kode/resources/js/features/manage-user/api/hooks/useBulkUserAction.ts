@@ -1,11 +1,11 @@
-
 import { useMutation } from "@tanstack/react-query";
 import MainApi from "../../../../api-manager/MainApi";
 import { onErrorResponse } from "../../../../api-manager/api-error-response/ErrorResponses";
 
-const deleteUser = async (id) => {
+
+const deleteBulkUser = async (postData) => {
     try {
-        const { data } = await MainApi.delete(`users/${id}`);
+        const { data } = await MainApi.post(`/users/bulk`, postData);
         return data;
     } catch (error) {
         onErrorResponse(error);
@@ -13,12 +13,12 @@ const deleteUser = async (id) => {
     }
 };
 
-const useDeleteUser = () => {
+const useBulkUserAction = () => {
     return useMutation({
-        mutationKey: "user-delete",
-        mutationFn: deleteUser,
+        mutationKey: "user-bulk-delete",
+        mutationFn: deleteBulkUser,
         onError: onErrorResponse,
     });
 };
 
-export default useDeleteUser; 
+export default useBulkUserAction;

@@ -1,18 +1,56 @@
 import { useState } from "react";
 import { BsCalendar2Range } from "react-icons/bs";
-import { LuFilter } from "react-icons/lu";
+import { LuFilter, LuRefreshCw, LuUserPlus } from "react-icons/lu";
 import Button from "../../../components/common/button/Button";
 import DateTimePicker from "../../../components/common/datepicker/DateTimePicker";
 import Field from "../../../components/common/from/Field";
+import SelectBox from "../../../components/common/from/SelectBox";
 
-const UserFilter = ({ handleOnFilter }) => {
+const options = [
+    { value: 11, label: 'Berk Glover' },
+    { value: 10, label: 'Timothy Weaver' },
+]
+
+const UserFilter = ({ roles, onReset }) => {
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-        new Date(),
+        null,
         null,
     ]);
+
     const [startDate, endDate] = dateRange;
+
     const handleDateChange = (date: [Date | null, Date | null]) => {
         setDateRange(date);
+    };
+
+    const roleOptions = roles.map((role) => ({
+        value: role.id,
+        label: role.name,
+    }));
+
+    const [selectInput, setSelectInput] = useState({
+        'role_id': "",
+    })
+
+    const handleSelectChange = (option, key) => {
+        setSelectInput((prevState) => {
+            return {
+                ...prevState,
+                [key]: option
+            }
+        })
+
+    }
+
+    const formatDateRange = () => {
+        if (!startDate || !endDate) return "";
+        const formatDate = (date: Date) => {
+            const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based, add 1
+            const day = String(date.getDate()).padStart(2, "0");
+            const year = date.getFullYear();
+            return `${month}/${day}/${year}`;
+        };
+        return `${formatDate(startDate)} - ${formatDate(endDate)}`;
     };
 
     return (
@@ -43,37 +81,48 @@ const UserFilter = ({ handleOnFilter }) => {
                             }
                             startDate={startDate}
                             endDate={endDate}
-                            required
+                            placeholderText="Select date range"
                         />
 
-                        <input type="hidden" name="date" value={dateRange} />
+                        <input type="hidden" name="date" value={formatDateRange()} />
                     </div>
                 </Field>
             </div>
 
-            <div className="flex-grow-1">
-                <Field>
-                    <select
-                        className="form-select h-40"
-                        id="country"
-                        aria-label="country"
-                    >
-                        <option defaultValue>Status</option>
-                        <option value="1">Active</option>
-                        <option value="2">Deactive</option>
-                        <option value="3">Pending</option>
-                    </select>
-                </Field>
-            </div>
+            <Field>
+                <SelectBox
+                    options={roleOptions}
+                    icon={<LuUserPlus />}
+                    name="role_id"
+                    placeholder={"Choose user"}
+                    size="lg"
+                    id="role_id"
+                    value={selectInput.role_id}
+                    onChange={(selectedOption) =>
+                        handleSelectChange(selectedOption, "role_id")
+                    }
+                />
+            </Field>
 
-            <Button
-                iconBtn={true}
-                tooltipText="Filter"
-                icon={LuFilter}
-                type="submit"
-                className="dark-soft btn-ghost hover btn-md rounded-circle fs-18"
-            />
+            <div className="d-flex align-items-center gap-2">
+                <Button
+                    iconBtn={true}
+                    tooltipText="Filter"
+                    icon={LuFilter}
+                    type="submit"
+                    className="dark-soft hover btn-md rounded-circle fs-18"
+                />
+                <Button
+                    iconBtn={true}
+                    tooltipText="Reset"
+                    icon={LuRefreshCw}
+                    type="button"
+                    onClick={() => onReset(setDateRange, setSelectInput)}
+                    className="danger-soft hover btn-md rounded-circle fs-18"
+                />
+            </div>
         </div>
+
     );
 };
 

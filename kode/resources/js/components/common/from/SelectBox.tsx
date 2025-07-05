@@ -69,8 +69,8 @@ const SelectBox: React.FC<SelectBoxProps> = ({ icon, size, ...props }) => {
       borderRadius: "12px",
       borderColor: "var(--border-primary)",
       border: state.isFocused
-        ? "1px solid var(--primary)"
-        : "1px solid #ddd",
+        ? "1px solid var(--color-primary)"
+        : "1px solid var(--border-primary)",
       paddingInlineStart: "10px",
       color: "var(--text-primary)",
       transition: "border-color 0.3s ease, box-shadow 0.3s ease",
@@ -79,6 +79,7 @@ const SelectBox: React.FC<SelectBoxProps> = ({ icon, size, ...props }) => {
       ...provided,
       borderBottom: "none",
       color: state.isSelected ? "white" : "black",
+      fontSize:"14px",
       backgroundColor: state.isSelected
         ? "var(--color-primary)"
         : state.isFocused
