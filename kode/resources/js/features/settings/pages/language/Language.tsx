@@ -3,19 +3,70 @@
 import Button from "@/components/common/button/Button";
 import ModalWrapper, { DeleteModal } from "@/components/common/modal";
 import PageHeader from "@/components/common/Page-header/PageHeader";
-import PaginationWrapper from "@/components/common/pagination/PaginationWrapper";
 import TableWrapper from "@/components/common/table/TableWrapper";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
 import { LuPlus } from "react-icons/lu";
 import FilterWrapper from "../../../../components/common/filter/FilterWrapper";
 import { useModal } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
+import useDeleteLanguage from "./api/hooks/useDeleteLanguage";
+import useGetLanguage from "./api/hooks/useGetLanguage";
+import useLanguageStatus from "./api/hooks/useLanguageStatus";
 import SaveLanguage from "./components/modals/SaveLanguage";
 import LanguageTable from "./components/tables/LanguageTable";
 
 const Language: React.FC = () => {
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid ="languageModal"
+    const modalUid = "languageModal"
+
+    const { data, refetch, isLoading } = useGetLanguage();
+    const languages = useMemo(() => data?.data || null, [data]);
+
+    const { mutate: updateStatus } = useLanguageStatus();
+    const { mutate: deleteLanguageFn, isPending: deleteButtonLoader } = useDeleteLanguage();
+
+    const [filteredLanguages, setFilteredLanguages] = useState(languages);
+
+    useEffect(() => {
+        if (languages) setFilteredLanguages(languages);
+    }, [languages]);
+
+    const searchLanguages = (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = languages.filter(language =>
+            language.name.toLowerCase().includes(searchTerm)
+        );
+        setFilteredLanguages(filtered);
+    };
+
+
+    const handleStatusChange = (language) => {
+        const postData = {
+            id: language?.id,
+            value: language?.status === "active" ? "inactive" : "active",
+        };
+        updateStatus(postData, {
+            onSuccess: (response) => {
+                if (response) {
+                    toast.success("Updated");
+                    refetch();
+                }
+            },
+        });
+    };
+
+    const handleResourceDelete = () => {
+        deleteLanguageFn(modalConfig?.data, {
+            onSuccess: (response) => {
+                if (response) {
+                    toast.success("Deleted");
+                    closeModal();
+                    refetch();
+                }
+            },
+        });
+    };
 
     return (
         <>
@@ -23,7 +74,6 @@ const Language: React.FC = () => {
                 <PageHeader
                     title={"Manage Language"}
                     breadcrumbs={[
-                        { title: "Settings", path: "/setting/general" },
                         {
                             title: "Manage Language",
                         },
@@ -36,19 +86,22 @@ const Language: React.FC = () => {
 
                         <Button
                             className="btn--primary btn--md rounded-3 flex-shrink-0"
-                            onClick={() => openModal(modalUid,"CREATE","Create Language","md")}
+                            onClick={() => openModal(modalUid, "CREATE", "Create Language", "md")}
                         >
                             <LuPlus className="fs-20" /> Add
                         </Button>
                     </div>
 
-                    <TableWrapper>
-                        <LanguageTable actions={{
-                            modal: { fn: openModal, modalUid },
-                        }} />
+                    <TableWrapper loader={isLoading}>
+                        <LanguageTable
+                            languages={filteredLanguages}
+                            actions={{
+                                status: { fn: handleStatusChange },
+                                modal: { fn: openModal, modalUid },
+                            }}
+                            loader={isLoading}
+                        />
                     </TableWrapper>
-
-                    <PaginationWrapper />
                 </div>
             </div>
 
@@ -62,10 +115,10 @@ const Language: React.FC = () => {
                     centered
                 >
                     {(modalConfig?.type === "CREATE" || modalConfig?.type === "EDIT") && (
-                        <SaveLanguage onHide={closeModal} />
+                        <SaveLanguage onHide={closeModal} language={filteredLanguages} refetchFn={refetch} />
                     )}
                     {modalConfig?.type === "DELETE" && (
-                        <DeleteModal onHide={closeModal} />
+                        <DeleteModal onHide={closeModal} onDelete={handleResourceDelete} isLoading={deleteButtonLoader} />
                     )}
                 </ModalWrapper>
             )}

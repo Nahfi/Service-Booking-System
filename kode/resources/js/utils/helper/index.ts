@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 
 export const generateUUID = () => {
     return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -100,7 +101,7 @@ export const exportToPDF = (
 
     doc.save(`exported-${file_name}.pdf`);
 };
-  
+
 
 // Convert key to value
 export const keyToValue = (text: string, replaceWith: string = " "): string => {
@@ -122,14 +123,14 @@ export const valueToKey = (text: string, separator: string = "_"): string => {
         return text;
     }
 };
-  
+
 
 export const getToken = () => {
     if (typeof window !== "undefined") {
-      return window.localStorage.getItem("token");
+        return window.localStorage.getItem("token");
     }
 };
-  
+
 export const clearStore = async () => {
     if (typeof window !== "undefined") {
         localStorage.removeItem("token");
@@ -138,7 +139,7 @@ export const clearStore = async () => {
     // Cookies.remove("authToken");
     // await persistor.purge();
     // store.dispatch({ type: "RESET_STORE" });
-}  
+}
 
 export const getMonthStartAndEnd = (month, year) => {
     const startDate = new Date(year, month, 1);
@@ -312,3 +313,15 @@ export const handlePageChange = (page, hookFn) => {
         page: page,
     }));
 };
+
+export const onCopy = (textToCopy) => {
+    const cleanText = textToCopy?.toString().trim();
+    navigator.clipboard
+        .writeText(cleanText)
+        .then(() => {
+            toast.success("Copied!");
+        })
+        .catch((err) => {
+            toast.error("Failed to copy: " + err.message);
+        });
+}

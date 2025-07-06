@@ -1,7 +1,6 @@
 
 
 import type React from "react";
-import { useContext } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { BsPlusLg } from "react-icons/bs";
@@ -12,7 +11,7 @@ import PageHeader from "../../components/common/Page-header/PageHeader";
 import SEO from "../../components/common/seo/SEO";
 import TableWrapper from "../../components/common/table/TableWrapper";
 import BaseLayout from "../../components/layouts/BaseLayout";
-import { ModalContext } from "../../context";
+import { useModal } from "../../context";
 import { valueToKey } from "../../utils/helper";
 import type { ModalContextType } from "../../utils/types";
 import useGetRoles from "./api/hooks/useGetRoles";
@@ -24,8 +23,9 @@ const ManageRole: React.FC = () => {
 
     const { t } = useTranslation();
 
-    const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
-    const { data, refetch, isPending } = useGetRoles();
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid= "rolesModal"
+    const { data, refetch, isLoading } = useGetRoles();
     const roles = data?.data || null;
 
 
@@ -34,7 +34,6 @@ const ManageRole: React.FC = () => {
         useRoleDelete();
 
     const handleStatusChange = (role) => {
-        const toastId = toast.loading("Updating.....");
         const postData = {
             id: role?.id,
             value: role?.status === "active" ? "inactive" : "active",
@@ -45,7 +44,6 @@ const ManageRole: React.FC = () => {
                 if (response) {
                     toast.success("Updated");
                     refetch();
-                    toast.dismiss(toastId);
                 }
             },
         });
@@ -93,13 +91,13 @@ const ManageRole: React.FC = () => {
                     </PageHeader>
 
                     <div>
-                        <TableWrapper loader={isPending}>
+                        <TableWrapper loader={isLoading}>
                             <RoleListTable
                                 roles={roles}
-                                isPending={isPending}
+                                isLoading={isLoading}
                                 actions={{
                                     status: { fn: handleStatusChange },
-                                    modal: { fn: openModal },
+                                    modal: { fn: openModal, modalUid },
                                 }}
                             />
                         </TableWrapper>
@@ -107,22 +105,24 @@ const ManageRole: React.FC = () => {
                 </>
             </BaseLayout>
 
-            <ModalWrapper
-                title={modalConfig?.title}
-                onHide={closeModal}
-                show={showModal}
-                size={modalConfig?.size}
-                scrollable
-                centered
-            >
-                {modalConfig?.type === "DELETE" && (
-                    <DeleteModal
-                        onHide={closeModal}
-                        onDelete={handleResourceDelete}
-                        isLoading={deleteButtonLoader}
-                    />
-                )}
-            </ModalWrapper>
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {modalConfig?.type === "DELETE" && (
+                        <DeleteModal
+                            onHide={closeModal}
+                            onDelete={handleResourceDelete}
+                            isLoading={deleteButtonLoader}
+                        />
+                    )}
+                </ModalWrapper>
+            )}
         </>
     );
 };

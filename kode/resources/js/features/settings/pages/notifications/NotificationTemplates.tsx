@@ -1,23 +1,35 @@
-import ModalWrapper, { DeleteModal } from "@/components/common/modal";
 import PageHeader from "@/components/common/Page-header/PageHeader";
-import PaginationWrapper from "@/components/common/pagination/PaginationWrapper";
 import TableWrapper from "@/components/common/table/TableWrapper";
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import FilterWrapper from "../../../../components/common/filter/FilterWrapper";
-import { useModal } from "../../../../context";
-import type { ModalContextType } from "../../../../utils/types";
+import Field from "../../../../components/common/from/Field";
+import type { InputChangeEvent } from "../../../../utils/types";
+import useGetNotificationTemplates from "./api/hooks/useGetNotificationTemplates";
 import NotificationTable from "./components/NotificationTable";
+import type { NotificationTemplate } from "./utils/type";
 
 const NotificationTemplates: React.FC = () => {
-    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid = "notificationModal"
+    const { data, refetch, isLoading } = useGetNotificationTemplates();
+    const templates = useMemo<NotificationTemplate[] | null>(() => data?.data || null, [data])
+    const [notificationTemplates, setNotificationTemplates] = useState<NotificationTemplate[] | null>(templates);
+
+    useEffect(() => {
+        if (templates) setNotificationTemplates(templates);
+    }, [templates]);
+
+    const searchTemplates = (e: InputChangeEvent) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filtered = templates.filter(template =>
+            template?.name.toLowerCase().includes(searchTerm)
+        );
+        setNotificationTemplates(filtered);
+    };
     
     return (
         <>
             <PageHeader
                 title={"Notification Templates"}
                 breadcrumbs={[
-                    { title: "Settings", path: "/setting/general" },
                     {
                         title: "Notification Templates",
                     },
@@ -26,31 +38,32 @@ const NotificationTemplates: React.FC = () => {
 
             <div>
                 <div className="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-4">
-                    <FilterWrapper className={"mb-0"} />
+                    <FilterWrapper className="mb-0">
+                        <div className="d-flex justify-content-start align-items-center flex-wrap gap-3">
+                            <div className="flex-grow-1">
+                                <Field>
+                                    <input
+                                        type="search"
+                                        id="search"
+                                        name="search"
+                                        placeholder="Search contacts"
+                                        className="form-control h-40"
+                                        onChange={searchTemplates}
+                                    />
+                                </Field>
+                            </div>
+                        </div>
+                    </FilterWrapper>
                 </div>
 
-                <TableWrapper>
-                    <NotificationTable />
+                <TableWrapper loader={isLoading}>
+                    <NotificationTable
+                        templates={notificationTemplates}
+                        loader={isLoading} />
                 </TableWrapper>
 
-                <PaginationWrapper />
-                
             </div>
 
-            {showModal && modalConfig?.modalUid === modalUid && (
-                <ModalWrapper
-                    title={modalConfig?.title}
-                    onHide={closeModal}
-                    show={showModal}
-                    size={modalConfig?.size}
-                    scrollable
-                    centered
-                >
-                    {modalConfig?.type === "DELETE" && (
-                        <DeleteModal onHide={closeModal} />
-                    )}
-                </ModalWrapper>
-            )}
         </>
     );
 }

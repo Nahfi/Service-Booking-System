@@ -38,7 +38,7 @@
       color: $text-placeholder;
     }
     &:disabled{
-      background-color: var(--bs-secondary-bg) !important;
+      background-color: $light-bg !important;
     }
 
     &.input-color{
@@ -46,6 +46,12 @@
       padding: .375rem 0.20rem;
     }
 
+  }
+
+  .form-control{
+    &:read-only{
+      background-color: $light-bg !important;
+    }
   }
 
   .form-control[type="file"] {

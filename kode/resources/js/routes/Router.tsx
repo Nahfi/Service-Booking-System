@@ -162,7 +162,7 @@ const router: RouteObject[] = createBrowserRouter(
                     element: <CreateRole />,
                 },
                 {
-                    path: "/roles/edit",
+                    path: "/roles/:roleId/edit",
                     element: <UpdateRole />,
                 },
                 {
@@ -198,7 +198,7 @@ const router: RouteObject[] = createBrowserRouter(
                             element: <NotificationTemplates />,
                         },
                         {
-                            path: "notification-templates/:templateId",
+                            path: "notification-templates/:templateId/edit",
                             element: <TemplateDetails />,
                         },
                         {

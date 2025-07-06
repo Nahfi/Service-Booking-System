@@ -274,7 +274,6 @@ const Users: React.FC = () => {
 
                     <TableWrapper loader={isLoading}>
                         <UserTable
-                            openModal={openModal}
                             usersData={usersData}
                             bulkActions={{ selectedId, setSelectedId }}
                             actions={{

@@ -6,54 +6,92 @@ import Card from '../../../components/common/card/Card';
 import CardBody from '../../../components/common/card/CardBody';
 import Field from '../../../components/common/from/Field';
 import SwitchWrapper from '../../../components/common/from/SwitchWrapper';
+import SpinnerLoader from '../../../components/common/loader/SpinnerLoader';
 import { PERMISSIONS } from '../../../utils/constant';
 import { valueToKey } from '../../../utils/helper';
 import useSaveRoles from '../api/hooks/useSaveRoles';
 import { formatPermissions } from '../utils/helper';
 
-const SaveRole = ({role}) => {
+const SaveRole = ({ role, isLoading, refetchFn }) => {
     const { t } = useTranslation();
 
     const { mutate: saveRole, isPending } = useSaveRoles();
 
     const permissions = PERMISSIONS;
-    let checkedPermissions = [];
 
-
-    console.log(1000);
-    
+    let checkedPermissions = (role && role?.id && role.permissions) ? Object.values(role.permissions).flat() : [];
 
     const [formattedPermissions, setPermissions] = useState(
         formatPermissions(permissions, checkedPermissions)
     );
 
 
-    const [selectAll, setSelectAll] = useState(false);
-    // Helper function to check if all permissions are selected
-    const areAllPermissionsSelected = (permissionsSections) => {
-        return permissionsSections.every(section =>
-            section.permissions.every(permission => permission.enabled)
-        );
-    };
+    const [selectAll, setSelectAll] = useState(() => {
+        const totalPermissions = Object.values(permissions).flat().length;
+        return checkedPermissions.length === totalPermissions && totalPermissions > 0;
+    });
 
-    // Update selectAll state when permissions change
+    // Update permissions when role data is loaded
     useEffect(() => {
-        const allSelected = areAllPermissionsSelected(formattedPermissions);
-        setSelectAll(allSelected);
+        if (role && role?.id && role.permissions) {
+            const newCheckedPermissions = Object.values(role.permissions).flat();
+            const newFormattedPermissions = formatPermissions(permissions, newCheckedPermissions);
+            setPermissions(newFormattedPermissions);
+
+            const totalPermissions = Object.values(permissions).flat().length;
+            setSelectAll(newCheckedPermissions.length === totalPermissions && totalPermissions > 0);
+
+            console.log('Role loaded, updating permissions:', {
+                role: role,
+                newCheckedPermissions,
+                newFormattedPermissions
+            });
+        }
+    }, [role, permissions]);
+
+    // Update selectAll state when individual permissions change
+    useEffect(() => {
+        const totalPermissions = formattedPermissions.reduce((total, section) => {
+            return total + section.permissions.length;
+        }, 0);
+
+        const enabledPermissions = formattedPermissions.reduce((total, section) => {
+            return total + section.permissions.filter(p => p.enabled).length;
+        }, 0);
+
+        setSelectAll(totalPermissions > 0 && enabledPermissions === totalPermissions);
     }, [formattedPermissions]);
-    
+
+
     const togglePermission = (sectionIndex, permissionIndex) => {
         setPermissions((prevSections) => {
-            const updatedSections = [...prevSections];
-            updatedSections[sectionIndex].permissions[permissionIndex].enabled =
-                !updatedSections[sectionIndex].permissions[permissionIndex].enabled;
+            const updatedSections = prevSections.map((section, idx) => {
+                if (idx === sectionIndex) {
+                    return {
+                        ...section,
+                        permissions: section.permissions.map((permission, permIdx) => {
+                            if (permIdx === permissionIndex) {
+                                const newPermission = {
+                                    ...permission,
+                                    enabled: !permission.enabled
+                                };
+                                return newPermission;
+                            }
+                            return permission;
+                        })
+                    };
+                }
+                return section;
+            });
+
             return updatedSections;
         });
     };
+    
 
     const toggleAllPermissions = () => {
         const newSelectAllState = !selectAll;
-        setSelectAll(newSelectAllState);
+
         setPermissions((prevSections) =>
             prevSections.map((section) => ({
                 ...section,
@@ -63,11 +101,14 @@ const SaveRole = ({role}) => {
                 })),
             }))
         );
+
+        setSelectAll(newSelectAllState);
     };
 
+    
     const resetForm = () => {
         setPermissions(formatPermissions(permissions, checkedPermissions));
-        setSelectAll(false);
+        setSelectAll(checkedPermissions.length === Object.values(permissions).flat().length);
     };
 
     const handleSubmit = (e) => {
@@ -86,6 +127,7 @@ const SaveRole = ({role}) => {
             return acc;
         }, {});
 
+
         let postData = {
             permissions: permissionPostData,
             name: inputs.name,
@@ -102,17 +144,24 @@ const SaveRole = ({role}) => {
                     if (!postData?.id) {
                         resetForm();
                     }
+
+                    if (postData?.id) {
+                        refetchFn()
+                    }
                 }
             },
         });
 
     }
-    
 
     return (
         <Card>
             <CardBody>
-                <form onSubmit={handleSubmit}>
+                {isLoading ? (
+                    <div className='d-flex align-items-center justify-content-center py-5'>
+                        <SpinnerLoader />
+                    </div>
+                ) : (<form onSubmit={handleSubmit}>
                     <div className="form-element">
                         <div className="row g-3">
                             <div className="col-md-8">
@@ -129,13 +178,13 @@ const SaveRole = ({role}) => {
                             </div>
                             <div className="col-md-4">
                                 <Field label="Check All">
-                                        <SwitchWrapper
+                                    <SwitchWrapper
                                         label={" Select All Permissions"}
                                         id={"check_all"}
                                         name={"check_all"}
                                         checked={selectAll}
                                         onSwitch={toggleAllPermissions}
-                                        />
+                                    />
                                 </Field>
                             </div>
                         </div>
@@ -175,7 +224,6 @@ const SaveRole = ({role}) => {
                         );
                     })}
 
-
                     <div className="text-end mt-4">
                         <Button
                             type="submit"
@@ -185,7 +233,8 @@ const SaveRole = ({role}) => {
                             {t(valueToKey("Submit"), "Submit")}
                         </Button>
                     </div>
-                </form>
+                </form>)}
+
             </CardBody>
         </Card>
     );
