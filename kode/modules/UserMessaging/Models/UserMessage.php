@@ -3,6 +3,7 @@
 namespace Modules\UserMessaging\Models;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -77,5 +78,21 @@ class UserMessage extends Model
     }
 
 
+    /**
+     * Summary of scopeVisibleToUser
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int | string $userId
+     * @return Builder
+     */
+    public function scopeVisibleToUser(Builder $query, int | string  $userId): Builder{
+
+        return $query->where(function (Builder $q) use ($userId): void {
+                    $q->where('sender_id', $userId)
+                    ->where('deleted_by_sender', false);
+                })->orWhere(function (Builder $q) use ($userId): void {
+                    $q->where('sender_id', '!=', $userId)
+                    ->where('deleted_by_receiver', false);
+                });
+    }
 
 }
