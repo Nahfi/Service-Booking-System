@@ -22,7 +22,7 @@ trait Notify
     use Fileable;
 
 
-    
+
     /**
      * Summary of sendNotification
      * @param string $templateKey
@@ -34,25 +34,25 @@ trait Notify
     {
 
         if(!$parentUser) $parentUser = parent_user();
-        
+
         $template = ModelsNotificationTemplate::withoutGlobalScope(UserScope::class)
                                     ->where('key', $templateKey)
                                     ->where('user_id', $parentUser->id)
                                     ->first();
 
-                             
+
         if (!$template) return false;
 
-        $data['custom_data']['subject'] = $template->subject; 
+        $data['custom_data']['subject'] = $template->subject;
 
 
         $messageData = [
             'tmpCodes'   => Arr::get($data, 'template_code'),
             'userinfo'   => Arr::get($data, 'receiver_model'),
-            'parentUser' => $parentUser 
+            'parentUser' => $parentUser
         ];
 
-        
+
         if ($template->email_notification == Status::ACTIVE->value) {
 
             $emailBody =   $template->mail_body;
@@ -66,15 +66,15 @@ trait Notify
             if($gateway && !is_null($emailBody)){
 
                 $message = $this->replacePlaceholders( $emailBody,SettingKey::DEFAULT_MAIL_TEMPLATE->value,...$messageData);
-                
+
                 $this->createLog(gateway: $gateway, message: $message, data: $data);
             }
 
         }
 
-      
+
         if ($template->site_notificaton == Status::ACTIVE->value && $template->push_notification_body) {
-            
+
             $dbNotification = Arr::get($data ,'custom_data.push_notification');
 
             if($dbNotification){
@@ -85,12 +85,12 @@ trait Notify
             }
 
         }
-        
+
         return true;
     }
 
 
-    
+
     /**
      * Summary of replacePlaceholders
      * @param string $body
@@ -100,25 +100,25 @@ trait Notify
      * @param null|\App\Models\User $parentUser
      * @return array|string
      */
-    public function replacePlaceholders( string $body , 
+    public function replacePlaceholders( string $body ,
                                          string $settingsKey ,
                                          array $tmpCodes,
-                                         mixed $userinfo, 
+                                         mixed $userinfo,
                                          null | User $parentUser  = null
                                          ): array|string
     {
 
 
         $siteLogo = Settings::with(relations: ['file'])
-                    ->withoutGlobalScope(UserScope::class)
-                    ->where('user_id', $parentUser->id)
-                    ->where('key',SettingKey::SITE_LOGO->value)
-                    ->where('group', SettingKey::LOGO->value)
-                    ->first();
+                                ->withoutGlobalScope(UserScope::class)
+                                ->where('user_id', $parentUser->id)
+                                ->where('key',SettingKey::SITE_LOGO->value)
+                                ->where('group', SettingKey::LOGO->value)
+                                ->first();
 
 
         $logo = $this->getimageURL(
-                                    file    : $siteLogo?->file , 
+                                    file    : $siteLogo?->file ,
                                     location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value]['user']['path']
                                 );
 
@@ -150,17 +150,17 @@ trait Notify
                 return '{{' . $key . '}}';
             }, array_keys($tmpCodes)),
             array_values($tmpCodes),
-            str_replace([ 
-                                           "{{name}}", 
+            str_replace([
+                                           "{{name}}",
                                            "{{message}}" ,
                                            "{{company_name}}",
                                            "{{phone}}",
                                            "{{email}}",
                                            "{{logo}}"
-                                         ], 
-                                         [ 
-                                             $userinfo->username?? $siteName , 
-                                             $body ?? translate('Dummy message') , 
+                                         ],
+                                         [
+                                             $userinfo->username?? $siteName ,
+                                             $body ?? translate('Dummy message') ,
                                              $siteName,
                                              $sitePhone,
                                              $email,
@@ -174,7 +174,7 @@ trait Notify
 
 
 
-    
+
     /**
      * createLog
      *
@@ -183,7 +183,7 @@ trait Notify
      * @param array $data
      * @param bool $broadcast
      * @param bool $isEmployee
-     * 
+     *
      * @return void
      */
     public function createLog(Settings  $gateway , string $message , array $data): void{
@@ -194,7 +194,7 @@ trait Notify
 
         $senderModel   =  Arr::get($data , 'sender_model');
         $customData    =  Arr::get($data , 'custom_data');
-        
+
         if(isset($customData['push_notification']['receiver_model'])) unset($customData['push_notification']['receiver_model']);
 
         $notificationLog->gateway_id        = $gateway->id;
@@ -206,7 +206,7 @@ trait Notify
         $notificationLog->message           = $message;
         $notificationLog->status            = NotificationLogStatus::PENDING;
         $notificationLog->save();
-        
+
         SendNotificationJob::dispatchSync($notificationLog->load('gateway', 'receiver'));
 
     }

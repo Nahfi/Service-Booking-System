@@ -9,14 +9,18 @@ use App\Facades\ApiResponse;
 use App\Models\User;
 use App\Traits\Common\Fileable;
 use App\Traits\Common\ModelAction;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Modules\Settings\Models\File;
+use Modules\User\Http\Services\AuthService;
 use Modules\UserMessaging\Http\Resources\UserConversationResource;
 use Modules\UserMessaging\Http\Resources\UserMessageResource;
 use Modules\UserMessaging\Models\UserConversation;
@@ -30,62 +34,33 @@ class MessageService
     use ModelAction , Fileable;
 
 
-
-
-
     /**
      * Summary of getConversationList
      * @return JsonResponse
      */
     public function getConversationList(): JsonResponse{
 
-
-          $authUser = getAuthUser();
-
-
-             // Step 1: Get all users except auth user with eager loaded possible conversations
-    $users = User::where('id', '!=', $authUser->id)
-        ->with([
-            'conversationAsUserOne' => function ($query) use ($authUser) {
-                $query->where('user_two_id', $authUser->id)
-                      ->with(['messages' => function ($q) use ($authUser) {
-                          $q->where('sender_id', '!=', $authUser->id)
-                            ->where('is_read', false)
-                            ->latest()
-                            ->limit(1);
-                      }, 'conversationPreferences' => function ($q) use ($authUser) {
-                          $q->where('user_id', $authUser->id);
-                      }]);
-            },
-            'conversationAsUserTwo' => function ($query) use ($authUser) {
-                $query->where('user_one_id', $authUser->id)
-                      ->with(['messages' => function ($q) use ($authUser) {
-                          $q->where('sender_id', '!=', $authUser->id)
-                            ->where('is_read', false)
-                            ->latest()
-                            ->limit(1);
-                      }, 'conversationPreferences' => function ($q) use ($authUser) {
-                          $q->where('user_id', $authUser->id);
-                      }]);
-            }
-        ])
-        ->paginate(10);
-
-    // Step 2: Attach conversation, unread message & preferences to each user
-    $users->getCollection()->transform(function ($user) {
-        $conversation = $user->conversation; // uses getConversationAttribute()
-
-        $user->latest_unread_message = $conversation?->messages?->first() ?? null;
-        $preference = $conversation?->conversationPreferences?->first() ?? null;
-
-        $user->is_blocked = (bool) optional($preference)->is_blocked;
-        $user->is_muted = (bool) optional($preference)->is_muted;
-
-        return $user;
-    });
+        $authUser      = getAuthUser();
 
 
-    return response()->json($users);
+        $conversations = UserConversation::with([
+                                    'latestMessage' => fn(BelongsTo $q):BelongsTo => $q->visibleToUser($authUser->id),
+                                    'userOne.file',
+                                    'userTwo.file',
+                                    'conversationPreferences' => fn(HasMany $q) : HasMany =>
+                                         $q->where('user_id' ,$authUser->id)
+                                    ])
+                                ->whereUserInvolved($authUser->id)
+                                ->orderByDesc('last_message_at')
+                                ->paginate(paginateNumber())
+                                ->appends(request()->all());
+
+
+        return ApiResponse::asSuccess()
+                            ->withData(resource: $conversations,resourceNamespace: UserConversationResource::class)
+                            ->build();
+
+
 
     }
 
@@ -127,16 +102,10 @@ class MessageService
 
         $messages = UserMessage::with(['files','reactions.user.file','sender','replyTo'])
                                ->where('conversation_id',$conversation->id)
-                                        ->where(function (Builder $query) use ($user): void {
-                                            $query->where(function (Builder $q) use ($user) {
-                                                $q->where('sender_id', $user->id)
-                                                ->where('deleted_by_sender', false);
-                                            })->orWhere(function (Builder $q) use ($user): void {
-                                                $q->where('sender_id', '!=', $user->id)
-                                                ->where('deleted_by_receiver', false);
-                                            });
+                                        ->where(function (Builder $query) use ($user): void{
+                                            $query->visibleToUser($user->id);
                                         })->paginate(paginateNumber())
-                                                  ->appends(request()->all());
+                                          ->appends(request()->all());
 
 
 
@@ -190,7 +159,9 @@ class MessageService
             if($senderId == $receiverId)
                    throw new Exception(translate("Sender and receiver can not be the same person"), Response::HTTP_FORBIDDEN);
 
-            $receiverUser     = User::where('id', $receiverId)->firstOrfail();
+            $receiverUser     = User::active()
+                                        ->where('id', $receiverId)
+                                        ->firstOrfail();
 
             $isNotChildOfParent = $receiverUser->parent_id && $receiverUser->parent_id != $parentUserId;
 
@@ -202,19 +173,15 @@ class MessageService
 
         }
 
+
         $conversation = UserConversation::findOrCreateWithOptionalId($conversationId, $senderId, $receiverId);
-
-
-        #todo: notify receiver  if convo is new
-        if($conversation->wasRecentlyCreated){
-
-        }
 
 
 
         $message =  DB::transaction(function() use($replyToId , $conversation ,  $user , $content ,  $files): UserMessage{
 
                         if($replyToId){
+
                             $replyMessage = UserMessage::where('conversation_id', $conversation->id)
                                                                 ->where('id',$replyToId)
                                                                 ->firstOrFail();
@@ -246,9 +213,27 @@ class MessageService
                         }
 
 
+                        $conversation->update([
+                            'last_message_id' => $message->id,
+                            'last_message_at' => Carbon::now(),
+                        ]);
+
                         return $message->load(['files','sender','replyTo']);
 
                     });
+
+
+
+        #notify receiver  if convo is new
+        if($conversation->wasRecentlyCreated){
+
+            $parentUser = !$user->parent_id
+                                        ? $user
+                                        : (new AuthService())->findActiveUser(['parent_id' => $user->id]);
+
+            $receiverUser->notifyUserMessage( $user->name ,$parentUser , $conversation);
+
+        }
 
 
 
@@ -299,6 +284,7 @@ class MessageService
 
 
         if($message->deleted_by_receiver){
+
             self::destroyMessage($message);
             return ApiResponse::asSuccess()->build();
         }
@@ -333,7 +319,7 @@ class MessageService
                             'message_id' => $messageId,
                             'user_id'    => $user->id,
                             'reaction'   => $request->input('reaction')
-                        ];
+                           ];
 
         $reaction = UserMessageReaction::where($queryAttributes)
                                         ->first();

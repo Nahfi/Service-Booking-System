@@ -27,6 +27,20 @@ return new class extends Migration
                              ->nullable()
                              ->constrained(table: 'users');
 
+
+
+            $table->unsignedBigInteger('last_message_id')
+                            ->index()
+                            ->nullable()
+                            ->constrained(table: 'user_messages');
+
+
+
+            $table->timestamp('last_message_at')
+                            ->nullable()
+                            ->index();
+
+
             $table->timestamps();
         });
     }
