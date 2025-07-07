@@ -1,10 +1,12 @@
 
 
 import type React from "react";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { BsPlusLg } from "react-icons/bs";
 import { LuRefreshCw } from "react-icons/lu";
+import { useSearchParams } from "react-router";
 import Button from "../../components/common/button/Button";
 import ModalWrapper, { DeleteModal } from "../../components/common/modal";
 import PageHeader from "../../components/common/Page-header/PageHeader";
@@ -20,6 +22,8 @@ import useRolesStatusUpdate from "./api/hooks/useRoleUpdateStatus";
 import RoleListTable from "./components/table/RoleListTable";
 
 const ManageRole: React.FC = () => {
+    const [searchParams] = useSearchParams();
+    const queryRefetch = searchParams.get("refetch");
 
     const { t } = useTranslation();
 
@@ -30,8 +34,13 @@ const ManageRole: React.FC = () => {
 
 
     const { mutate: updateStatus } = useRolesStatusUpdate();
-    const { mutate: deleteRoleFn, isPending: deleteButtonLoader } =
-        useRoleDelete();
+    const { mutate: deleteRoleFn, isPending: deleteButtonLoader } = useRoleDelete();
+    
+    useEffect(() => {
+        if (queryRefetch) {
+            refetch();
+        }
+    }, [queryRefetch]);
 
     const handleStatusChange = (role) => {
         const postData = {

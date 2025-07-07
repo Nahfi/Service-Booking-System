@@ -10,6 +10,7 @@ import { useModal } from "../../../context";
 import { valueToKey } from "../../../utils/helper";
 import type { ModalContextType } from "../../../utils/types";
 import useGetUserSession from "../api/hooks/useGetUserSession";
+import useLogout from "../api/hooks/useLogout";
 
 const Sessions: React.FC = () => {
     const { t } = useTranslation()
@@ -18,8 +19,23 @@ const Sessions: React.FC = () => {
     const sessionData = data?.data || [];
 
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid = "twoFactorModal"
+    const modalUid: string = "sessionModal"
 
+    const { mutate: logoutFn, isPending } = useLogout()
+
+    const handleLogout = () => {
+        logoutFn({}, {
+            onSuccess: (response) => {
+                if (response) {
+                    toast.success("Logout form this session");
+                    closeModal();
+                    refetch();
+                }
+            },
+        })
+    }
+    
+    
     return (
         <>
             <Card>
@@ -128,7 +144,6 @@ const Sessions: React.FC = () => {
                                     </div>
                                 </div>
                             ))}
-
                     </div>
                 </CardBody>
             </Card>
@@ -144,10 +159,12 @@ const Sessions: React.FC = () => {
                 >
                     {modalConfig?.type === "LOGOUT_SESSION" && (
                         <DeleteModal onHide={closeModal}
-                            message={` Are you sure you want to log out?`}
+                            message={` Are you sure you want to log out this session?`}
                             description={`You will be signed out of your current session.
                                 Make sure you've saved any unsaved work.`}
                             buttonLabel={`Log Out`}
+                            onDelete={handleLogout}
+                            isLoading={isPending}
                         />
                     )}
 

@@ -40,7 +40,6 @@ const Language: React.FC = () => {
         setFilteredLanguages(filtered);
     };
 
-
     const handleStatusChange = (language) => {
         const postData = {
             id: language?.id,

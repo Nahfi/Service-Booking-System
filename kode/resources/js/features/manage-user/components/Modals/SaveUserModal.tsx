@@ -1,19 +1,19 @@
 import Button from "@/components/common/button/Button";
 import Field from "@/components/common/from/Field";
 import type React from "react";
-import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-
 import { valueToKey } from "../../../../utils/helper";
 import type { FormSubmitEvent } from "../../../../utils/types";
 import useSaveUser from "../../api/hooks/useSaveUser";
-import type { ModalConfigType, RoleType, SaveUserPayload } from "../../utils/type";
+import type { ModalConfigType, RoleType } from "../../utils/type";
+import { saveUser } from "../../utils/userController";
 
 interface SaveUserModalProps {
     closeModal: () => void;
     modalConfig: ModalConfigType;
     refetchFn: () => void;
     roles: RoleType[];
+    isTrash: boolean;
 }
 
 const SaveUserModal: React.FC<SaveUserModalProps> = ({
@@ -21,57 +21,16 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
     modalConfig,
     refetchFn,
     roles,
+    isTrash = false
 }) => {
 
     const { t } = useTranslation();
-
     const { mutate: saveUserFn, isPending } = useSaveUser();
     const user = modalConfig?.data;
-    const address = user?.address[0]
+    const address = user?.address?.[0] ?? {}
 
-    
-    const handleOnSubmit = (e: FormSubmitEvent): void => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
-
-        const addressData = [
-            {
-                country: formData.get("country") as string,
-                city: formData.get("city") as string,
-                full_address: formData.get("full_address") as string,
-                postal_code: formData.get("postal_code") as string,
-            }
-        ];
-
-        formData.delete("country");
-        formData.delete("city");
-        formData.delete("full_address");
-        formData.delete("postal_code");
-        
-        const postData = Object.fromEntries(
-            formData.entries()
-        ) as unknown as SaveUserPayload;
-
-        // Remove password fields if they are empty
-        if (!postData.password || postData.password === '') {
-            delete postData.password;
-        }
-        if (!postData.password_confirmation || postData.password_confirmation === '') {
-            delete postData.password_confirmation;
-            }
-
-        postData.address = addressData;
-
-        saveUserFn(postData, {
-            onSuccess: (response) => {
-                if (response) {
-                    e.target.reset();
-                    refetchFn();
-                    closeModal();
-                    toast.success("User create successfully!");
-                }
-            },
-        });
+    const handleOnSubmit = (event: FormSubmitEvent): void => {
+        saveUser(event, saveUserFn, refetchFn, closeModal)
     };
 
     return (
@@ -94,6 +53,14 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                             type="hidden"
                             name="id"
                             defaultValue={user?.id}
+                        />
+                    )}
+
+                    {isTrash && (
+                        <input
+                            type="hidden"
+                            name="is_trash"
+                            defaultValue={1}
                         />
                     )}
 
@@ -152,14 +119,14 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                                     required
                                     defaultValue={user?.role?.id}
                                 >
-                                    <option>--Select role--</option>
+                                    <option value={""}>--Select role--</option>
                                     {roles?.length > 0 &&
                                         roles?.map((role) => (
                                             <option
-                                                value={role?.id}
-                                                key={role?.id}
+                                                value={role?.value}
+                                                key={role?.value}
                                             >
-                                                {role?.name}
+                                                {role?.label}
                                             </option>
                                         ))}
                                 </select>
@@ -167,8 +134,6 @@ const SaveUserModal: React.FC<SaveUserModalProps> = ({
                         </div>
                     </div>
                 </div>
-
-
 
                 <div className="info-block">
                     <div>

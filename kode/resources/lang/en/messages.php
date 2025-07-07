@@ -51,4 +51,5 @@ __{_subject_:_test_subject_}__pending__2025-05-21_10:08:33__2025-05-21_10:08:33)
   'property_[file]_does_not_exist_on_the_eloquent_builder_instance.' => 'Property [file] does not exist on the Eloquent builder instance.',
   'this_role_cannot_be_deleted_because_it_has_users_assigned_to_it' => 'This role cannot be deleted because it has users assigned to it',
   'role_deleted' => 'Role Deleted',
+  'no_query_results_for_model_[app\\models\\user].' => 'No query results for model [App\\Models\\User].',
 );

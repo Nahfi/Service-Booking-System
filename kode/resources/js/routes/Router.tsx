@@ -22,8 +22,8 @@ import Templates from "../features/conversation/pages/template/Templates";
 import WhatsappChat from "../features/conversation/pages/whatsapp-chat/WhatsappChat";
 import Dashboard from "../features/dashboard/Dashboard";
 import Error from "../features/error/Error";
-import UserDetails from "../features/manage-user/UserDetails";
 import Users from "../features/manage-user/Users";
+import UsersRecycleBin from "../features/manage-user/UsersRecycleBin";
 import PricingPlan from "../features/plans/PricingPlan";
 import Profile from "../features/profile/Profile";
 import Reports from "../features/reports/Reports";
@@ -170,9 +170,13 @@ const router: RouteObject[] = createBrowserRouter(
                     element: <Users />,
                 },
                 {
-                    path: "/users/:userId",
-                    element: <UserDetails />,
+                    path: "/users/recycle-bin",
+                    element: <UsersRecycleBin />,
                 },
+                // {
+                //     path: "/users/:userId",
+                //     element: <UserDetails />,
+                // },
                 {
                     path: "/setting",
                     element: <Settings />,

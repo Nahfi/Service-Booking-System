@@ -1,7 +1,7 @@
 
+import MainApi from "@/api-manager/MainApi";
+import { onErrorResponse } from "@/api-manager/api-error-response/ErrorResponses";
 import { useQuery } from "@tanstack/react-query";
-import MainApi from "../../../../api-manager/MainApi";
-import { onErrorResponse } from "../../../../api-manager/api-error-response/ErrorResponses";
 
 const getData = async () => {
     try {
@@ -18,7 +18,7 @@ const useGetRoles = (enabled = true)=> {
         queryKey: ["user-get-roles"],
         queryFn: getData,
         staleTime: 1000 * 60 * 5,
-        // cacheTime: 100000,
+        cacheTime: 100000,
         onError: onErrorResponse,
         // refetchOnWindowFocus: false,
         // refetchOnMount: false,

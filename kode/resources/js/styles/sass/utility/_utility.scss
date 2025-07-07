@@ -889,3 +889,15 @@
 .tox-statusbar__branding{
   display: none !important;
 }
+
+
+
+// User Details css
+.user-details{
+  .user-profile-wrapper{
+      .user-profile-image{
+          @include square(90px,$radius-rounded);
+          overflow: hidden;
+      }
+  }
+}

@@ -17,7 +17,6 @@ export enum BulkActionTypes {
   }
 
 
-
 //   Role Permission
   export type PermissionKey =
       | "user"

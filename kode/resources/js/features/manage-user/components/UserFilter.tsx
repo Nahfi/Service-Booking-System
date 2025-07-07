@@ -12,6 +12,7 @@ const options = [
 ]
 
 const UserFilter = ({ roles, onReset }) => {
+
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
         null,
         null,
@@ -22,11 +23,6 @@ const UserFilter = ({ roles, onReset }) => {
     const handleDateChange = (date: [Date | null, Date | null]) => {
         setDateRange(date);
     };
-
-    const roleOptions = roles.map((role) => ({
-        value: role.id,
-        label: role.name,
-    }));
 
     const [selectInput, setSelectInput] = useState({
         'role_id': "",
@@ -45,7 +41,7 @@ const UserFilter = ({ roles, onReset }) => {
     const formatDateRange = () => {
         if (!startDate || !endDate) return "";
         const formatDate = (date: Date) => {
-            const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is 0-based, add 1
+            const month = String(date.getMonth() + 1).padStart(2, "0");
             const day = String(date.getDate()).padStart(2, "0");
             const year = date.getFullYear();
             return `${month}/${day}/${year}`;
@@ -61,7 +57,7 @@ const UserFilter = ({ roles, onReset }) => {
                         type="search"
                         id="search"
                         name="search"
-                        placeholder="Search contacts"
+                        placeholder="Search by name or email"
                         className="form-control h-40"
                     />
                 </Field>
@@ -91,7 +87,7 @@ const UserFilter = ({ roles, onReset }) => {
 
             <Field>
                 <SelectBox
-                    options={roleOptions}
+                    options={roles}
                     icon={<LuUserPlus />}
                     name="role_id"
                     placeholder={"Choose user"}

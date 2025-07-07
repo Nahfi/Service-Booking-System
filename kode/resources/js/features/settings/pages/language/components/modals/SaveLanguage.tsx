@@ -25,9 +25,7 @@ const SaveLanguage: React.FC<SaveLanguageProps> = ({ onHide, language, refetchFn
     const { mutate: saveLanguageFn, isPending } = useStoreLanguage();
 
     const handleStoreLanguage = (e: FormSubmitEvent): void => {
-        console.log("Form submission triggered"); // Debug log
         e.preventDefault();
-
         const formData = new FormData(e.target);
 
         const postData = Object.fromEntries(

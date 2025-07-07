@@ -14,5 +14,11 @@
     "profile_information": "Profile Information",
     "security": "Security",
     "sessions": "Sessions",
-    "visibility_settings": "Visibility Settings"
+    "visibility_settings": "Visibility Settings",
+    "actions": "Actions",
+    "back_to_user": "Back to user",
+    "show_online_status": "show_online_status",
+    "delete_users": "Delete Users",
+    "restore_users": "Restore Users",
+    "status_update": "Status Update"
 }

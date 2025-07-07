@@ -16,7 +16,6 @@ export type InputFocusEvent = FocusEvent<HTMLInputElement>;
 export type InputKeyboardEvent = KeyboardEvent<HTMLInputElement>;
 export type DivClickEvent = MouseEvent<HTMLDivElement>;
 
-
 // Modal
 export type ModalType = "CREATE" | "EDIT" | "DELETE" | (string & {});
 
@@ -57,4 +56,28 @@ export interface ThemeContextType {
     };
     toggleTheme: () => void;
     toggleDirection: () => void;
+}
+
+
+// API  Response
+
+export interface ApiActionResponse {
+    success: boolean;
+    code: number;
+    message: string;
+}
+
+export interface PaginationMetaType {
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+    from: number;
+    to: number;
+    prev_page_url: string | null;
+    next_page_url: string | null;
+    prev_page: number | null;
+    next_page: number | null;
+    path: string;
+    query: string[];
 }

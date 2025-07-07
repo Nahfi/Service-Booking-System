@@ -294,17 +294,35 @@ export const normalizeDate = (date) => {
     return normalized;
 };
 
+// export const getFilterableUrl = (url, filters) => {
+//     Object.entries(filters).forEach(([key, value], index) => {
+//         if (index === 0) {
+//             url += "?";
+//         } else {
+//             url += "&";
+//         }
+//         url += `${key}=${value || null}`;
+//     });
+
+//     return url;
+// };
+
 export const getFilterableUrl = (url, filters) => {
-    Object.entries(filters).forEach(([key, value], index) => {
-        if (index === 0) {
-            url += "?";
-        } else {
-            url += "&";
+    const params = new URLSearchParams();
+
+    Object.entries(filters).forEach(([key, value]) => {
+        if (
+            value !== null &&
+            value !== undefined &&
+            value !== "" &&
+            value !== "null"
+        ) {
+            params.append(key, value);
         }
-        url += `${key}=${value || null}`;
     });
 
-    return url;
+    const queryString = params.toString();
+    return queryString ? `${url}?${queryString}` : url;
 };
 
 export const handlePageChange = (page, hookFn) => {

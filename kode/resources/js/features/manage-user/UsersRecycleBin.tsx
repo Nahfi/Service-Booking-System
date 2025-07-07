@@ -1,9 +1,10 @@
+
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 
 import { Dropdown } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { LuCircleCheckBig, LuPlus, LuRecycle, LuTrash2 } from "react-icons/lu";
+import { LuCircleCheckBig, LuCornerUpLeft, LuRotateCcw, LuTrash2 } from "react-icons/lu";
 import { useSearchParams } from "react-router";
 import Button from "../../components/common/button/Button";
 import FilterWrapper from "../../components/common/filter/FilterWrapper";
@@ -16,29 +17,32 @@ import TableWrapper from "../../components/common/table/TableWrapper";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import { useModal } from "../../context";
 import { BulkActionTypes } from "../../utils/constant";
-import { handlePageChange, valueToKey } from "../../utils/helper";
+import { handlePageChange } from "../../utils/helper";
 import type { FormSubmitEvent, ModalContextType } from "../../utils/types";
 import useGetRoles from "../role-permission/api/hooks/useGetRoles";
 import useBulkUserAction from "./api/hooks/useBulkUserAction";
 import useDeleteUser from "./api/hooks/useDeleteUser";
 import useGetUsers from "./api/hooks/useGetUsers";
+import useRestoreUser from "./api/hooks/useRestoreUser";
 import useUpdateUserStatus from "./api/hooks/useUpdateUserStatus";
 import SaveUserModal from "./components/Modals/SaveUserModal";
 import UserDetailsModal from "./components/Modals/UserDetailsModal";
 import UserFilter from "./components/UserFilter";
 import UserTable from "./components/UserTable";
 import type { ModalConfigType, RoleType, UserType } from "./utils/type";
-import { bulkUserAction, deleteUser, resetUserFilter, updateUserStatus, userFilter } from "./utils/userController";
+import { bulkUserAction, deleteUser, resetUserFilter, restoreUser, updateUserStatus, userFilter } from "./utils/userController";
 
-const filterObject = { page: "0" };
+const filterObject = { is_trash: "1", page: "0" };
 
-const Users: React.FC = () => {
+const UsersRecycleBin: React.FC = () => {
     const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const queryRefetch = searchParams.get("refetch");
-    
+
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid = "userModal"
+    const modalUid: string = "userRecycleModal"
+
+    const isTrash: boolean = true;
 
     const filterRef = useRef<HTMLDivElement | null>(null);
 
@@ -53,8 +57,11 @@ const Users: React.FC = () => {
     const { mutate: deleteUserFn, isPending: deleteButtonLoader } = useDeleteUser();
     const { mutate: BulkUserActionFn, isPending: BulkActionLoader } = useBulkUserAction();
 
+    const { mutate: restoreUserFn, isPending:restoreLoader } = useRestoreUser();
+    
     const { data: rolesData } = useGetRoles();
     const roles: RoleType[] = useMemo(() => rolesData?.data || [], [rolesData]);
+    
     const formattedRoles = useMemo(
         () =>
             roles.map(role => ({
@@ -70,14 +77,26 @@ const Users: React.FC = () => {
         }
     }, [queryRefetch]);
 
+    // useEffect(() => {
+    //     refetch();
+    //     setFilters((prevState) => ({
+    //         ...prevState,
+    //         page: 0,
+    //     }));
+    // }, []);
+
 
     const handleStatusChange = (user: UserType) => {
-        updateUserStatus(user, updateStatus, refetch)
+        updateUserStatus(user, updateStatus, refetch, isTrash)
     };
 
     const handleResourceDelete = () => {
-        deleteUser(modalConfig?.data, deleteUserFn, closeModal, refetch)
+        deleteUser(modalConfig?.data, deleteUserFn, closeModal, refetch, isTrash)
     };
+
+    const handleResourceRestore = () => {
+        restoreUser(modalConfig?.data, restoreUserFn, closeModal, refetch)
+    }
 
     const onPageChange = (page) => {
         handlePageChange(page, setFilters);
@@ -85,7 +104,7 @@ const Users: React.FC = () => {
     };
 
     const handleBulkAction = (actionType: BulkActionTypes, value?: "active" | "inactive") => {
-        bulkUserAction(actionType,value,BulkUserActionFn,selectedId,setSelectedId,refetch,closeModal)
+        bulkUserAction(actionType, value, BulkUserActionFn, selectedId, setSelectedId, refetch, closeModal)
     };
 
     const handleOnFilter = (event: FormSubmitEvent): void => {
@@ -98,24 +117,17 @@ const Users: React.FC = () => {
 
     return (
         <>
-            <SEO title="Manage User" />
+            <SEO title="User Recycle Bin" />
 
             <BaseLayout>
                 <PageHeader
-                    title={"Manage Staffs"}
-                    breadcrumbs={[{ title: "Manage User" }]}
+                    title={"User Recycle Bin"}
+                    breadcrumbs={[{ title: "Manage User", path: "/users", query_params: { refetch: "true" } }, { title: "User Recycle Bin" }]}
                 >
-                    <>
-                        <Button
-                            onClick={() =>
-                                openModal(modalUid, "CREATE", "Create User", "lg")
-                            }
-                            className="btn--primary btn--md rounded-3"
-                        >
-                            <LuPlus className="fs-18" />
-                            {t(valueToKey("Add New staff"), "Add New staff")}
-                        </Button>
-                    </>
+                    <Button className="btn--dark btn--md outline rounded-3" href="/users?refetch=true">
+                        <LuCornerUpLeft className="fs-18" />
+                        {t("back_to_user")}
+                    </Button>
                 </PageHeader>
 
                 <div>
@@ -142,9 +154,24 @@ const Users: React.FC = () => {
                                         className="btn--danger btn--md rounded-3"
                                     >
                                         <LuTrash2 className="fs-18" />
+                                        {t("delete_users")}
+                                    </Button>
+
+                                    <Button
+                                        onClick={() =>
+                                            openModal(
+                                                modalUid,
+                                                "RESTORE_BULK",
+                                                "",
+                                                "md",
+                                                selectedId
+                                            )
+                                        }
+                                        className="btn--info btn--md rounded-3"
+                                    >
+                                        <LuRotateCcw className="fs-18" />
                                         {t(
-                                            valueToKey("Delete Users"),
-                                            `Delete Users`
+                                            "restore_users"
                                         )}
                                     </Button>
 
@@ -152,10 +179,8 @@ const Users: React.FC = () => {
                                         <Dropdown.Toggle className="i-btn btn--warning btn--md rounded-3" id="dropdown-status">
                                             <LuCircleCheckBig className="fs-18 text-white" />
                                             <span className="text-white">
-                                                {t(
-                                                    valueToKey("Status Update"),
-                                                    `Status update`
-                                                )}</span>
+                                                {t(`status_update`)}
+                                            </span>
                                         </Dropdown.Toggle>
 
                                         <Dropdown.Menu className="dropdown-content">
@@ -163,28 +188,24 @@ const Users: React.FC = () => {
                                                 as="button"
                                                 onClick={() => handleBulkAction(BulkActionTypes.STATUS, "active")}
                                             >
-                                                Active
+                                                {t(`active`)}
                                             </Dropdown.Item>
                                             <Dropdown.Item
                                                 as="button"
                                                 onClick={() => handleBulkAction(BulkActionTypes.STATUS, "inactive")}
                                             >
-                                                Inactive
+                                                {t(`inactive`)}
                                             </Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </>
                             )}
 
-                            <Button className="btn--dark btn--md rounded-3" href="/users/recycle-bin?refetch=true">
-                                <LuRecycle className="fs-18" />
-                                {t(valueToKey("Recycle Bin"), "Recycle Bin")}
-                            </Button>
                         </div>
                     </div>
 
                     <TableWrapper loader={isLoading}>
-                        <UserTable
+                        <UserTable 
                             usersData={usersData}
                             bulkActions={{ selectedId, setSelectedId }}
                             actions={{
@@ -192,6 +213,7 @@ const Users: React.FC = () => {
                                 modal: { fn: openModal, modalUid },
                             }}
                             loader={isLoading}
+                            isTrash={isTrash}
                         />
                     </TableWrapper>
 
@@ -219,6 +241,7 @@ const Users: React.FC = () => {
                                 roles={formattedRoles}
                                 modalConfig={modalConfig as ModalConfigType}
                                 refetchFn={refetch}
+                                isTrash={isTrash}
                             />
                         )}
 
@@ -228,8 +251,8 @@ const Users: React.FC = () => {
 
                     {modalConfig?.type === "DELETE" && (
                         <DeleteModal
-                            message="Move user to Recycle Bin?"
-                            description="The user will lose access but can be restored later"
+                            message="Are you sure you want to permanently delete?"
+                            description="The user will be removed permanently and cannot be recovered"
                             onHide={closeModal}
                             onDelete={handleResourceDelete}
                             isLoading={deleteButtonLoader}
@@ -238,11 +261,35 @@ const Users: React.FC = () => {
 
                     {modalConfig?.type === "DELETE_BULK" && (
                         <DeleteModal
-                            message="Move all selected users to Recycle Bin?"
-                            description="These users will be disabled, but you can restore them later"
+                            message="Are you sure you want to permanently delete these users?"
+                            description="These users will be removed permanently and cannot be recovered"
                             onHide={closeModal}
-                            onDelete={() => handleBulkAction(BulkActionTypes.DELETE)}
+                            onDelete={() => handleBulkAction(BulkActionTypes.FORCE_DELETE)}
                             isLoading={BulkActionLoader}
+                        />
+                    )}
+
+                    {modalConfig?.type === "RESTORE" && (
+                        <DeleteModal
+                            message="Are you sure you want to restore this user?"
+                            description="Restores the user's access and previous settings"
+                            onHide={closeModal}
+                            onDelete={handleResourceRestore}
+                            isLoading={restoreLoader}
+                            buttonLabel="Confirm"
+                            type="Confirm"
+                        />
+                    )}
+
+                    {modalConfig?.type === "RESTORE_BULK" && (
+                        <DeleteModal
+                            message="Are you sure you want to restore these users?"
+                            description="Restores these users's access and previous settings"
+                            onHide={closeModal}
+                            onDelete={() => handleBulkAction(BulkActionTypes.RESTORE)}
+                            isLoading={BulkActionLoader}
+                            buttonLabel="Confirm"
+                            type="Confirm"
                         />
                     )}
                 </ModalWrapper>
@@ -251,4 +298,4 @@ const Users: React.FC = () => {
     );
 };
 
-export default Users;
+export default UsersRecycleBin;

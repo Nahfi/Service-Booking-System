@@ -13,19 +13,14 @@ const UserDetailsModal: React.FC = ({ onHide, modalData:user }) => {
     const address = Object.entries(user?.address[0] || []);
     const role = user?.role
     
-    console.log(user);
-    
-
-
     return (
         <div>
             <div className="row g-3 user-details">
                 <div className="col-12">
                     <Card>
                         <CardBody>
-
                             <div className="user-profile-wrapper d-flex align-items-center gap-4">
-                                <div className="user-profile-image">
+                                <div className="user-profile-image flex-shrink-0">
                                     <img src={user?.img_url} className='w-100 h-100'/>
                                 </div>
 
@@ -52,7 +47,6 @@ const UserDetailsModal: React.FC = ({ onHide, modalData:user }) => {
                                     </p>
                                 </div>
                             </div>
-
                         </CardBody>
                     </Card>
                 </div>
@@ -154,10 +148,10 @@ const UserDetailsModal: React.FC = ({ onHide, modalData:user }) => {
                                                 className="col-lg-6"
                                             >
                                                 <div className="py-2 px-3 border rounded-3 bg--light">
-                                                    <p className="mb-2 fs-14 fw-semibold">
+                                                    <p className="mb-2 fs-13 fw-semibold">
                                                         {keyToValue(key)}
                                                     </p>
-                                                    <ul className="d-flex align-items-center gap-2">
+                                                    <ul className="d-flex align-items-center flex-wrap gap-2">
                                                         {value?.map(
                                                             (
                                                                 permission,
