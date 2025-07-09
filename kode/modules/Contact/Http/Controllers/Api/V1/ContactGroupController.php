@@ -25,7 +25,7 @@ class ContactGroupController extends Controller
         $this->middleware('user.permission.check:view_contact_group')
                 ->only(['index', 'show']);
         $this->middleware('user.permission.check:save_contact_group')
-                ->only(['store', 'update', 'updateStatus', 'bulk']);
+                ->only(['store', 'update', 'updateStatus']);
         $this->middleware('user.permission.check:destroy_contact_group')
                 ->only(['destroy', 'restore']);
     }

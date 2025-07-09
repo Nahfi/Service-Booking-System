@@ -405,12 +405,12 @@ class ContactService
       */
      public function restoreContactGroup(string|null $uid = null): JsonResponse {
 
-          $user = ContactGroup::onlyTrashed()
+          $log = ContactGroup::onlyTrashed()
                                    ->where('user_id', parent_user()->id)
                                    ->where('uid', $uid)
                                    ->firstOrFail();
 
-          $user->restore();
+          $log->restore();
           return ApiResponse::asSuccess()
                                    ->withMessage(translate("Contact group restored successfully"))
                                    ->build();

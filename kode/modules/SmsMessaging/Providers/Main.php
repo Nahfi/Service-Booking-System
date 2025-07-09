@@ -2,7 +2,9 @@
 
 namespace Modules\SmsMessaging\Providers;
 
+use App\Enums\Settings\GlobalConfig;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as Provider;
 
 class Main extends Provider
@@ -131,6 +133,12 @@ class Main extends Provider
         foreach ($routes as $route) {
             $this->loadRoutesFrom(__DIR__ . '/../Routes/' . $route);
         }
+        Route::prefix(GlobalConfig::USER_API_ROUTE_PREFIX)
+                    ->middleware(GlobalConfig::GLOBAL_MIDDLEWARE)
+                    ->group(__DIR__ . '/../Routes/api/v1/api.php');
+
+        Route::prefix(GlobalConfig::USER_API_ROUTE_PREFIX)
+                    ->group(__DIR__ . '/../Routes/api/v1/app/api.php');
     }
 
     /**
