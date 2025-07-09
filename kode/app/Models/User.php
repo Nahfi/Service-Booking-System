@@ -131,8 +131,6 @@ class User extends Authenticatable
         return $this->belongsTo(SELF::class,'parent_id');
     }
 
-
-
     /**
      * Summary of settings
      * @return HasMany<Settings, User>

@@ -833,6 +833,24 @@ enum GlobalConfig {
             "save_contact_import",
             "destroy_contact_import"
         ],
+        
+        "sms_provider" => [ 
+            "view_sms_provider",
+            "save_sms_provider",
+            "destroy_sms_provider"
+        ],
+
+        "sms_provider_device" => [ 
+            "view_sms_provider_devices",
+            "save_sms_provider_devices",
+            "destroy_sms_provider_devices"
+        ],
+
+        "sms_gateway" => [ 
+            "view_sms_gateway",
+            "save_sms_gateway",
+            "destroy_sms_gateway"
+        ],
     ];
 
 
