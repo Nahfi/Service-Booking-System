@@ -29,6 +29,7 @@ class UserConversationResource extends JsonResource
 
 
 
+
         if ($this->users &&  !$this->users->isEmpty()) {
 
             $userCollection =  $this->users?->map(function (User $user): array{
@@ -48,15 +49,13 @@ class UserConversationResource extends JsonResource
                                         });
 
 
-
             $data['users'] = $userCollection;
 
         }
 
 
 
-
-        if ($this->conversationPreferences &&  !$this->conversationPreferences->isEmpty()) {
+        if ($this->relationLoaded('conversationPreferences') && $this->conversationPreferences &&  !$this->conversationPreferences->isEmpty()) {
 
             $preferenceCollection =  $this->conversationPreferences?->map(function (UserConversationPreference $userConversationPreference): array{
 
@@ -71,6 +70,11 @@ class UserConversationResource extends JsonResource
 
             $data['conversation_preferences'] = $preferenceCollection;
 
+        }
+
+
+        if($this->relationLoaded('latestMessage') && $this->latestMessage){
+            $data['latest_message'] = new UserMessageResource($this->latestMessage);
         }
 
         return $data;

@@ -4,7 +4,7 @@ import SpinnerLoader from "../../../../../../components/common/loader/SpinnerLoa
 
 const ChatLoader: React.FC = () => {
     return (
-        <div className="col chat-loader fade-out">
+        <div className="col chat-loader">
             <SpinnerLoader size={"lg"} />
         </div>
     );

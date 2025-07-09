@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import Field from "../../../../components/common/from/Field";
-import ImageUpload from "../../../../components/common/from/ImageUpload";
+import FileUploader from "../../../../components/common/from/FileUploader";
 
 const SetAudience: FC = () => {
     return (
@@ -25,7 +25,7 @@ const SetAudience: FC = () => {
                 </Field>
             </div>
             <div className="col-12">
-                <ImageUpload
+                <FileUploader
                     label="Or Upload your file"
                     inputNote="Only support extension of .csv, .dsv, .txt or .xlsx."
                 />

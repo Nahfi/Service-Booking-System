@@ -1,5 +1,5 @@
 
-import { forwardRef, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 import Modal, { type ModalProps } from "react-bootstrap/Modal";
 import { useTranslation } from "react-i18next";
@@ -13,17 +13,15 @@ interface ModalWrapperProps extends Omit<ModalProps, "children"> {
     children?: ReactNode;
 }
 
-const ModalWrapper = forwardRef<HTMLDivElement, ModalWrapperProps>(
-    ({ children, title, onHide, show, ...props }, ref) => {
-       const {t}= useTranslation()
+const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, title, onHide, animation = false, ...props }) => {
+        const { t } = useTranslation()
+        
         return (
             <Modal
                 {...props}
-                ref={ref}
-                show={show}
                 onHide={onHide}
                 aria-labelledby="modal-wrapper"
-                animation={false}
+                animation={animation}
             >
                 <Modal.Header>
                     <Modal.Title>{t(valueToKey(title), title)}</Modal.Title>
@@ -39,6 +37,5 @@ const ModalWrapper = forwardRef<HTMLDivElement, ModalWrapperProps>(
             </Modal>
         );
     }
-);
 
 export default ModalWrapper;

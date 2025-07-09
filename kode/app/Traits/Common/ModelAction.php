@@ -62,11 +62,11 @@ trait ModelAction
      * @return bool
      */
     private function bulkAction(Request $request,array $actionData): bool{
-        
+
         $type     = $request->input("type");
 
         $bulkIds  = $request->input('bulk_ids');
-        
+
         $modelQuery = Arr::get($actionData,'query',null);
 
         $model = $modelQuery ??  Arr::get($actionData,'model')::whereIn('id', $bulkIds);
@@ -80,9 +80,9 @@ trait ModelAction
                     ->lazyById(100)
                     ->each->update([BulkActionType::STATUS->value => $request->input('value')]);
                 break;
-        
+
             default:
-       
+
                 $model->when(in_array($type, [BulkActionType::RESTORE->value,BulkActionType::FORCE_DELETE->value]),
                     fn (Builder $q) :Builder => $q->onlyTrashed())
                     ->withCount(Arr::get($actionData, 'with_count', []))
@@ -186,15 +186,15 @@ trait ModelAction
         $relations->filter(fn(string $relation) : bool => $relation !=  'file'
                  )->each(function(string $relation) use ($record): void{
                             if($relation != 'file')  $record->{$relation}()->delete();
-                        });   
-                        
-    
-    }
-    
-   
+                        });
 
-  
-    
+
+    }
+
+
+
+
+
 
     /**
      * Summary of handleDefaultDelete
@@ -204,7 +204,7 @@ trait ModelAction
      */
     private function handleDefaultDelete(Model $record, array $actionData): void{
 
-        if (!in_array(needle: true, haystack: array_map(callback: fn (string $relation) :bool => 
+        if (!in_array(needle: true, haystack: array_map(callback: fn (string $relation) :bool =>
         $record->{$relation . "_count"} > 0
         , array: Arr::get(array: $actionData, key: 'with_count', default: [])))) {
              $record->delete();
@@ -224,14 +224,14 @@ trait ModelAction
      * @return bool|ModelsFile
      */
     private function saveFile(Model $model ,
-                              ? array $response  = null , 
+                              ? array $response  = null ,
                               ? string $type =  null
                               ):mixed
                             {
 
-    
+
         if(is_array($response) && Arr::has($response,'status')){
-            
+
             $file = new ModelsFile([
 
                             'display_name' => Arr::get($response, 'display_name'),
@@ -240,9 +240,9 @@ trait ModelAction
                             'type'         => $type,
                             'size'         => Arr::get($response, 'size', ''),
                             'extension'    => Arr::get($response, 'extension', ''),
-                            
+
                         ]);
-            
+
 
             $model->file()->save($file);
 
@@ -256,14 +256,14 @@ trait ModelAction
 
 
 
-    
+
     /**
      * Summary of saveFiles
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param array $response
      * @return bool
      */
-    private function saveFiles( 
+    private function saveFiles(
                                 Model $model ,
                                 array $responses  = [],
                                 ? string $type =  null
@@ -287,7 +287,7 @@ trait ModelAction
         if (!empty($files))  $model->files()->saveMany($files);
 
         return true ;
-   
+
     }
 
 
@@ -306,7 +306,7 @@ trait ModelAction
 
 
         $type =  strtolower($template);
-        
+
         if($delete) $sendTo->otp()
                              ->where('type', $type)
                              ->delete();
@@ -325,6 +325,5 @@ trait ModelAction
     }
 
 
-
-
 }
+

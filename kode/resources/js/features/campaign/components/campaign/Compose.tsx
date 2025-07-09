@@ -3,11 +3,11 @@ import React, { useState } from "react"; // Fixed import here
 import { RxCrossCircled } from "react-icons/rx";
 
 import Field from "../../../../components/common/from/Field";
-import ImageUpload from "../../../../components/common/from/ImageUpload";
+import FileUploader from "../../../../components/common/from/FileUploader";
 import type { InputChangeEvent } from "../../../../utils/types";
 import MessagePreview from "./MessagePreview";
 
-type SmsType = "text" | "unicode" | "mms";
+type SmsType = "text" | "unicode";
 
 const Compose: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -51,7 +51,7 @@ const Compose: React.FC = () => {
                     </div>
 
                     <div className="col-12">
-                        <ImageUpload
+                        <FileUploader
                             label="Add image/Gif"
                             onImagesUpload={handleImagesUpload}
                             uploadText="Drag your file(s) or Browse"
@@ -101,16 +101,6 @@ const Compose: React.FC = () => {
                                     id="unicode"
                                     value="unicode"
                                     checked={smsType === "unicode"}
-                                    onChange={handleSmsTypeChange}
-                                />
-                            </Field>
-                            <Field label="MMS">
-                                <input
-                                    type="radio"
-                                    name="smsType"
-                                    id="mms"
-                                    value="mms"
-                                    checked={smsType === "mms"}
                                     onChange={handleSmsTypeChange}
                                 />
                             </Field>

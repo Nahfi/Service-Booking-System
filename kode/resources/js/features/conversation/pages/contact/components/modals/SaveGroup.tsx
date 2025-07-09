@@ -1,7 +1,8 @@
+import type React from 'react'
 import Button from '../../../../../../components/common/button/Button'
 import Field from '../../../../../../components/common/from/Field'
 
-const SaveGroup = ({ onHide }) => {
+const SaveGroup: React.FC = ({ onHide }) => {
   return (
       <form action="#">
           <div>
@@ -13,7 +14,6 @@ const SaveGroup = ({ onHide }) => {
                         className="form-control"
                     />
                 </Field>
-                <p className="mt-2">Enter the name to create a group.</p>
           </div>
 
           <div className="modal-custom-footer mt-4">

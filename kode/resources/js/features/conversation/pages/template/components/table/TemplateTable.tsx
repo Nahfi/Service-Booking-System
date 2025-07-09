@@ -1,18 +1,17 @@
 import type React from "react";
 import { Dropdown } from "react-bootstrap";
-import {
-    BsPencilSquare,
-    BsThreeDotsVertical,
-    BsTrash3
-} from "react-icons/bs";
+import { LuEllipsisVertical, LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { Link } from "react-router";
 
-const TemplateTable: React.FC = () => {
+const TemplateTable: React.FC = ({ type=null ,actions }) => {
     return (
         <>
             <thead>
                 <tr>
                     <th>
-                        <b>#</b> Name
+                        <div className="d-flex justify-content-start align-items-center gap-2 lh-1">
+                            <b>#</b> <span>Name</span>
+                        </div>
                     </th>
                     <th>Category</th>
                     <th>Preview</th>
@@ -26,7 +25,9 @@ const TemplateTable: React.FC = () => {
                 {Array.from({ length: 7 }).map((_, ind) => (
                     <tr key={ind}>
                         <td>
-                            <span>new_test_template</span>
+                            <div className="d-flex justify-content-start align-items-center gap-2 lh-1">
+                                <b>{ind + 1}</b> <span>Template-{ind + 1}</span>
+                            </div>
                         </td>
 
                         <td>
@@ -38,8 +39,13 @@ const TemplateTable: React.FC = () => {
                         </td>
 
                         <td>
-                            <span className="i-badge pill success-soft lh-1 py-2">
-                                Approved
+                            <span className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id={`template-${ind + 1}`}
+                                />
                             </span>
                         </td>
 
@@ -48,31 +54,53 @@ const TemplateTable: React.FC = () => {
                         </td>
 
                         <td>
-                            <div className="d-flex align-items-center justify-content-end gap-2">
+                            <div className="d-flex align-items-center justify-content-end gap-1">
                                 <Dropdown className="icon-dropdown">
                                     <Dropdown.Toggle
                                         id="dropdown-5"
-                                        className="icon-btn dark-soft btn-ghost hover btn-md fs-18 rounded-3 p-0"
+                                        className="icon-btn dark-soft btn-ghost hover btn-md fs-18 circle p-0"
                                     >
-                                        <BsThreeDotsVertical />
+                                        <LuEllipsisVertical />
                                     </Dropdown.Toggle>
 
                                     <Dropdown.Menu align={`end`}>
-                                        <ul className="dropdown-content">
-                                            <li>
-                                                <Dropdown.Item as="button">
-                                                    <BsPencilSquare />
-                                                    Mute
+                                        <div className="dropdown-content">
+                                            {type === "whatsapp" && (
+                                                <Dropdown.Item as={Link}
+                                                    to={`create?type=whatsapp"`}
+                                                >
+                                                    <LuSquarePen />
+                                                    Edit
                                                 </Dropdown.Item>
-                                            </li>
+                                            )}
 
-                                            <li>
-                                                <Dropdown.Item as="button">
-                                                    <BsTrash3 />
-                                                    Delete
-                                                </Dropdown.Item>
-                                            </li>
-                                        </ul>
+                                            {type === "sms" && (
+                                                <Dropdown.Item as="button"
+                                                    onClick={() => actions.modal.fn(
+                                                        actions.modal.modalUid,
+                                                        "EDIT",
+                                                        "Update sms template",
+                                                        "md"
+                                                    )
+                                                }
+                                            >
+                                                <LuSquarePen />
+                                                Edit
+                                            </Dropdown.Item>)}
+
+                                            <Dropdown.Item as="button"
+                                                onClick={() => actions.modal.fn(
+                                                    actions.modal.modalUid,
+                                                    "DELETE",
+                                                    "",
+                                                    ""
+                                                )
+                                                }
+                                            >
+                                                <LuTrash2 />
+                                                Delete
+                                            </Dropdown.Item>
+                                        </div>
                                     </Dropdown.Menu>
                                 </Dropdown>
                             </div>

@@ -6,11 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Collection;
 
 class UserConversation extends Model
@@ -55,13 +53,14 @@ class UserConversation extends Model
         return $this->belongsTo(User::class, 'user_two_id');
     }
 
+
     /**
      * Summary of latestMessage
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne<UserMessage, UserConversation>
+     * @return BelongsTo<UserMessage, UserConversation>
      */
-    public function latestMessage(): HasOne
+    public function latestMessage(): belongsTo
     {
-        return $this->hasOne(UserMessage::class,'conversation_id')->latestOfMany();
+        return $this->belongsTo(UserMessage::class,'last_message_id');
     }
 
 
@@ -116,5 +115,21 @@ class UserConversation extends Model
             ]);
         });
     }
+
+
+
+    /**
+     * Summary of scopeWhereUserInvolved
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int|string $userId
+     * @return Builder
+     */
+    public function scopeWhereUserInvolved(Builder $query, int | string $userId): Builder{
+        return $query->where(function (Builder $q) use ($userId): void {
+                            $q->where('user_one_id', $userId)
+                            ->orWhere('user_two_id', $userId);
+                        });
+    }
+
 
 }

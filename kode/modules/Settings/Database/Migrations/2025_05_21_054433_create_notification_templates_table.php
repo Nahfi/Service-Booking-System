@@ -17,7 +17,7 @@ return new class extends Migration
     {
         Schema::create('notification_templates', function (Blueprint $table) {
 
-            $table->bigIncrements('id');
+            $table->id();
             $table->unsignedBigInteger('user_id')->index()->nullable()->constrained(table: 'users');
             $table->string('name',191);
             $table->string('key',191);

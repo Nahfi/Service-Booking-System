@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { LuChevronDown, LuChevronRight } from "react-icons/lu";
+import { LuChevronDown, LuChevronRight, LuSmartphone } from "react-icons/lu";
 import { keyToValue } from "../../../../../../utils/helper";
 
 const devices: Record<string, string[]> = {
@@ -26,7 +26,6 @@ const DeviceSetup: React.FC = () => {
                     <p className="font-semibold">
                         {`${keyToValue(device)} - ${keyToValue(sim)}`}
                     </p>
-                    <p className="fs-12 text-muted">01234656789</p>
                 </div>
             );
         } else {
@@ -93,8 +92,12 @@ const DeviceSetup: React.FC = () => {
                         setIsDropdownOpen(!isDropdownOpen);
                     }}
                 >
-                    {selectedDevice}
-                    <LuChevronDown className="fs-18 text-muted" />
+
+                        <div className="d-flex align-items-center gap-2 lh-1">
+                            <LuSmartphone className="fs-18"/>
+                            {selectedDevice}
+                        </div>
+                        <LuChevronDown className="fs-16 text-muted" />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu
