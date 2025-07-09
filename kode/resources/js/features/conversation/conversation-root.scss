@@ -224,19 +224,19 @@
           .channel {
             -webkit-border-before: 1px solid $border-primary;
             border-block-start: 1px solid $border-primary;
-            -webkit-margin-before: 15px;
-            margin-block-start: 15px;
-            -webkit-padding-before: 20px;
-            padding-block-start: 20px;
-            padding-inline: 25px 10px;
             .channel-title {
+              height: $c-sidebar-header;
+              -webkit-padding-start: 25px;
+              padding-inline-start: 25px;
+              -webkit-padding-end: 10px;
+              padding-inline-end: 10px;
               @include flex(
                 $align: center,
                 $gap: 10px,
                 $justify: space-between
               );
               > h5 {
-                font-size: 18px;
+                font-size: 17px;
               }
             }
             .channel-list {

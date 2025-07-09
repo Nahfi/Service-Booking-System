@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import {
-  BsArrowRight,
-  BsPencilSquare
+    BsArrowRight,
+    BsPencilSquare
 } from "react-icons/bs";
 import "./chat-profile.scss";
 
@@ -16,7 +16,7 @@ import CollapseItem from "../../../../../../components/common/collapse/CollapseI
 const ChatProfile = ({ profileAction }) => {
   const [activeModal, setActiveModal] = useState(null);
   const modalRef = useRef();
-  const { handleHideProfile, showProfile, openModal } = profileAction;
+  const { handleHideProfile, showProfile, modal } = profileAction;
 
   return (
       <>
@@ -103,7 +103,8 @@ const ChatProfile = ({ profileAction }) => {
                                               icon={BsPencilSquare}
                                               className="info-soft btn-sm btn-ghost circle fs-16"
                                               onClick={() =>
-                                                  openModal(
+                                                  modal.openModal(
+                                                      modal.modalUid,
                                                       "EDIT_NOTE",
                                                       "Edit Note",
                                                       ""
@@ -116,7 +117,7 @@ const ChatProfile = ({ profileAction }) => {
                                               icon={LuTrash2}
                                               className="danger-soft btn-sm btn-ghost circle fs-16"
                                               onClick={() =>
-                                                  openModal("DELETE", "", "")
+                                                  modal.openModal(modal.modalUid,"DELETE", "", "")
                                               }
                                           />
                                       </div>
@@ -126,7 +127,7 @@ const ChatProfile = ({ profileAction }) => {
                               <Button
                                   className="btn--primary btn--sm rounded-3"
                                   onClick={() =>
-                                      openModal("ADD_NOTE", "Add Note", "")
+                                      modal.openModal(modal.modalUid,"ADD_NOTE", "Add Note", "")
                                   }
                               >
                                   Add notes <LuPlus />

@@ -14,7 +14,7 @@ import SpinnerLoader from "../../../../../../components/common/loader/SpinnerLoa
 import { keyToValue, valueToKey } from "../../../../../../utils/helper";
 import type {
     OpenModalFn,
-    ThemeContextType,
+    ThemeContextType
 } from "../../../../../../utils/types";
 import "./chat-contact.scss";
 import ContactItem from "./ContactItem";
@@ -58,9 +58,10 @@ const ChatContacts: React.FC<ChatContactsProps> = ({
     contactAction,
     type,
 }) => {
-    const { handleHideContact, showContact,handleSelectUser, openModal } =
+    const { handleHideContact, showContact,handleSelectUser,modal } =
         contactAction;
-
+  
+    
     const { t } = useTranslation();
 
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -140,7 +141,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({
                                 tooltipText="Add user"
                                 className="dark-soft btn-ghost btn-sm fs-18 circle"
                                 onClick={() =>
-                                    openModal("ADD_USER", "Add User", "md")
+                                    modal.openModal(modal.modalUid,"ADD_USER", "Add User", "md")
                                 }
                             />
                         </div>
@@ -260,6 +261,7 @@ const ChatContacts: React.FC<ChatContactsProps> = ({
                 </div>
             </Tab.Container>
         </div>
+       
     );
 };
 

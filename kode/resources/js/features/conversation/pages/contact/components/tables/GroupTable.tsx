@@ -1,20 +1,17 @@
 import { Dropdown } from "react-bootstrap"
 import { LuEllipsisVertical, LuSquarePen, LuTrash2 } from "react-icons/lu"
 
-const GroupTable = () => {
+const GroupTable = ({ actions }) => {
     return (
         <>
             <thead>
                 <tr>
                     <th>
                         <div className="d-flex justify-content-start align-items-center gap-3 lh-1">
-                            <input
-                                type="checkbox"
-                            />
-                            No
+                            <b>#</b>
+                            <span>Group Name</span>
                         </div>
                     </th>
-                    <th>Group Name</th>
                     <th>Contacts </th>
                     <th>Status</th>
                     <th>Actions</th>
@@ -25,19 +22,9 @@ const GroupTable = () => {
                     <tr key={ind}>
                         <td>
                             <div className="d-flex justify-content-start align-items-start gap-3">
-                                <input
-                                    type="checkbox"
-                                    name="contactCheckbox"
-                                    id={ind}
-                                />
-                                <h6 className="fs-15">{ind + 1}</h6>
+                                <b className="fs-15">{ind + 1}.</b>
+                                <span>Group {ind + 1}</span>
                             </div>
-                        </td>
-
-                        <td>
-                            <span className="text--primary">
-                                Team {ind + 1}
-                            </span>
                         </td>
 
                         <td>
@@ -69,12 +56,25 @@ const GroupTable = () => {
 
                                     <Dropdown.Menu align={`end`}>
                                         <div className="dropdown-content">
-                                            <Dropdown.Item as="button">
+                                            <Dropdown.Item as="button" onClick={() => actions.modal.fn(
+                                                actions.modal.modalUid,
+                                                "EDIT_GROUP",
+                                                "Update group",
+                                                "md"
+                                            )
+                                            }
+                                            >
                                                 <LuSquarePen />
                                                 Edit
                                             </Dropdown.Item>
 
-                                            <Dropdown.Item as="button">
+                                            <Dropdown.Item as="button" onClick={() => actions.modal.fn(
+                                                actions.modal.modalUid,
+                                                "DELETE",
+                                                "",
+                                                ""
+                                            )
+                                            }>
                                                 <LuTrash2 />
                                                 Delete
                                             </Dropdown.Item>

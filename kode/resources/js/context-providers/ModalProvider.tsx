@@ -1,35 +1,18 @@
 
 import React, { ReactNode, useCallback, useState } from "react";
 import { ModalContext } from "../context";
+import type { ModalConfigType } from "../utils/types";
 
-// Define the shape of modalConfig
-interface ModalConfig {
-    type: string;
-    title: string;
-    size: string;
-    data: any | null;
-}
 
 // Define the context value shape
-interface ModalContextType {
-    showModal: boolean;
-    modalConfig: ModalConfig;
-    openModal: (
-        type: string,
-        title: string,
-        size: string,
-        data?: any | null
-    ) => void;
-    closeModal: () => void;
-}
-
 interface ModalProviderProps {
     children: ReactNode;
 }
 
 const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
-    const [modalConfig, setModalConfig] = useState<ModalConfig>({
+    const [modalConfig, setModalConfig] = useState<ModalConfigType>({
+        modalUid: "",
         type: "",
         title: "",
         size: "",
@@ -39,12 +22,13 @@ const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
 
     const openModal = useCallback(
         (
+            modalUid: string,
             type: string,
             title: string,
             size: string,
             data: any | null = null
         ) => {
-            setModalConfig({ type, title, size, data });
+            setModalConfig({ modalUid, type, title, size, data });
             setShowModal(true);
         },
         []
@@ -52,7 +36,7 @@ const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
 
     const closeModal = useCallback(() => {
         setShowModal(false);
-        setModalConfig({ type: "", title: "", size: "", data: null });
+        setModalConfig({ modalUid:"", type: "", title: "", size: "", data: null });
     }, []);
 
     return (

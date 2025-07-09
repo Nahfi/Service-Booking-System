@@ -2,7 +2,7 @@
 namespace Modules\Settings\Enums;
 enum RateLimit: string
 {
-    case SETTINGS = '10,2'; 
+    case SETTINGS = '100,2'; 
 
 
     public function attempts(): int

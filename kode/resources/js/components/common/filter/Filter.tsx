@@ -7,10 +7,11 @@ import Field from "../../../components/common/from/Field";
 
 const Filter = ({ handleOnFilter }) => {
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-        new Date(),
+        null,
         null,
     ]);
     const [startDate, endDate] = dateRange;
+
     const handleDateChange = (date: [Date | null, Date | null]) => {
         setDateRange(date);
     };
@@ -43,7 +44,7 @@ const Filter = ({ handleOnFilter }) => {
                             }
                             startDate={startDate}
                             endDate={endDate}
-                            required
+                            placeholderText="Select date range"
                         />
 
                         <input type="hidden" name="date" value={dateRange} />

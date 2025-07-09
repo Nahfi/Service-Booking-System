@@ -1,7 +1,7 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import ModalWrapper, { DeleteModal } from "../../../../components/common/modal";
-import { ModalContext } from "../../../../context";
+import { useModal } from "../../../../context";
 import type { ModalContextType } from "../../../../utils/types";
 
 import "./chat-wrapper.scss";
@@ -21,104 +21,108 @@ const ChatWrapper: React.FC = () => {
     }, [location.pathname]);
     const isXXLDown = useMediaQuery({ query: "(max-width: 1399.98px)" });
 
-  const [showContact, setShowContact] = useState<boolean>(true);
+    const [showContact, setShowContact] = useState<boolean>(true);
     const [showProfile, setShowProfile] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    
+
     const [selectedUser, setSelectedUser] = useState(null);
- 
-  const { showModal, modalConfig, openModal, closeModal } = useContext(ModalContext) as ModalContextType;
 
-  const handleShowContact = () => {
-    setShowContact((show) => !show);
-  };
+    const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
+    const modalUid = "chatModal";
 
-  const handleHideContact = () => {
-    setShowContact(false);
-  };
+    const handleShowContact = () => {
+        setShowContact((show) => !show);
+    };
 
-  const handleShowProfile = () => {
-    if (isXXLDown) setShowProfile((show) => !show);
-  };
+    const handleHideContact = () => {
+        setShowContact(false);
+    };
 
-  const handleHideProfile = () => {
-    if (isXXLDown) {
-      setShowProfile(false);
+    const handleShowProfile = () => {
+        if (isXXLDown) setShowProfile((show) => !show);
+    };
+
+    const handleHideProfile = () => {
+        if (isXXLDown) {
+            setShowProfile(false);
+        }
+    };
+
+    const handleSelectUser = (user) => {
+        setSelectedUser(user);
+        setIsLoading(true);
+        setTimeout(() => {
+            setIsLoading(false);
+        }, 300);
     }
-  };
-    
-  const handleSelectUser = (user) => {
-      setSelectedUser(user);
-      setIsLoading(true);
-      setTimeout(() => {
-          setIsLoading(false);
-      }, 1000);
-   }
 
-  return (
-      <>
-          <div className="chat-wrapper">
-              <div className="row g-0">
-                  <ChatContacts
-                      contactAction={{
-                          handleHideContact,
-                          handleSelectUser,
-                          openModal,
-                      }}
-                      type={pathValue}
-                  />
+    return (
+        <>
+            <div className="chat-wrapper">
+                <div className="row g-0">
+                    <ChatContacts
+                        contactAction={{
+                            handleHideContact,
+                            handleSelectUser,
+                            modal: { openModal, modalUid },
+                        }}
+                        type={pathValue}
+                        
+                    />
 
-                  {selectedUser === null ? (
-                      <EmptyChat />
-                  ) : isLoading ? (
-                      <ChatLoader/>
-                  ) : (
-                      <>
-                          <ChatBody
-                              onHandle={{
-                                  handleShowContact,
-                                  handleShowProfile,
-                              }}
-                              type={pathValue}
-                              user={selectedUser}
-                          />
-                          <ChatProfile
-                              profileAction={{
-                                  handleHideProfile,
-                                  showProfile,
-                                  openModal,
-                              }}
-                              type={pathValue}
-                              user={selectedUser}
-                          />
-                      </>
-                  )}
-              </div>
-          </div>
+                    {selectedUser === null ? (
+                        <EmptyChat />
+                    ) : isLoading ? (
+                        <ChatLoader />
+                    ) : (
+                        <>
+                            <ChatBody
+                                onHandle={{
+                                    handleShowContact,
+                                    handleShowProfile,
+                                }}
+                                type={pathValue}
+                                user={selectedUser}
+                            />
+                            <ChatProfile
+                                profileAction={{
+                                    handleHideProfile,
+                                    showProfile,
+                                    modal: { openModal, modalUid },
+                                }}
+                                type={pathValue}
+                                user={selectedUser}
+                            />
+                        </>
+                    )}
+                </div>
+            </div>
 
-          <ModalWrapper
-              title={modalConfig?.title}
-              onHide={closeModal}
-              show={showModal}
-              size={modalConfig?.size}
-              scrollable
-              centered
-          >
-              {(modalConfig?.type === "ADD_NOTE" ||
-                  modalConfig?.type === "EDIT_NOTE") && (
-                  <AddNote onHide={closeModal} />
-              )}
+            {showModal && modalConfig?.modalUid === modalUid && (
+                <ModalWrapper
+                    title={modalConfig?.title}
+                    onHide={closeModal}
+                    show={showModal}
+                    size={modalConfig?.size}
+                    scrollable
+                    centered
+                >
+                    {(modalConfig?.type === "ADD_NOTE" ||
+                        modalConfig?.type === "EDIT_NOTE") && (
+                            <AddNote onHide={closeModal} />
+                        )}
 
-              {modalConfig?.type === "DELETE" && (
-                  <DeleteModal onHide={closeModal} />
-              )}
+                    {modalConfig?.type === "DELETE" && (
+                        <DeleteModal onHide={closeModal} />
+                    )}
 
-              {modalConfig?.type === "ADD_USER" && (
-                  <AddUser onHide={closeModal} />
-              )}
-          </ModalWrapper>
-      </>
-  );
+                    {modalConfig?.type === "ADD_USER" && (
+                        <AddUser onHide={closeModal} />
+                    )}
+                </ModalWrapper>
+            )}
+        </>
+    );
 };
 
 export default ChatWrapper;

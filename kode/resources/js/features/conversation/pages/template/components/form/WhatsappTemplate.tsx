@@ -1,6 +1,6 @@
 import Button from '@/components/common/button/Button';
 import Field from '@/components/common/from/Field';
-import ImageUpload from '@/components/common/from/ImageUpload';
+import FileUploader from '@/components/common/from/FileUploader';
 import React, { useState } from 'react';
 import { BsPlusLg, BsXLg } from 'react-icons/bs';
 import { RxCrossCircled } from 'react-icons/rx';
@@ -124,7 +124,7 @@ const WhatsappTemplate: React.FC = () => {
                 </div>
 
                 <div className="col-12">
-                    <ImageUpload
+                    <FileUploader
                         uploadText="Select a file or drag and drop here"
                         maxFile="JPG, PNG or PDF, file size no more than 10MB"
                         onImagesUpload={handleImagesUpload}

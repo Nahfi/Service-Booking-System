@@ -1,69 +1,81 @@
 import Button from '@/components/common/button/Button';
-import { BsFillCheckCircleFill } from 'react-icons/bs';
-import { LuSquarePen, LuTrash2 } from 'react-icons/lu';
-import type { OpenModalFn } from '../../../../../utils/types';
+import { useTranslation } from 'react-i18next';
+import { LuSquarePen } from 'react-icons/lu';
+import NoDataFound from '../../../../../components/common/NoDataFound/NoDataFound';
+import { keyToValue, valueToKey } from '../../../../../utils/helper';
+import { getNotificationTemplateBadgeClass } from '../utils/helper';
 
 interface NotificationTableProps {
-    openModal: OpenModalFn;
+    templates: NotificationTemplate[] | undefined;
+    loader: boolean;
 }
 
-const NotificationTable: React.FC<NotificationTableProps> = ({ openModal }) => {
+const NotificationTable: React.FC<NotificationTableProps> = ({ templates, loader }) => {
+    const { t } = useTranslation()
     return (
         <>
             <thead>
                 <tr>
                     <th>
                         <span className="d-flex align-items-center gap-2">
-                            <b>#</b> Name
+                            <b>#</b> {t(valueToKey("Name"), "Name")}
                         </span>
                     </th>
-                    <th>Type</th>
-                    <th>Subject</th>
-                    <th>Actions</th>
+                    <th>{t(valueToKey("Type"), "Type")}</th>
+                    <th>{t(valueToKey("Subject"), "Subject")}</th>
+                    <th>{t(valueToKey("Actions"), "Actions")}</th>
                 </tr>
             </thead>
 
             <tbody>
-                {Array.from({ length: 7 }).map((_, ind) => (
-                    <tr key={ind}>
-                        <td>
-                            <span className="d-flex align-items-center gap-2">
-                                <b>{ind + 1}.</b> SHIFT REQUEST STATUS
-                            </span>
-                        </td>
+                {
+                    templates?.length > 0 ? (
+                        templates.map((template, ind) => (
+                            <tr key={template?.id}>
+                                <td>
+                                    <span className="d-flex align-items-center gap-2 lh-1">
+                                        <b>{ind + 1}.</b> <span>{template?.name}</span>
+                                    </span>
+                                </td>
 
-                        <td>
-                            <span className="i-badge pill success-soft py-1">
-                                <BsFillCheckCircleFill className="me-1" />{" "}
-                                Outgoing
-                            </span>
-                        </td>
+                                <td>
+                                    <span className={`i-badge pill 
+                                    ${getNotificationTemplateBadgeClass(
+                                        template?.type
+                                        )}-soft
+                                    `}>
+                                        {keyToValue(template?.type)}
+                                    </span>
+                                </td>
 
-                        <td>
-                            <span>Upcoming shift reminder</span>
-                        </td>
+                                <td>
+                                    <span>{template?.subject}</span>
+                                </td>
 
-                        <td>
-                            <div className="d-flex align-items-center justify-content-end gap-2">
-                                <Button
-                                    iconBtn={true}
-                                    tooltipText="Update gateway"
-                                    icon={LuSquarePen}
-                                    className="info-soft btn-ghost hover btn-sm rounded-circle fs-18"
-                                    href="/setting/notification-templates/create"
-                                />
+                                <td>
+                                    <div className="d-flex align-items-center justify-content-end gap-2">
+                                        <Button
+                                            iconBtn={true}
+                                            tooltipText="Edit Template"
+                                            icon={LuSquarePen}
+                                            className="info-soft btn-ghost hover btn-sm rounded-circle fs-16"
+                                            href={`/setting/notification-templates/${template?.id}/edit`}
+                                        />
+                                    </div>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        !loader && (
+                            <tr>
+                                <td colSpan={4}>
+                                    <NoDataFound />
+                                </td>
+                            </tr>
+                        )
+                    )
 
-                                <Button
-                                    iconBtn={true}
-                                    tooltipText="Delete"
-                                    icon={LuTrash2}
-                                    className="danger-soft btn-ghost hover btn-sm rounded-circle fs-18"
-                                    onClick={() => openModal("DELETE")}
-                                />
-                            </div>
-                        </td>
-                    </tr>
-                ))}
+                }
             </tbody>
         </>
     );

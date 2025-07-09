@@ -79,7 +79,8 @@ const Field: React.FC<FieldProps> = ({
                         </label>
                     )}
                 </div>
-            ) : isFileInput ? (
+            ) :
+                isFileInput ? (
                 <div className="file-input-wrapper">
                     {label && (
                         <label htmlFor={id} className="form-label">
@@ -95,13 +96,17 @@ const Field: React.FC<FieldProps> = ({
                         </label>
                     )}
                     <div className="file-input">
-                        <FaCloudUploadAlt size={40} />
-                        <p>{uploadText}</p>
-                        <span className="fs-11 mt-1">{maxFile}</span>
+                            <FaCloudUploadAlt size={36} />
+                            <div>
+                                <p>{uploadText || "Drag your file(s) or Browse"}</p>
+                                {maxFile && <span className="mt-1">{`Max ${maxFile} files are allowed`}</span>}
+                            </div>
                     </div>
                     {children}
                 </div>
-            ) : (
+                )
+                    :
+                    (
                 <>
                     {label && (
                         <label htmlFor={id} className="form-label">

@@ -11,6 +11,7 @@ interface DeleteModalProps {
     onHide: () => void;
     message?: string;
     description?: string;
+     buttonLabel?: string;
     type?: "Confirm" | "Delete" | string;
 }
 
@@ -21,6 +22,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ ...props }) => {
         onHide,
         message = "",
         description = "",
+        buttonLabel="",
         type = "",
     } = props;
 
@@ -30,7 +32,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ ...props }) => {
                 <h3 className="fs-22 mb-2 fw-700">
                     {message || `Delete this record`}
                 </h3>
-                <p>{description || `Do You Want To Delete this Records?`}</p>
+                <p className="text-muted">{description || `Do You Want To Delete this Records?`}</p>
             </div>
 
             <div className="d-flex align-items-center justify-content-center gap-3 mt-5">
@@ -52,7 +54,7 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ ...props }) => {
                     isLoading={isLoading}
                     onClick={onDelete}
                 >
-                    {type || `Delete`}
+                    {buttonLabel || `Delete`}
                 </Button>
             </div>
         </div>

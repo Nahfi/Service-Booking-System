@@ -1,5 +1,5 @@
 import React from "react";
-import { LuDot } from "react-icons/lu";
+import { LuDot, LuMessageCircleQuestion } from "react-icons/lu";
 import Card from "../../../components/common/card/Card";
 import CardBody from "../../../components/common/card/CardBody";
 import CardHeader from "../../../components/common/card/CardHeader";
@@ -10,20 +10,20 @@ const Security: React.FC = () => {
     return (
         <>
             <div className="row g-4">
-                <div className="col-lg-9">
+                <div className="col-xl-9 col-lg-8">
                     <div className="d-flex flex-column gap-4">
                         <PasswordUpdate/>
                         <TwoFactorAuthentication/>
                     </div>
                 </div>
 
-                <div className="col-lg-3">
+                <div className="col-xl-3 col-lg-4">
                     <Card className="h-100">
-                        <CardHeader cardTitle="Security Tips" />
+                        <CardHeader cardTitle="Security Tips" icon={LuMessageCircleQuestion} iconClassName="text-warning" />
                         <CardBody>
                             <ul className="d-flex flex-column gap-1">
                                 <li>
-                                    <LuDot />
+                                    <LuDot/>
                                     <span className="fs-14">
                                         Use a unique password for this account
                                     </span>

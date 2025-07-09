@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
 import { FaWhatsapp } from "react-icons/fa";
-import { LuBell, LuLanguages, LuSettings, LuWebhook } from "react-icons/lu";
+import { LuBell, LuLanguages, LuSettings } from "react-icons/lu";
 import { useMediaQuery } from "react-responsive";
 import { NavLink, Outlet } from "react-router-dom";
 import BaseLayout from "../../components/layouts/BaseLayout";
@@ -40,11 +40,6 @@ const settingsMenu: SettingsMenuItem[] = [
         icon: <LuBell />,
         path: "/setting/notification-templates",
     },
-    {
-        label: "Web hooks setup",
-        icon: <LuWebhook />,
-        path: "/setting/web-hook",
-    },
 ];
 
 const Settings: React.FC = () => {
@@ -72,6 +67,7 @@ const Settings: React.FC = () => {
                                             key={index}
                                             className="setting-menu-item"
                                             to={item.path}
+                                            viewTransition
                                         >
                                             {item.icon}
                                             <span>{item.label}</span>

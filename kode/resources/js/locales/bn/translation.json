@@ -25,5 +25,6 @@
     "country": "দেশ",
     "city": "শহর",
     "full_address": "সম্পূর্ণ ঠিকানা",
-    "postal_code": "পোস্টাল কোড"
+    "postal_code": "পোস্টাল কোড",
+    "actions": "পোস্টাল কোড"
 }

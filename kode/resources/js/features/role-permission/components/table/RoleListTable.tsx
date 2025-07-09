@@ -10,7 +10,7 @@ import { Link } from 'react-router';
 import NoDataFound from '../../../../components/common/NoDataFound/NoDataFound';
 import { valueToKey } from '../../../../utils/helper';
 
-const RoleListTable: React.FC = ({ roles, isPending, actions={} }) => {
+const RoleListTable: React.FC = ({ roles, isLoading, actions = {} }) => {
     const { t } = useTranslation();
 
     return (
@@ -32,7 +32,7 @@ const RoleListTable: React.FC = ({ roles, isPending, actions={} }) => {
             </thead>
 
             <tbody>
-                {(!isPending && roles?.length > 0) ? (
+                {(roles?.length > 0) ? (
                     roles?.map((role, index) => (
                         <tr key={role?.id}>
                             <td>
@@ -68,48 +68,44 @@ const RoleListTable: React.FC = ({ roles, isPending, actions={} }) => {
                                             <BsThreeDotsVertical />
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <ul className="dropdown-content">
-                                                <li>
-                                                    <Dropdown.Item
-                                                        as={Link}
-                                                        state={{
-                                                            some: "value",
-                                                        }}
-                                                        to="/roles/edit"
-                                                    >
-                                                        <LuSquarePen />
-                                                        {t(
-                                                            valueToKey(
-                                                                "Edit Role"
-                                                            ),
-                                                            "Edit Role"
-                                                        )}
-                                                    </Dropdown.Item>
-                                                </li>
+                                        <Dropdown.Menu className="dropdown-content">
+                                            <Dropdown.Item
+                                                as={Link}
+                                                state={{
+                                                    some: "value",
+                                                }}
+                                                to={`/roles/${role?.id}/edit`}
+                                            >
+                                                <LuSquarePen />
+                                                {t(
+                                                    valueToKey(
+                                                        "Edit Role"
+                                                    ),
+                                                    "Edit Role"
+                                                )}
+                                            </Dropdown.Item>
 
-                                                <li>
-                                                    <Dropdown.Item
-                                                        as={"button"}
-                                                        onClick={() =>
-                                                            actions?.modal?.fn(
-                                                                "DELETE",
-                                                                "",
-                                                                "",
-                                                                role?.id
-                                                            )
-                                                        }
-                                                    >
-                                                        <LuTrash2 />
-                                                        {t(
-                                                            valueToKey(
-                                                                "Delete"
-                                                            ),
-                                                            "Delete"
-                                                        )}
-                                                    </Dropdown.Item>
-                                                </li>
-                                            </ul>
+                                            <Dropdown.Item
+                                                as={"button"}
+                                                onClick={() =>
+                                                    actions?.modal?.fn(
+                                                        actions?.modal?.modalUid,
+                                                        "DELETE",
+                                                        "",
+                                                        "",
+                                                        role?.id
+                                                    )
+                                                }
+                                            >
+                                                <LuTrash2 />
+                                                {t(
+                                                    valueToKey(
+                                                        "Delete"
+                                                    ),
+                                                    "Delete"
+                                                )}
+                                            </Dropdown.Item>
+
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </div>
@@ -117,11 +113,13 @@ const RoleListTable: React.FC = ({ roles, isPending, actions={} }) => {
                         </tr>
                     ))
                 ) : (
-                    <tr>
-                        <td colSpan="5">
-                            <NoDataFound />
-                        </td>
-                    </tr>
+                    !isLoading && (
+                        <tr>
+                            <td colSpan="5">
+                                <NoDataFound />
+                            </td>
+                        </tr>
+                    )
                 )}
             </tbody>
         </>

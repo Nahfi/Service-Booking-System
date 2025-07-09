@@ -10,6 +10,9 @@ import ChooseCampaign from "../features/campaign/ChooseCampaign";
 import CreateSmsCampaign from "../features/campaign/CreateSmsCampaign";
 import CreateWhatsappCampaign from "../features/campaign/CreateWhatsappCampaign";
 import Conversation from "../features/conversation/Conversation";
+import CreateAccount from "../features/conversation/pages/channels/CreateAccount";
+import SmsChannel from "../features/conversation/pages/channels/SmsChannel";
+import WhatsappAccount from "../features/conversation/pages/channels/WhatsappAccount";
 import ChatWrapper from "../features/conversation/pages/chat/ChatWrapper";
 import Contact from "../features/conversation/pages/contact/Contact";
 import Report from "../features/conversation/pages/report/Report";
@@ -19,8 +22,8 @@ import Templates from "../features/conversation/pages/template/Templates";
 import WhatsappChat from "../features/conversation/pages/whatsapp-chat/WhatsappChat";
 import Dashboard from "../features/dashboard/Dashboard";
 import Error from "../features/error/Error";
-import UserDetails from "../features/manage-user/UserDetails";
 import Users from "../features/manage-user/Users";
+import UsersRecycleBin from "../features/manage-user/UsersRecycleBin";
 import PricingPlan from "../features/plans/PricingPlan";
 import Profile from "../features/profile/Profile";
 import Reports from "../features/reports/Reports";
@@ -29,8 +32,10 @@ import ManageRole from "../features/role-permission/ManageRole";
 import UpdateRole from "../features/role-permission/UpdateRole";
 import Gateways from "../features/settings/pages/gateways/Gateways";
 import General from "../features/settings/pages/general/General";
+import Language from "../features/settings/pages/language/Language";
+import Translate from "../features/settings/pages/language/Translate";
 import NotificationTemplates from "../features/settings/pages/notifications/NotificationTemplates";
-import SaveNotificationTemplates from "../features/settings/pages/notifications/SaveNotificationTemplates";
+import TemplateDetails from "../features/settings/pages/notifications/TemplateDetails";
 import WhatsappSetting from "../features/settings/pages/whatsapp/WhatsappSetting";
 import Settings from "../features/settings/Settings";
 import AuthRoute from "./AuthRoute";
@@ -101,6 +106,18 @@ const router: RouteObject[] = createBrowserRouter(
                             path: "templates/create",
                             element: <CreateTemplate />,
                         },
+                        {
+                            path: "channel/sms",
+                            element: <SmsChannel/>,
+                        },
+                        {
+                            path: "gateway/whatsapp",
+                            element: <WhatsappAccount />,
+                        },
+                        {
+                            path: "gateway/whatsapp/create",
+                            element: <CreateAccount />,
+                        },
                     ],
                 },
 
@@ -145,7 +162,7 @@ const router: RouteObject[] = createBrowserRouter(
                     element: <CreateRole />,
                 },
                 {
-                    path: "/roles/edit",
+                    path: "/roles/:roleId/edit",
                     element: <UpdateRole />,
                 },
                 {
@@ -153,9 +170,13 @@ const router: RouteObject[] = createBrowserRouter(
                     element: <Users />,
                 },
                 {
-                    path: "/users/:userId",
-                    element: <UserDetails />,
+                    path: "/users/recycle-bin",
+                    element: <UsersRecycleBin />,
                 },
+                // {
+                //     path: "/users/:userId",
+                //     element: <UserDetails />,
+                // },
                 {
                     path: "/setting",
                     element: <Settings />,
@@ -181,8 +202,16 @@ const router: RouteObject[] = createBrowserRouter(
                             element: <NotificationTemplates />,
                         },
                         {
-                            path: "notification-templates/create",
-                            element: <SaveNotificationTemplates />,
+                            path: "notification-templates/:templateId/edit",
+                            element: <TemplateDetails />,
+                        },
+                        {
+                            path: "language",
+                            element: <Language />,
+                        },
+                        {
+                            path: "language/:langId",
+                            element: <Translate />,
                         },
                     ],
                 },

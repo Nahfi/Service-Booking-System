@@ -6,12 +6,12 @@ import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
 import BaseLayout from "../../components/layouts/BaseLayout";
 
-import TableWrapper from "@/components/common/table/TableWrapper";
 import { BsPlusLg } from "react-icons/bs";
 import Button from "../../components/common/button/Button";
-import FilterWrapper from "../../components/common/filter/FilterWrapper";
 import PageHeader from "../../components/common/Page-header/PageHeader";
-import CampaignTable from "./components/table/CampaignTable";
+import AllCampaign from "./components/AllCampaign";
+import SmsCampaign from "./components/SmsCampaign";
+import WhatsappCampaign from "./components/WhatsappCampaign";
 
 const Campaign: React.FC = () => {
     return (
@@ -27,31 +27,20 @@ const Campaign: React.FC = () => {
             </PageHeader>
 
             <Tabs
-                defaultActiveKey="All"
-                id="fill-tab-example"
+                defaultActiveKey="all"
+                id="campaign-tab"
                 className="mb-4 style-1"
             >
-                <Tab eventKey="All" title="All">
-                    <FilterWrapper />
-                    <div>
-                        <TableWrapper>
-                            <CampaignTable />
-                        </TableWrapper>
-                    </div>
+                <Tab eventKey="all" title="All">
+                    <AllCampaign/>
                 </Tab>
 
-                <Tab eventKey="SMS" title="SMS">
-                    <FilterWrapper />
-                    <TableWrapper>
-                        <CampaignTable />
-                    </TableWrapper>
+                <Tab eventKey="sms" title="SMS">
+                    <SmsCampaign/>
                 </Tab>
 
-                <Tab eventKey="Whatsapp" title="Whatsapp">
-                    <FilterWrapper />
-                    <TableWrapper>
-                        <CampaignTable />
-                    </TableWrapper>
+                <Tab eventKey="whatsapp" title="Whatsapp">
+                    <WhatsappCampaign/>
                 </Tab>
             </Tabs>
         </BaseLayout>
