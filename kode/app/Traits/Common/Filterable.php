@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 
 trait Filterable
 {
-  
+
     /**
      * Get Only Recycled Data
      *
@@ -35,7 +35,7 @@ trait Filterable
         $search = request()->input(key: "search");
         if (!$search) return $query;
         $search = $like ? "%$search%" : $search;
-        
+
         return $query->where(column: function(Builder $q) use ($params, $search): Collection {
                return collect(value: $params)->map(callback: function(string $param) use($q,$search): Builder  {
                     return $q->when(value: (strpos(haystack: $param, needle: ':') !== false),
@@ -58,10 +58,10 @@ trait Filterable
         collect(value: $params)->map(callback: function(string $param) use($query,$filters) : Builder{
 
             return $query->when(value: (strpos(haystack: $param, needle: ':') !== false),
-                        callback: fn(Builder $q): Builder => 
+                        callback: fn(Builder $q): Builder =>
                               $this->filterRelationalData(query: $query, relations: $param, filters: $filters),
                                     default: fn(Builder $query): Builder =>
-                                        $query->when(value: in_array(needle: $param, haystack: $filters) && request()->input($param) !== null , 
+                                        $query->when(value: in_array(needle: $param, haystack: $filters) && request()->input($param) !== null ,
                                             callback: fn(Builder $query): Builder => $query->when(value: gettype(value: request()->input(key: $param)) === 'array',
                                                 callback: fn(Builder $query) : Builder => $query->whereIn(column: $param,  values: request()->input(key: $param)),
                                                    default: fn(Builder $query) : Builder =>  $query->where(column: $param, operator: request()->input(key: $param)))));
@@ -80,7 +80,7 @@ trait Filterable
      * @return Builder
      */
     public function scopeDate(Builder $query, string $column = 'created_at') : Builder {
-        
+
         try {
             if (!request()->input('date'))   return $query;
 
@@ -88,13 +88,13 @@ trait Filterable
             $dateRangeString             = preg_replace('/\s*-\s*/', ' - ', $dateRangeString);
             $start_date                  = $dateRangeString;
             $end_date                    = $dateRangeString;
-            if (strpos(haystack: $dateRangeString, needle: ' - ') !== false) list($start_date, $end_date) = explode(separator: " - ", string: $dateRangeString); 
-    
+            if (strpos(haystack: $dateRangeString, needle: ' - ') !== false) list($start_date, $end_date) = explode(separator: " - ", string: $dateRangeString);
+
             $start_date = Carbon::createFromFormat(format: 'm/d/Y', time: $start_date)->format('Y-m-d');
             $end_date   = Carbon::createFromFormat(format: 'm/d/Y', time: $end_date)->format('Y-m-d');
-            
-    
-            return $query->where(fn (Builder $query): Builder =>  
+
+
+            return $query->where(fn (Builder $query): Builder =>
                             $query->whereBetween(column: $column , values: [$start_date, $end_date])
                                     ->orWhereDate(column: $column , operator: $start_date)
                                     ->orWhereDate(column: $column , operator: $end_date));
@@ -114,8 +114,8 @@ trait Filterable
      */
     private function searchRelationalData(Builder $query,string $relations, string $search): Builder{
 
-        list($relation, $keys) = explode(separator: ":", string: $relations); 
-        collect(value: explode(separator: ',',string: $keys))->map(callback: fn(string $column): Builder => 
+        list($relation, $keys) = explode(separator: ":", string: $relations);
+        collect(value: explode(separator: ',',string: $keys))->map(callback: fn(string $column): Builder =>
             $query->orWhereHas( relation: $relation , callback: fn (Builder $q)  : Builder =>  $q->where($column,'like', $search))
         );
 
@@ -134,7 +134,7 @@ trait Filterable
     private function filterRelationalData(Builder $query,string $relations,array $filters): Builder{
 
 
-        list($relation, $keys) = explode(separator: ":", string: $relations); 
+        list($relation, $keys) = explode(separator: ":", string: $relations);
 
         collect(value: explode(separator: ',', string: $keys))->map( callback: fn(string $column): Builder =>
                 $query->when( in_array($relation, $filters) && request()->input( $relation) != null ,

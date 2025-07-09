@@ -36,6 +36,7 @@ class UserController extends Controller
     public function index(): JsonResponse
     {
         return $this->userService->getUsers();
+
     }
 
     /**
@@ -60,7 +61,7 @@ class UserController extends Controller
         return $this->userService->getUsers($id);
     }
 
-   
+
 
     /**
      * Update the specified resource in storage.
@@ -84,7 +85,7 @@ class UserController extends Controller
     }
 
 
- 
+
     /**
      * Summary of restore
      * @param mixed $id
@@ -104,7 +105,7 @@ class UserController extends Controller
      * @return JsonResponse
      */
     public function updateStatus(Request $request): JsonResponse{
-        
+
         $validator = Validator::make($request->all(), rules: [
             'id'    => 'required|exists:roles,id',
             'value' => ['required', new Enum(Status::class)],
@@ -118,6 +119,7 @@ class UserController extends Controller
         return $this->changeStatus(request: $request->except(keys: "_token"), actionData: [
             "model"                 => new User(),
             "filterable_attributes" => ['id' => $request->input(key: 'id'), 'parent_id' => parent_user()->id],
+            'recycle'               => request()->has('is_trash')
         ]);
     }
 
