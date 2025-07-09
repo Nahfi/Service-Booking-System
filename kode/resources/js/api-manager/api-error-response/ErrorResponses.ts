@@ -1,9 +1,13 @@
+import { QueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import { resetUserStorage } from "../../features/auth/utils/authController";
 import { getToken } from "../../utils/helper";
 
 interface ApiErrorResponse {
+  success: boolean;
+  code:number
   data?: {
     errors?: Record<string, string[]>;
     error?: string;
@@ -18,7 +22,12 @@ const handleTokenExpire = (redirectPath: string = "/login"): void => {
         toast.error("Your account is inactive or Your token has been expired");
         if (typeof window !== "undefined") {
             localStorage.removeItem("token");
-            const navigate = useNavigate();
+          const navigate = useNavigate();
+          resetUserStorage(
+              persistKey,
+              JSON.parse(localStorage.getItem(persistKey))
+          );
+          QueryClient.clear();
             navigate(redirectPath);
         }
     }

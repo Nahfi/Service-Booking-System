@@ -1,9 +1,8 @@
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 
 import { useTranslation } from "react-i18next";
-import { LuEllipsisVertical, LuEye, LuSquarePen, LuTrash2 } from "react-icons/lu";
-import { Link } from "react-router";
+import { LuEllipsisVertical, LuEye, LuRotateCcw, LuSquarePen, LuTrash2 } from "react-icons/lu";
 import NoDataFound from "../../../components/common/NoDataFound/NoDataFound";
 import { valueToKey } from "../../../utils/helper";
 import type { InputChangeEvent, OpenModalFn } from "../../../utils/types";
@@ -32,17 +31,19 @@ interface BulkActions {
 interface UserTableProps {
     openModal: OpenModalFn;
     usersData: UserType[];
-    isPending?: boolean;
+    loader?: boolean;
     bulkActions: BulkActions;
     actions?: ActionHandlers;
+    is_trash?: boolean;
 }
 
 const UserTable: FC<UserTableProps> = ({
     openModal,
     usersData,
-    isPending,
     bulkActions,
     actions = {},
+    loader,
+    isTrash=false
 }) => {
     const { t } = useTranslation();
 
@@ -68,6 +69,13 @@ const UserTable: FC<UserTableProps> = ({
         }
     };
 
+    const isBulkChecked = useMemo(() => {
+        return (
+            usersData.length > 0 &&
+            usersData.every((user) => selectedId.includes(user.id))
+        );
+    }, [usersData, selectedId]);
+
     return (
         <>
             <thead>
@@ -79,10 +87,7 @@ const UserTable: FC<UserTableProps> = ({
                                     type="checkbox"
                                     id="bulk"
                                     onChange={handleOnBulkSelect}
-                                    checked={
-                                        usersData.length > 0 &&
-                                        usersData.length === selectedId.length
-                                    }
+                                    checked={isBulkChecked}
                                 />
                             )}
 
@@ -91,13 +96,13 @@ const UserTable: FC<UserTableProps> = ({
                     </th>
                     <th> {t(valueToKey("Role Name"), "Role Name")}</th>
                     <th>{t(valueToKey("Status"), "Status")}</th>
-                    <th>{t(valueToKey("Created By"), "Created By")}</th>
-                    <th>{t(valueToKey("Actions"), "Actions")}</th>
+                    <th>{t(valueToKey("Created At"), "Created At")}</th>
+                    <th>{t("actions")}</th>
                 </tr>
             </thead>
 
             <tbody>
-                {!isPending && usersData?.length > 0 ? (
+                {usersData?.length > 0 ? (
                     usersData?.map((user) => (
                         <tr key={user?.id}>
                             <td>
@@ -122,17 +127,17 @@ const UserTable: FC<UserTableProps> = ({
                                         </div>
 
                                         <div>
-                                            <h6 className="fs-15">
+                                            <h6 className="fs-14">
                                                 {user?.name || "--"}
                                             </h6>
                                             <div>
-                                                <p className="fs-14 text-muted d-inline-block">
+                                                <p className="fs-13 text-muted d-inline-block">
                                                     {user?.email || "--"}
                                                 </p>
 
                                                 <p
                                                     to="tel:012345678"
-                                                    className="fs-14 text-muted d-block"
+                                                    className="fs-13 text-muted d-block"
                                                 >
                                                     {user?.phone || "--"}
                                                 </p>
@@ -170,59 +175,90 @@ const UserTable: FC<UserTableProps> = ({
                                             <LuEllipsisVertical />
                                         </Dropdown.Toggle>
 
-                                        <Dropdown.Menu>
-                                            <div className="dropdown-content">
-                                                <Dropdown.Item
-                                                    as={Link}
-                                                    to={`/users/${user?.id}`}
-                                                >
-                                                    <LuEye />
-                                                    {t(
-                                                        valueToKey(
-                                                            "View Details"
-                                                        ),
+                                        <Dropdown.Menu className="dropdown-content">
+                                            <Dropdown.Item
+                                                as={"button"}
+                                                onClick={() =>
+                                                    actions?.modal?.fn(
+                                                        actions?.modal?.modalUid,
+                                                        "VIEW_DETAILS",
+                                                        "Update User",
+                                                        "lg",
+                                                        user
+                                                    )
+                                                }
+                                            >
+                                                <LuEye />
+                                                {t(
+                                                    valueToKey(
                                                         "View Details"
-                                                    )}
-                                                </Dropdown.Item>
+                                                    ),
+                                                    "View Details"
+                                                )}
+                                            </Dropdown.Item>
 
-                                                <Dropdown.Item
-                                                    as={"button"}
-                                                    onClick={() =>
-                                                        openModal(
-                                                            "EDIT",
-                                                            "Update User",
-                                                            "lg",
-                                                            user
-                                                        )
-                                                    }
-                                                >
-                                                    <LuSquarePen />
-                                                    {t(
-                                                        valueToKey("Edit"),
-                                                        "Edit"
-                                                    )}
-                                                </Dropdown.Item>
+                                            <Dropdown.Item
+                                                as={"button"}
+                                                onClick={() =>
+                                                    actions?.modal?.fn(
+                                                        actions?.modal?.modalUid,
+                                                        "EDIT",
+                                                        "Update User",
+                                                        "lg",
+                                                        user
+                                                    )
+                                                }
+                                            >
+                                                <LuSquarePen />
+                                                {t(
+                                                    valueToKey("Edit"),
+                                                    "Edit"
+                                                )}
+                                            </Dropdown.Item>
 
+                                            {isTrash && (
                                                 <Dropdown.Item
                                                     as={"button"}
                                                     onClick={() =>
                                                         actions?.modal?.fn(
-                                                            "DELETE",
+                                                            actions?.modal?.modalUid,
+                                                            "RESTORE",
                                                             "",
                                                             "",
                                                             user?.id
                                                         )
                                                     }
                                                 >
-                                                    <LuTrash2 />
+                                                    <LuRotateCcw />
                                                     {t(
                                                         valueToKey(
-                                                            "Delete"
+                                                            "Restore"
                                                         ),
-                                                        "Delete"
+                                                        "Restore"
                                                     )}
                                                 </Dropdown.Item>
-                                            </div>
+                                            )}
+
+                                            <Dropdown.Item
+                                                as={"button"}
+                                                onClick={() =>
+                                                    actions?.modal?.fn(
+                                                        actions?.modal?.modalUid,
+                                                        "DELETE",
+                                                        "",
+                                                        "",
+                                                        user?.id
+                                                    )
+                                                }
+                                            >
+                                                <LuTrash2 />
+                                                {t(
+                                                    valueToKey(
+                                                        "Delete"
+                                                    ),
+                                                    "Delete"
+                                                )}
+                                            </Dropdown.Item>
                                         </Dropdown.Menu>
                                     </Dropdown>
                                 </div>
@@ -230,11 +266,13 @@ const UserTable: FC<UserTableProps> = ({
                         </tr>
                     ))
                 ) : (
-                    <tr>
-                        <td colSpan={5}>
-                            <NoDataFound />
-                        </td>
-                    </tr>
+                        !loader && (
+                            <tr>
+                                <td colSpan={5}>
+                                    <NoDataFound />
+                                </td>
+                            </tr>
+                        )
                 )}
             </tbody>
         </>

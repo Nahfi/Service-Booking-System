@@ -144,6 +144,7 @@ trait Filterable
     }
 
 
+
     /**
      * scopeFetchWithFormat
      *
@@ -177,4 +178,6 @@ trait Filterable
                             fn(Builder $q): Collection => $q->get(),
                             fn(Builder $q): LengthAwarePaginator => $q->paginate(paginateNumber())->appends(request()->all()));
     }
+
 }
+

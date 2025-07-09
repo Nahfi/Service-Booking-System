@@ -1,3 +1,5 @@
+import type { PaginationMetaType } from "../../../utils/types";
+
 // Role type with full structure
 export interface RoleType {
     id: number;
@@ -45,14 +47,6 @@ export type UserType = {
     role: RoleType;
 };
 
-// Modal configuration type
-export type ModalConfigType = {
-    type: "CREATE" | "EDIT" | "DELETE";
-    title?: string;
-    size?: string;
-    data?: UserType;
-};
-
 export type SaveUserPayload = {
     id?: number;
     name: string;
@@ -61,17 +55,25 @@ export type SaveUserPayload = {
     password?: string;
     password_confirmation?: string;
     role_id: number;
-    address?: {
+    address?: Array<{
         country?: string;
         city?: string;
         full_address?: string;
         postal_code?: string;
-    };
+    }>;
 };
 
-export type ApiResponseType<T = any> = {
+export type UserResponseType = {
     success: boolean;
     message?: string;
     code: number;
-    data?: T;
+    data?: UserType[];
+    pagination_meta: PaginationMetaType;
 };
+
+export type SaveUserApiResponse = {
+    success: boolean;
+    message?: string;
+    code: number;
+    data?: UserType;
+}

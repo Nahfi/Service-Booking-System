@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { valueToKey } from "../../../utils/helper";
 
-import NoDataImage from "../../../assets/images/no-data-found.gif";
+import { LuDatabase } from "react-icons/lu";
 
 
 interface NoDataFoundProps {
@@ -15,23 +15,25 @@ const NoDataFound: React.FC<NoDataFoundProps> = ({
 }) => {
     const { t } = useTranslation();
     return (
-        <div className="d-flex flex-column align-items-center justify-content-center h-100 py-5 px-4 animate-fade-in">
-            {Icon ? (
-                <Icon
-                    className="fs-60 text-ternary"
-                    aria-label="No data icon"
-                />
-            ) : (
-                <img className="no-data-image" src={NoDataImage} alt="No data found" />
-            )}
+        <div className="d-flex flex-column align-items-center justify-content-center h-100 py-5 px-4 fade-in">
+            <span className="mb-3 p-4 bg--light rounded-circle  text-ternary">
+                {Icon ? (
+                    <Icon
+                        className="fs-60"
+                        aria-label="No data icon"
+                    />
+                ) : (
+                    <LuDatabase aria-label="No data icon" className="fs-60" />
+                )}
+            </span>
 
-            <h4 className="fs-18">
+            <h4 className="fs-20">
                 {message
                     ? t(valueToKey(message), message)
-                    : t(valueToKey("No Data Found"), "No Data Found")}
+                    : t(valueToKey("No data available"), "No data available")}
             </h4>
             <p className="mt-2 text-muted">
-                {t(valueToKey("Your list is empty. Create your first item to begin"), "Your list is empty. Create your first item to begin")}.
+                {t(valueToKey("No data available for your query"), "No data available for your query")}.
             </p>
         </div>
     );

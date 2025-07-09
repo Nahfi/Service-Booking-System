@@ -4,16 +4,17 @@ import type React from "react";
 import {
     BsChatDots,
     BsInbox,
-    BsPlusLg,
     BsWhatsapp
 } from "react-icons/bs";
 import {
     LuChartArea,
     LuContact,
     LuLayoutTemplate,
-    LuMessageSquareDot
+    LuMessageSquare,
+    LuMessageSquareDot,
+    LuMessagesSquare
 } from "react-icons/lu";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 interface MenuItem {
     icon: React.ReactNode;
@@ -114,18 +115,38 @@ const ConversationSidebar: React.FC = () => {
                     {isLgUp && (
                         <div className="channel">
                             <div className="channel-title">
-                                <h5>Channels </h5>
+                                <h5>Gateways </h5>
                                 <span>
-                                    <BsPlusLg />
+                                    <LuMessagesSquare className="fs-20"/>
                                 </span>
                             </div>
-                            <nav className="channel-list">
-                                <Link to="#" className="channel-link">
-                                    SMS
-                                </Link>
-                                <Link to="#" className="channel-link">
-                                    Whatsapp
-                                </Link>
+
+                            <nav className="chat-menu">
+                                <NavLink
+                                    to={`channel/sms`}
+                                    className="chat-menu-link"
+                                    viewTransition
+                                >
+                                    <span className="chat-menu-icon">
+                                        <LuMessageSquare />
+                                    </span>
+                                    <h6>
+                                        SMS
+                                    </h6>
+                                </NavLink>
+
+                                <NavLink
+                                    to={`gateway/whatsapp`}
+                                        className="chat-menu-link"
+                                        viewTransition
+                                    >
+                                        <span className="chat-menu-icon">
+                                          <BsWhatsapp />
+                                        </span>
+                                        <h6>
+                                            Whatsapp
+                                        </h6>
+                                </NavLink>
                             </nav>
                         </div>
                     )}

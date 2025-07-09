@@ -38,9 +38,20 @@
       color: $text-placeholder;
     }
     &:disabled{
-      background-color: var(--bs-secondary-bg) !important;
+      background-color: $light-bg !important;
     }
 
+    &.input-color{
+      width: 50px;
+      padding: .375rem 0.20rem;
+    }
+
+  }
+
+  .form-control{
+    &:read-only{
+      background-color: $light-bg !important;
+    }
   }
 
   .form-control[type="file"] {
@@ -138,8 +149,8 @@ input[type="checkbox"] {
     border: 1px dashed $color-primary;
     border-radius: $radius-8;
     width: 100%;
-    @include flex($align:center,$direction:column,$justify:center);
-    padding: 20px;
+    @include flex($align:center,$justify:center,$wrap:wrap,$gap:20px);
+    padding: 15px;
     background-color: $site-bg;
     -webkit-transition: 0.4s ease;
     -o-transition: 0.4s ease;
@@ -148,14 +159,14 @@ input[type="checkbox"] {
       color: $color-primary;
     }
   
-   > span {
+    span {
       display: inline-block;
       font-size: 12px;
+      color: $text-secondary;
     }
 
-   > p {
-     margin-top: 10px;
-     font-size: 16px;
+    p {
+     font-size: 14px;
      color: $text-primary;
    }
   }

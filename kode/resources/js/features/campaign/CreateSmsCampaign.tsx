@@ -14,24 +14,26 @@ interface Step {
     description: string;
 }
 
-  const steps: Step[] = [
-      {
-          title: "Campaign Setup",
-          description: "Write the essential details for your campaign",
-      },
-      {
-          title: "Compose Message",
-          description: "Write the essential details for your campaign.",
-      },
-      {
-          title: "Set Audience",
-          description: "Write the essential details for your campaign.",
-      },
-      {
-          title: "Review",
-          description: "Write the essential details for your campaign.",
-      },
-  ];
+const steps: Step[] = [
+    {
+        title: "Campaign Setup",
+        description: "Write the essential details for your campaign",
+    },
+    {
+        title: "Compose Message",
+        description: "Write the essential details for your campaign.",
+    },
+    {
+        title: "Set Audience",
+        description: "Write the essential details for your campaign.",
+    },
+    {
+        title: "Review",
+        description: "Write the essential details for your campaign.",
+    },
+];
+
+
 const CreateSmsCampaign: React.FC = () => {
     const [activeStep, setActiveStep] = useState<number>(1);
 
@@ -49,6 +51,7 @@ const CreateSmsCampaign: React.FC = () => {
                 return <CampaignSetup />;
         }
     };
+
     const nextStep = (): void => {
         if (activeStep < steps?.length + 1) {
             setActiveStep(activeStep + 1);
@@ -61,9 +64,11 @@ const CreateSmsCampaign: React.FC = () => {
         }
     };
 
-    const handleOnSubmit = (e:FormSubmitEvent): void  => {
+    const handleOnSubmit = (e: FormSubmitEvent): void => {
         e.preventDefault();
     };
+
+    const currentStepTitle = steps[activeStep - 1]?.title || "Create SMS Campaign";
 
     return (
         <BaseLayout className="p-0">
@@ -73,7 +78,8 @@ const CreateSmsCampaign: React.FC = () => {
                 <div className="col campaign-body-wrapper">
                     <form onSubmit={handleOnSubmit}>
                         <div className="campaign-body">
-                            <PageHeader title={"Create SMS Campaign"} />
+                            <PageHeader title={currentStepTitle} />
+
                             <div className="campaign-form-wrapper ms-0 me-auto">
                                 {renderStepContent()}
                             </div>
@@ -83,12 +89,12 @@ const CreateSmsCampaign: React.FC = () => {
                             <Button
                                 type="button"
                                 onClick={prevStep}
-                                className={`btn--dark btn--md rounded-3 ${
-                                    activeStep === 1 ? "opacity-0" : ""
-                                }`}
+                                className={`btn--dark btn--md rounded-3 ${activeStep === 1 ? "opacity-0" : ""
+                                    }`}
                             >
                                 Previous step
                             </Button>
+
                             {activeStep < steps?.length ? (
                                 <Button
                                     type="button"
