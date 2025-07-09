@@ -4,7 +4,6 @@ import Button from "../../../../../../components/common/button/Button";
 
 const ChatComposer: React.FC = ({ type }) => {
 
-  console.log(type);
   
   return (
       <div className="chat-body-footer">

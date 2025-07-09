@@ -12,7 +12,7 @@ const CreateRole:React.FC = () => {
               <PageHeader
                   title={"Create Role"}
                   breadcrumbs={[
-                      { title: "Manage Role", path: "/roles", query_params: { refetch: "true" }, },
+                      { title: "Manage Role", path: "/roles", query_params: { refetch: "true" }},
                       { title: "Create", },
                   ]}
               />

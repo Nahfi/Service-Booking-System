@@ -3,8 +3,6 @@ import MainApi from "../../../../api-manager/MainApi";
 import { onErrorResponse } from "../../../../api-manager/api-error-response/ErrorResponses";
 
 const getData = async (id) => {
-    console.log(id);
-    
     try {
         const { data } = await MainApi.get(`/roles/${id}`);
         return data;

@@ -10,6 +10,7 @@ import { useSignIn } from "./api/hook/useSignIn";
 import AuthHeader from "./components/AuthHeader";
 import AuthLayout from "./components/AuthLayout";
 import LoginForm from "./components/LoginForm";
+import Cookies from "js-cookie";
 
 const Login: React.FC = () => {
     const navigate = useNavigate(); 
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
 
         signIn(signInData, {
             onSuccess: (response) => {
-                if (response) {
+                if (response && response?.code == 200) {
                     const token = response?.data?.access_token;
                     const user = response?.user;
                     if (token && user) {
@@ -34,6 +35,8 @@ const Login: React.FC = () => {
                             window.localStorage.setItem("token", token);
                         }
                         dispatch(setUser(user));
+                        Cookies.set("authToken", token, { path: "/", secure: true });
+                        navigate('/');
                     }
                 }
             },

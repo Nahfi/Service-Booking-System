@@ -9,7 +9,6 @@ const ContactItem = ({
     onSelectUser,
     themeSettings,
 }) => {
-    console.log(contact);
     
     return (
         <div

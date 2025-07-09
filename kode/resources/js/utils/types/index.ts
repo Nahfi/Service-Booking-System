@@ -24,7 +24,6 @@ export type ModalSize = "sm" | "md" | "lg" | "xl" | (string & {});
 export interface OpenModalFn {
     (type: ModalType, title?: string, size?: ModalSize, data?: any): void;
 }
-
 export interface ModalConfigType {
     modalUid: string;
     type?: ModalType;
@@ -32,7 +31,6 @@ export interface ModalConfigType {
     size?: ModalSize;
     data?: any;
 }
-
 
 export interface ModalContextType {
     showModal: boolean;
@@ -58,7 +56,6 @@ export interface ThemeContextType {
     toggleDirection: () => void;
 }
 
-
 // API  Response
 
 export interface ApiActionResponse {
@@ -80,4 +77,36 @@ export interface PaginationMetaType {
     next_page: number | null;
     path: string;
     query: string[];
+}
+
+
+// User Type define
+export interface Address {
+    country: string;
+    city: string;
+    full_address: string;
+    postal_code: string;
+}
+
+export interface RootUserType {
+    id: number;
+    uid: string;
+    fcm_token: string;
+    name: string;
+    img_url: string;
+    phone: string;
+    email: string;
+    meta_data: any | null; 
+    address: Address[];
+    visible_password: string;
+    status: string; 
+    google2fa_secret: string | null;
+    recovery_codes: string[] | null; 
+    two_factor_enabled: boolean;
+    two_factor_confirmed_at: string | null; 
+    last_login_time: string; 
+    is_online: boolean;
+    show_online_status: boolean;
+    created_at: string; 
+    deleted_at: string | null; 
 }

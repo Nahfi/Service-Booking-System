@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { onErrorResponse } from "../../../../api-manager/api-error-response/ErrorResponses";
-import MainApi from "../../../../api-manager/MainApi";
+import { onErrorResponse } from "@/api-manager/api-error-response/ErrorResponses";
+import MainApi from "@/api-manager/MainApi";
 
 interface Address {
     country: string;
@@ -23,10 +23,13 @@ interface ProfileUpdateData {
     meta_data?: MetaData;
 }
 
-const profileUpdate = async (postData: profileUpdateData) => {
+const profileUpdate = async (postData: ProfileUpdateData) => {
     try {
-        const id = postData.get("userId");
-        const { data } = await MainApi.patch(`/profile/${id}`, postData);
+        const id = postData?.userId;
+        const { data } = await MainApi.patch(
+            `/profile/${id}`,
+            postData
+        );
         return data;
     } catch (error) {
         onErrorResponse(error);

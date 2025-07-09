@@ -76,13 +76,9 @@
 .two-factor-modal{
   .two-factor-wrapper{
     .two-factor-qrcode{
-      max-width: 250px;
+      max-width: 200px;
       width: 100%;
       margin-inline: auto;
-      background-color: $light-bg;
-      padding: 10px;
-      font-size: 200px;
-      line-height: 1;
     }
   }
 }

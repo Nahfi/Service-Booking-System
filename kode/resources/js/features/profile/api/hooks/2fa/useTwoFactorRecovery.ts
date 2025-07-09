@@ -2,15 +2,9 @@ import MainApi from "@/api-manager/MainApi";
 import { onErrorResponse } from "@/api-manager/api-error-response/ErrorResponses";
 import { useMutation } from "@tanstack/react-query";
 
-
-const logout = async (data = null) => {
-
-    const URL =
-        data && data?.all_device_logout
-            ? "/logout?all_device_logout=1"
-            : "/logout";
+const recoveryTwoFactor = async () => {
     try {
-        const { data } = await MainApi.post(URL);
+        const { data } = await MainApi.post(`/2fa/verify`);
         return data;
     } catch (error) {
         onErrorResponse(error);
@@ -18,12 +12,12 @@ const logout = async (data = null) => {
     }
 };
 
-const useLogout = () => {
+const useTwoFactorRecovery = () => {
     return useMutation({
-        mutationKey: ["user-sign-Out"],
-        mutationFn: logout,
+        mutationKey: ["recovery-two-factor"],
+        mutationFn: recoveryTwoFactor,
         onError: onErrorResponse,
     });
 };
 
-export default useLogout;
+export default useTwoFactorRecovery;

@@ -1,4 +1,5 @@
 import React from "react";
+import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { LuActivity, LuLogIn, LuLogOut, LuMapPin, LuMonitor } from "react-icons/lu";
 import Button from "../../../components/common/button/Button";
@@ -11,6 +12,7 @@ import { valueToKey } from "../../../utils/helper";
 import type { ModalContextType } from "../../../utils/types";
 import useGetUserSession from "../api/hooks/useGetUserSession";
 import useLogout from "../api/hooks/useLogout";
+import useLogoutOthersSession from "../api/hooks/useLogoutOthersSession";
 
 const Sessions: React.FC = () => {
     const { t } = useTranslation()
@@ -21,13 +23,14 @@ const Sessions: React.FC = () => {
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
     const modalUid: string = "sessionModal"
 
-    const { mutate: logoutFn, isPending } = useLogout()
+    const { mutate: logoutFn, isPending } = useLogout();
+    const { mutate: logoutOthersFn, isPending: OtherSessionLoader } = useLogoutOthersSession();
 
     const handleLogout = () => {
-        logoutFn({}, {
+        logoutFn({all_device_logout : 1}, {
             onSuccess: (response) => {
-                if (response) {
-                    toast.success("Logout form this session");
+                if ((response && response?.code === 200)) {
+                    toast.success("Logout form all session");
                     closeModal();
                     refetch();
                 }
@@ -35,6 +38,17 @@ const Sessions: React.FC = () => {
         })
     }
     
+    const handleLogoutOthers = () => {
+        logoutOthersFn({}, {
+            onSuccess: (response) => {
+                if (response && response?.code === 200) {
+                    toast.success("Logout form others session");
+                    closeModal();
+                    refetch();
+                }
+            },
+        })
+    }
     
     return (
         <>
@@ -46,12 +60,12 @@ const Sessions: React.FC = () => {
                     <Button className="btn--danger btn--lg rounded-3 outline flex-shrink-0" onClick={() => {
                         openModal(
                             modalUid,
-                            "LOGOUT_ALL_SESSION",
+                            "LOGOUT_OTHERS_SESSION",
                             "",
                             "md"
                         );
                     }}>
-                        <LuLogOut className="fs-18" /> Log out from other devices
+                        <LuLogOut className="fs-18" /> {t(valueToKey("Log out from other devices"),"Log out from other devices")}
                     </Button>
                 </CardHeader>
 
@@ -125,14 +139,14 @@ const Sessions: React.FC = () => {
                                             </div>
 
                                             <Button className="btn--danger btn--md outline rounded-3 flex-shrink-0 mt-3"
-                                                onClick={() => {
-                                                    openModal(
-                                                        modalUid,
-                                                        "LOGOUT_SESSION",
-                                                        "",
-                                                        "md"
-                                                    );
-                                                }}
+                                                // onClick={() => {
+                                                //     openModal(
+                                                //         modalUid,
+                                                //         "LOGOUT_SESSION",
+                                                //         "",
+                                                //         "md"
+                                                //     );
+                                                // }}
                                             >
                                                 <LuLogOut className="fs-18" />
                                                 {t(
@@ -168,11 +182,13 @@ const Sessions: React.FC = () => {
                         />
                     )}
 
-                    {modalConfig?.type === "LOGOUT_ALL_SESSION" && (
+                    {modalConfig?.type === "LOGOUT_OTHERS_SESSION" && (
                         <DeleteModal onHide={closeModal}
                             message={`Are you sure you want to log out from other devices?`}
                             description={`This will sign you out from all other devices and browsers where your account is currently active.Make sure this action is intentional.`}
                             buttonLabel={`Log out other devices`}
+                            onDelete={handleLogoutOthers}
+                            isLoading={OtherSessionLoader}
                         />
                     )}
                 </ModalWrapper>

@@ -18,8 +18,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     ) : (
         <Navigate
             to="/login"
-            replace
-            state={{ from: window.location.pathname }}
+            // replace
+            // state={{ from: window.location.pathname }}
         />
     );
 };

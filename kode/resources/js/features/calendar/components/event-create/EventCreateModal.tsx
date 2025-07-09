@@ -40,7 +40,7 @@ const EventCreateModal = ({ modalData={} }) => {
       ...formData,
       allDay: false,
     };
-    console.log(eventData);
+
   };
 
   return (

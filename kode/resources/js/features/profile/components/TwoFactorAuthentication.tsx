@@ -1,27 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
-    LuEye,
     LuQrCode,
     LuShield
 } from "react-icons/lu";
+import { useDispatch } from "react-redux";
 import Button from "../../../components/common/button/Button";
 import Card from "../../../components/common/card/Card";
 import CardBody from "../../../components/common/card/CardBody";
 import CardHeader from "../../../components/common/card/CardHeader";
 import ModalWrapper from "../../../components/common/modal";
 import { useModal } from "../../../context";
-import type { ModalContextType } from "../../../utils/types";
-import AddTwoFactor from "./modals/AddTwoFactor";
-import UpdateTwoFactor from "./modals/UpdateTwoFactor";
+import { valueToKey } from "../../../utils/helper";
+import type { ModalContextType, RootUserType } from "../../../utils/types";
+import useGetTwoFactorSetup from "../api/hooks/2fa/useGetTwoFactorSetup";
+import useTwoFactorDisable from "../api/hooks/2fa/useTwoFactorDisable";
+import TwoFactorModal from "./modals/TwoFactorModal";
 
 
-const TwoFactorAuthentication: React.FC = () => {
+interface TwoFactorAuthenticationProps {
+    user: RootUserType;
+}
 
+const TwoFactorAuthentication: React.FC<TwoFactorAuthenticationProps> = ({ user }) => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+    
     const { showModal, modalConfig, openModal, closeModal } = useModal() as ModalContextType;
-    const modalUid ="twoFactorModal"
+    const modalUid: string = "twoFactorModal"
 
-    const [isEnable, setIsEnable] = useState<boolean>(false);
+    const [localTwoFactorEnabled, setLocalTwoFactorEnabled] = useState(user?.two_factor_enabled);
 
+    console.log(localTwoFactorEnabled);
+    
+    const { data, refetch, isLoading } = useGetTwoFactorSetup();
+    const twoFactorData = useMemo(() => data?.data || null, [data]);
+    
+    const { mutate: twoFactorDisableFn, isPending } = useTwoFactorDisable();
+
+    console.log(twoFactorData);
+    
+
+    useEffect(() => {
+        setLocalTwoFactorEnabled(user?.two_factor_enabled);
+    }, [user?.two_factor_enabled]);
+
+
+    const handleTwoFactorDisable = () => {
+        if (localTwoFactorEnabled) {
+            // setLocalTwoFactorEnabled(false);
+            twoFactorDisableFn({}, {
+                onSuccess: (response) => {
+                    if (response && response?.code == 200) {
+                        setLocalTwoFactorEnabled(response?.data?.two_factor_enabled);
+                        dispatch(setUser(response?.data));
+                        refetch();
+                        toast.success("Two factor authentication disabled successfully");
+                    }
+                }
+            });
+        }
+    }
 
     return (
         <>
@@ -41,22 +81,16 @@ const TwoFactorAuthentication: React.FC = () => {
                             </div>
                             <div>
                                 <h6 className="d-flex align-items-center gap-4 mb-1">
-                                    Two-factor verification
-                                    <span className="form-check form-switch">
-                                        <input
-                                            className="form-check-input"
-                                            type="checkbox"
-                                            role="switch"
-                                        />
-                                    </span>
+                                    {t(valueToKey("Two-factor verification"), "Two-factor verification")}
                                 </h6>
                                 <p className="fs-14 text-muted">
-                                    Secure your account with time-based codes
+                                    {t(valueToKey("Secure your account with time-based codes"),
+                                        "Secure your account with time-based codes")}
                                 </p>
                             </div>
                         </div>
 
-                        {!isEnable ? (
+                        {(!localTwoFactorEnabled) ? (
                             <Button
                                 className="btn--dark btn--md rounded-3 mt-3"
                                 onClick={() => {
@@ -64,28 +98,27 @@ const TwoFactorAuthentication: React.FC = () => {
                                         modalUid,
                                         "TWO-FACTOR-AUTHENTICATION",
                                         "Setup Two-Factor Authentication",
-                                        "md"
+                                        "xl",
+                                        twoFactorData
                                     );
                                 }}
                             >
-                                <LuQrCode /> Enable 2FA
+                                <LuQrCode /> {t(valueToKey("Enable 2FA"), "Enable 2FA")}
                             </Button>
                         ) : (
-                            <Button
-                                className="btn--info btn--md rounded-3 mt-3"
-                                    onClick={() => {
-                                        openModal(
-                                            modalUid,
-                                            "UPDATE-TWO-FACTOR",
-                                            "Setup Two-Factor Authentication",
-                                            "lg"
-                                        );
-                                }}
-                            >
-                                <LuEye />
-                                View authentication
-                            </Button>
-                        )}
+                            <span className="form-check form-switch">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    role="switch"
+                                    id="two-factor"
+                                    disabled={isPending}
+                                    checked={localTwoFactorEnabled}
+                                    onChange={handleTwoFactorDisable}
+                                />
+                            </span>
+                        )
+                    }
                     </div>
                 </CardBody>
             </Card>
@@ -100,14 +133,7 @@ const TwoFactorAuthentication: React.FC = () => {
                     centered
                 >
                     {modalConfig?.type === "TWO-FACTOR-AUTHENTICATION" && (
-                        <AddTwoFactor
-                            onModalClose={closeModal}
-                            setIsEnable={setIsEnable}
-                        />
-                    )}
-
-                    {modalConfig?.type === "UPDATE-TWO-FACTOR" && (
-                        <UpdateTwoFactor onModalClose={closeModal} />
+                        <TwoFactorModal onModalClose={closeModal} twoFactorData={twoFactorData} setLocalTwoFactorEnabled={setLocalTwoFactorEnabled} />
                     )}
                 </ModalWrapper>
             )}
