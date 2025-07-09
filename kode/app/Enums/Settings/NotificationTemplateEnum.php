@@ -1,5 +1,5 @@
 <?php
-  
+
   namespace App\Enums\Settings;
 
 use App\Enums\EnumTrait;
@@ -8,12 +8,13 @@ use Illuminate\Support\Arr;
 enum NotificationTemplateEnum :string {
 
     use EnumTrait;
-    
+
 
     case TEST_MAIL                                  = 'TEST_MAIL';
     case PASSWORD_RESET                             = 'PASSWORD_RESET';
-   
-    
+    case NEW_MESSAGE                                = 'NEW_MESSAGE';
+
+
 
     /**
      * Get Notification Template
@@ -40,7 +41,7 @@ enum NotificationTemplateEnum :string {
                           'is_real_time_disable' =>  true
                   ],
 
-      
+
                     self::TEST_MAIL->value => [
 
                         "name"      => key_to_value(self::TEST_MAIL->value),
@@ -53,8 +54,27 @@ enum NotificationTemplateEnum :string {
                         'is_real_time_disable' =>  true,
                         'is_sms_disable'       =>  true,
                         'type' => NotificationType::OUTGOING,
-                        
-                    ],    
+
+                    ],
+
+
+                    self::NEW_MESSAGE->value => [
+
+                        "name"      => key_to_value(self::NEW_MESSAGE->value),
+                        "subject"   => "New message",
+                        "push_notification_body"  => "You have a new message from {{user}}.",
+                        "template_key" => ([
+                            'user'    => "Name of the user or contact",
+                        ]),
+
+                        'is_mail_disable'      =>  true,
+                        'is_sms_disable'       =>  true,
+                        'is_real_time_disable' =>  false,
+
+                        'type'                 => NotificationType::OUTGOING,
+
+                    ]
+
                 ];
     }
 }

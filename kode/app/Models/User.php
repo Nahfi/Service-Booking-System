@@ -5,8 +5,10 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Enums\Common\Status;
+use App\Enums\Settings\NotificationTemplateEnum;
 use App\Models\Scopes\UserScope;
 use App\Traits\Common\Filterable;
+use App\Traits\Common\Notify;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -28,7 +30,7 @@ use Modules\UserMessaging\Models\UserConversation;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasApiTokens, Filterable, SoftDeletes;
+    use HasFactory, Notifiable, HasApiTokens, Filterable, SoftDeletes , Notify;
 
     /**
      * The attributes that are mass assignable.
@@ -130,8 +132,6 @@ class User extends Authenticatable
     public function parent():BelongsTo{
         return $this->belongsTo(SELF::class,'parent_id');
     }
-
-
 
     /**
      * Summary of settings
@@ -241,6 +241,77 @@ class User extends Authenticatable
                     ? $query
                     : $query->where('id', '!=', $user->id);
     }
+
+
+
+    /**
+     * Summary of scopeWithConversationsFor
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param \App\Models\User $authUser
+     * @return Builder
+     */
+    public function scopeWithConversationsFor(Builder $query, User $authUser): Builder{
+
+        return $query->with([
+            'file',
+            'conversationAsUserOne' => function (HasOne $q) use ($authUser): void{
+                                        $q->where('user_two_id', $authUser->id)
+                                                ->with([
+                                                    'latestMessage',
+                                                    'conversationPreferences' => function (HasMany $q) use ($authUser): void{
+                                                        $q->where('user_id', $authUser->id);
+                                                    }
+                                                ]);
+            },
+            'conversationAsUserTwo' => function ($q) use ($authUser): void{
+                $q->where('user_one_id', $authUser->id)
+                                ->with([
+                                    'latestMessage',
+                                    'conversationPreferences' => function (HasMany $q) use ($authUser): void{
+                                        $q->where('user_id', $authUser->id);
+                                    }
+                                ]);
+            }
+        ]);
+    }
+
+
+
+    /**
+     * Summary of notifyUserMessage
+     * @param string $senderName
+     * @param \App\Models\User $parentUser
+     * @param \Modules\UserMessaging\Models\UserConversation $userConversation
+     * @return void
+     */
+    public function notifyUserMessage(
+                                        string $senderName ,
+                                        User $parentUser ,
+                                        UserConversation $userConversation
+                                    ): void{
+
+            $templateKey = NotificationTemplateEnum::NEW_MESSAGE->value;
+
+            $this->sendNotification(
+                templateKey: $templateKey,
+                data: [
+                    'template_code' => [ 'user'   => $senderName],
+                    'receiver_model' => null,
+                    'custom_data' => [
+                    'push_notification' => [
+                        'receiver_model' => $this,
+                        'payload' => [
+                            'payload_model_id' => $userConversation->id,
+                            'type'             => $templateKey,
+                        ],
+                    ],
+                ],
+                ],
+                parentUser: $parentUser
+            );
+    }
+
+
 
 
 
