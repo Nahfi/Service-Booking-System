@@ -2,8 +2,10 @@
 
 namespace App\Traits\Common;
 
+use App\Enums\Common\QueryFormat;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 
 trait Filterable
@@ -141,4 +143,41 @@ trait Filterable
         return $query;
     }
 
+
+
+    /**
+     * scopeFetchWithFormat
+     *
+     * @param Builder|null $query
+     * 
+     * @return Collection|LengthAwarePaginator
+     */
+    public function scopeFetchWithFormat(Builder|null $query = null): Collection|LengthAwarePaginator
+    {
+        $query = $query ?? $this->newQuery();
+        return $this->applyFetchWithFormat(
+                        query: $query, 
+                        paramKey: 'format', 
+                        paramValue: QueryFormat::COLLECTION->value);
+    }
+
+    /**
+     * applyFetchWithFormat
+     *
+     * @param Builder $query
+     * @param string $paramKey
+     * @param string $paramValue
+     * 
+     * @return Collection|LengthAwarePaginator
+     */
+    private function applyFetchWithFormat(Builder $query, string $paramKey, string $paramValue): Collection|LengthAwarePaginator
+    {
+        $useCollection = request()->query($paramKey, QueryFormat::PAGINATED->value) == $paramValue;
+        
+        return $query->when($useCollection,
+                            fn(Builder $q): Collection => $q->get(),
+                            fn(Builder $q): LengthAwarePaginator => $q->paginate(paginateNumber())->appends(request()->all()));
+    }
+
 }
+

@@ -758,6 +758,13 @@ enum GlobalConfig {
                 'path' => self::IMAGE_PATH_PREFIX.'/user/seo',
             ],
         ],
+
+        'contact' => [
+            'path' => self::IMAGE_PATH_PREFIX.'/contact',
+        ],
+        'contact_imports' => [
+            'path' => self::FILE_PATH_PREFIX.'contact_imports',
+        ],
     ];
 
 
@@ -807,6 +814,24 @@ enum GlobalConfig {
             "view_setting",
             "save_setting",
             "destroy_setting"
+        ],
+
+        "contact" => [
+            "view_contact",
+            "save_contact",
+            "destroy_contact"
+        ],
+
+        "contact_group" => [ 
+            "view_contact_group",
+            "save_contact_group",
+            "destroy_contact_group"
+        ],
+
+        "contact_import" => [ 
+            "view_contact_import",
+            "save_contact_import",
+            "destroy_contact_import"
         ],
     ];
 
