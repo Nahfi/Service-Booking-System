@@ -1,8 +1,6 @@
 import type React from "react";
 
-import { BsPlusLg } from "react-icons/bs";
 import { ImCheckmark } from "react-icons/im";
-import Button from "../../../components/common/button/Button";
 import Field from "../../../components/common/from/Field";
 import SmallCalendar from "./SmallCalendar";
 
@@ -50,12 +48,6 @@ const CalendarSidebar:React.FC = () => {
                   </label>
                 </li>
               ))}
-
-              <li>
-                <Button className="fs-14 lh-1">
-                  <BsPlusLg className="fs-16 me-2" /> Add Calendar
-                </Button>
-              </li>
             </ul>
           </div>
         </div>

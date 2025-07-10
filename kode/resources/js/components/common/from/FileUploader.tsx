@@ -15,6 +15,7 @@ export interface UploadedFile {
 
 interface FileUploaderProps {
     label?: string;
+    id?: string;
     name?: string;
     onUpload: (files: UploadedFile[]) => void;
     uploadText?: string;
@@ -26,6 +27,7 @@ interface FileUploaderProps {
 
 const FileUploader: React.FC<FileUploaderProps> = ({
     label,
+    id,
     name,
     onUpload,
     uploadText = "Select a file or drag and drop here",
@@ -81,6 +83,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({
                 maxFile={maxFile}
             >
                 <input
+                    id={id}
                     type="file"
                     name={name}
                     className="form-control"

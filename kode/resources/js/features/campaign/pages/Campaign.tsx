@@ -4,14 +4,14 @@ import type React from "react";
 
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import BaseLayout from "../../components/layouts/BaseLayout";
+import BaseLayout from "../../../components/layouts/BaseLayout";
 
 import { BsPlusLg } from "react-icons/bs";
-import Button from "../../components/common/button/Button";
-import PageHeader from "../../components/common/Page-header/PageHeader";
-import AllCampaign from "./components/AllCampaign";
-import SmsCampaign from "./components/SmsCampaign";
-import WhatsappCampaign from "./components/WhatsappCampaign";
+import Button from "../../../components/common/button/Button";
+import PageHeader from "../../../components/common/Page-header/PageHeader";
+import AllCampaign from "../components/AllCampaign";
+import SmsCampaign from "../components/SmsCampaign";
+import WhatsappCampaign from "../components/WhatsappCampaign";
 
 const Campaign: React.FC = () => {
     return (

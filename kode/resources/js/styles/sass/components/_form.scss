@@ -61,8 +61,8 @@
 
   .form-select {
     cursor: pointer;
-    -webkit-padding-end: 30px;
-    padding-inline-end: 30px;
+    -webkit-padding-end: 40px;
+    padding-inline-end: 40px;
     background-color: $site-bg;
     > option {
       background-color: transparent;
@@ -231,6 +231,11 @@ input[type="checkbox"] {
 
 .date-range-wrapper{
   width: 240px;
+  .react-datepicker-wrapper{
+    width: 100%;
+  }
+}
+.date-date-wrapper{
   .react-datepicker-wrapper{
     width: 100%;
   }

@@ -16,7 +16,7 @@ const ReviewText: ReviewTextItem[] = [
         subtitle: 'Write the essential details for your campaign.',
     },
     {
-        title: 'Campaign Setup',
+        title: 'Set Audience',
         subtitle: 'Write the essential details for your campaign.',
     }
 ]
@@ -26,12 +26,12 @@ const Review: React.FC = () => {
         <ul className="list-wrapper">
             {ReviewText.map((list, index) => (
                 <li
-                    className="d-flex justify-content-between align-items-center"
+                    className="d-flex justify-content-between align-items-center p-3"
                     key={index}
                 >
                     <div>
-                        <h6 className="fs-17 mb-2">{list?.title}</h6>
-                        <p>{list?.subtitle}</p>
+                        <h6 className="fs-15 mb-1">{list?.title}</h6>
+                        <p className="fs-13">{list?.subtitle}</p>
                     </div>
 
                     <Button

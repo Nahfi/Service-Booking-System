@@ -1,4 +1,4 @@
-@use "../abstracts/" as *;
+@use "../abstracts/"as *;
 
 .i-btn {
   @include inline-flex($align: center, $justify: center);
@@ -18,10 +18,11 @@
   -o-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
 
-  &:disabled{
+  &:disabled {
     pointer-events: none;
     opacity: 0.60;
   }
+
   &.btn--sm {
     padding: 10px 20px;
     font-size: 12px;
@@ -79,14 +80,17 @@
     background: $color-primary;
     color: $color-primary-text;
     border: 1px solid var(--color-primary);
+
     &:hover {
       -webkit-transform: translateY(-2px);
       -ms-transform: translateY(-2px);
       transform: translateY(-2px);
     }
+
     &.soft {
       background: $color-primary-soft;
       color: $text-primary;
+
       &:hover {
         background: $color-primary;
         color: $color-primary-text;
@@ -99,6 +103,7 @@
       -webkit-transition: all 0.3s ease-in-out;
       -o-transition: all 0.3s ease-in-out;
       transition: all 0.3s ease-in-out;
+
       &:hover {
         background: $color-primary;
         color: $color-primary-text;
@@ -110,10 +115,12 @@
     background-color: $color-secondary;
     border: 1px solid $color-secondary;
     color: $color-secondary-text;
+
     &.outline {
       border: 1px solid $color-secondary-soft;
       color: $color-secondary;
       background-color: transparent;
+
       &:hover {
         background-color: $color-secondary;
         border: 1px solid $color-secondary;
@@ -138,6 +145,7 @@
       border: 1px solid $color-danger-light;
       color: $color-danger;
       background-color: transparent;
+
       &:hover {
         border: 1px solid $color-danger;
         background-color: $color-danger;
@@ -150,10 +158,12 @@
     background-color: $color-success;
     border: 1px solid $color-success;
     color: $text-light;
+
     &.outline {
       border: 1px solid $color-success-light;
       color: $color-success;
       background-color: transparent;
+
       &:hover {
         background-color: $color-success;
         border: 1px solid $color-success;
@@ -166,10 +176,12 @@
     background-color: $color-info;
     border: 1px solid $color-info;
     color: $text-light;
+
     &.outline {
       border: 1px solid $color-info-light;
       color: $color-info;
       background-color: transparent;
+
       &:hover {
         background-color: $color-info;
         border: 1px solid $color-info;
@@ -182,10 +194,12 @@
     background-color: $color-warning;
     border: 1px solid $color-warning;
     color: $text-light;
+
     &.outline {
       border: 1px solid $color-warning-light;
       color: $color-warning;
       background-color: transparent;
+
       &:hover {
         background-color: $color-warning;
         border: 1px solid $color-warning;
@@ -198,16 +212,20 @@
     background-color: $color-dark;
     border: 1px solid $color-dark-light;
     color: $text-light;
+
     [data-bs-theme="dark"] & {
       color: $text-secondary;
     }
+
     &.outline {
       border: 1px solid $border-primary;
       color: $text-ternary;
       background-color: transparent;
+
       [data-bs-theme="dark"] & {
         color: $text-secondary;
       }
+
       &:hover {
         background-color: $color-dark;
         border: 1px solid $color-dark;
@@ -220,10 +238,12 @@
     background-color: $color-white;
     border: 1px solid $color-white;
     color: $text-primary;
+
     &.outline {
       border: 1px solid $border-primary;
       color: $text-primary;
       background-color: $color-gray-200;
+
       &:hover {
         background-color: $color-gray-300;
         border: 1px solid $border-primary;
@@ -247,6 +267,7 @@
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   @include flex($align: center, $justify: center);
+
   .tooltiptext {
     opacity: 0;
     visibility: hidden;
@@ -272,9 +293,11 @@
     -webkit-transition: all 0.2s ease-in-out;
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
+
     [data-bs-theme="dark"] & {
       background-color: #494949;
     }
+
     &::after {
       content: "";
       position: absolute;
@@ -286,11 +309,13 @@
       border-width: 4px;
       border-style: solid;
       border-color: $color-gray-500 transparent transparent transparent;
+
       [data-bs-theme="dark"] & {
         border-color: #494949 transparent transparent transparent;
       }
     }
   }
+
   &:hover .tooltiptext {
     opacity: 1;
     visibility: visible;
@@ -353,6 +378,7 @@
       background-color: $color-danger-light !important;
       color: $color-danger !important;
     }
+
     &.danger-solid:hover {
       background-color: $color-danger !important;
       color: $text-light !important;
@@ -362,6 +388,7 @@
       background-color: $color-warning-light !important;
       color: $color-warning !important;
     }
+
     &.warning-solid:hover {
       background-color: $color-warning !important;
       color: $text-light !important;
@@ -390,9 +417,11 @@
 
   &:is(.outline) {
     border: 1px solid $border-primary;
+
     &.outline-primary {
       background: transparent !important;
       color: $color-primary !important;
+
       &:is(:hover) {
         background: $color-primary !important;
         color: $color-primary-text !important;
@@ -403,6 +432,7 @@
     &.outline-secondary {
       background: transparent !important;
       color: $color-secondary !important;
+
       &:is(:hover) {
         background: $color-secondary !important;
         color: $color-secondary-text !important;
@@ -413,6 +443,7 @@
     &.outline-info {
       background: transparent !important;
       color: $color-info !important;
+
       &:is(:hover) {
         background: $color-info !important;
         color: $text-light !important;
@@ -423,6 +454,7 @@
     &.outline-success {
       background: transparent !important;
       color: $color-success !important;
+
       &:is(:hover) {
         background: $color-success !important;
         color: $text-light !important;
@@ -433,6 +465,7 @@
     &.outline-warning {
       background: transparent !important;
       color: $color-warning !important;
+
       &:is(:hover) {
         background: $color-warning !important;
         color: $text-light !important;
@@ -443,6 +476,7 @@
     &.outline-danger {
       background: transparent !important;
       color: $color-danger !important;
+
       &:is(:hover) {
         background: $color-danger !important;
         color: $text-light !important;
@@ -453,6 +487,7 @@
     &.outline-dark {
       background: transparent !important;
       color: $color-dark !important;
+
       &:is(:hover) {
         background: $color-dark !important;
         color: $text-light !important;
@@ -464,6 +499,7 @@
   &.primary-soft {
     background-color: $color-primary-soft;
     color: $color-primary;
+
     &:is(.hover):hover {
       background-color: $color-primary;
       color: $color-primary-text;
@@ -478,6 +514,7 @@
   &.secondary-soft {
     background-color: $color-secondary-soft;
     color: $color-secondary;
+
     &:is(.hover):hover {
       background-color: $color-secondary;
       color: $color-secondary-text;
@@ -492,6 +529,7 @@
   &.success-soft {
     background-color: $color-success-light;
     color: $color-success;
+
     &:is(.hover):hover {
       background-color: $color-success;
       color: $text-light;
@@ -506,6 +544,7 @@
   &.danger-soft {
     background-color: $color-danger-light;
     color: $color-danger;
+
     &:is(.hover):hover {
       background-color: $color-danger;
       color: $text-light;
@@ -520,6 +559,7 @@
   &.warning-soft {
     background-color: $color-warning-light;
     color: $color-warning;
+
     &:is(.hover):hover {
       background-color: $color-warning;
       color: $text-light;
@@ -534,6 +574,7 @@
   &.info-soft {
     background-color: $color-info-light;
     color: $color-info;
+
     &:is(.hover):hover {
       background-color: $color-info;
       color: $text-light;
@@ -548,6 +589,7 @@
   &.dark-soft {
     background-color: $color-dark-light;
     color: $text-primary;
+
     &:is(.hover):hover {
       background-color: $color-dark;
       color: $text-light;
@@ -559,6 +601,70 @@
     color: $text-light;
   }
 }
+
 button {
   background-color: transparent;
 }
+
+
+// Radio Button Styles
+// -----------------------------
+
+.custom-radio {
+  height: 100%;
+  display: block;
+  >input {
+    display: none;
+  }
+  .radio-btn {
+    padding: 12px;
+    width: 230px;
+    height: 100%;
+    border: 1px solid $border-primary;
+    display: block;
+    border-radius: $radius-8;
+    cursor: pointer;
+    @include flex($align: start, $gap: 15px);
+    .radio-btn-icon  {
+      margin-top: 5px;
+      flex-shrink: 0;
+      @include square(20px, $radius-rounded);
+      border: 1px solid $border-secondary;
+      border-radius: $radius-rounded;
+      padding: 1px;
+      transition: 0.4s;
+      pointer-events: none;
+      position: relative;
+      &::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        inset-inline-start: 50%;
+        width: 10px;
+        height: 10px;
+        background-color: $color-primary;
+        border-radius: $radius-rounded;
+        transform: translate(-50%, -50%) !important;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+  & input:checked+.radio-btn {
+    border-color: $color-primary;
+    background-color: $color-primary-soft;
+  }
+
+  & input:checked+.radio-btn .radio-btn-icon {
+    border-color: $color-primary;
+    &::before {
+      background-color: $color-primary;
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+  }
+}
+
+

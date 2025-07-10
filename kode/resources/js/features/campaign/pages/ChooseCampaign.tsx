@@ -1,8 +1,8 @@
 import type React from "react";
 import { BsEnvelope, BsWhatsapp } from "react-icons/bs";
-import PageHeader from "../../components/common/Page-header/PageHeader";
-import BaseLayout from "../../components/layouts/BaseLayout";
-import CampCard from "./components/campaign/CampCard";
+import PageHeader from "../../../components/common/Page-header/PageHeader";
+import BaseLayout from "../../../components/layouts/BaseLayout";
+import CampCard from "../components/campaign/CampCard";
 
 const ChooseCampaign: React.FC = () => {
     return (

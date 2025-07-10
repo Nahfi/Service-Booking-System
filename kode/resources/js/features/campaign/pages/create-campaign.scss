@@ -1,102 +1,113 @@
 @use "@/styles/sass/abstracts/"as *;
 
 .create-campaign {
-    --c-sidebar: 240px;
-    $c-sidebar: var(--c-sidebar);
-    min-height: calc(100dvh - $header-h);
+  --c-sidebar: 240px;
+  $c-sidebar: var(--c-sidebar);
+  min-height: calc(100dvh - $header-h);
+
+  @include lg-down {
+    --c-sidebar: 100%;
+  }
+
+  .campaign-sidebar {
+    max-width: $c-sidebar;
+    width: 100%;
+    -webkit-border-end: 1px solid $border-primary;
+    border-inline-end: 1px solid $border-primary;
+    background-color: $light-bg;
+    padding: 20px;
+
     @include lg-down {
-        --c-sidebar: 100%;
-    }
-    .campaign-sidebar {
-        max-width: $c-sidebar;
-        width: 100%;
-        -webkit-border-end: 1px solid $border-primary;
-        border-inline-end: 1px solid $border-primary;
-        background-color: $light-bg;
-        padding: 20px;
-        @include lg-down {
-            -webkit-border-end: none;
-            border-inline-end: none;
-        }
-
-        .campaign-sidebar-body {
-            @include flex($direction:column,
-                $gap:30px);
-                position: sticky;
-                top: 20px;
-
-            .step-item {
-                @include flex($align: flex-start,
-                    $justify: flex-start,
-                    $gap:10px);
-
-                &.active {
-                    .number {
-                        background-color: $text-primary;
-                        border: 1px solid $text-primary;
-                        color: $color-white;
-                    }
-                }
-
-                .number {
-                    min-width: 30px;
-                    height: 30px;
-                    line-height: 28px;
-                    border-radius: 50%;
-                    font-size: 14px;
-                    border: 1px solid $border-secondary;
-                    text-align: center;
-                    font-weight: 600;
-                }
-
-                .text>h6 {
-                    line-height: 1;
-                    margin-bottom: 6px;
-                }
-            }
-        }
+      -webkit-border-end: none;
+      border-inline-end: none;
     }
 
-    .campaign-body-wrapper {
-        max-width: calc(100% - $c-sidebar);
-        width: 100%;
+    .campaign-sidebar-body {
+      @include flex($direction:column,
+        $gap:30px);
+      position: sticky;
+      top: 20px;
 
-        @include lg-down {
-            max-width: calc(100% - 0px);
-        }
+     
+        .step-item {
+          @include flex($align: flex-start,
+            $justify: flex-start,
+            $gap:10px);
 
-        .campaign-body {
-            padding: 20px;
-            @include lg-down {
-                padding-inline: 20px;
-                max-width: calc(100% - 0px);
+          &.active {
+            .number {
+              background-color: $text-primary;
+              border: 1px solid $text-primary;
+              color: $color-white;
             }
-            @include md-down {
-                padding-inline: 15px;
-                height: 100%;
-            }
+          }
 
-            @include sm-down {
-                padding-inline: 15px;
-            }
-        }
+          .number {
+            min-width: 30px;
+            height: 30px;
+            line-height: 28px;
+            border-radius: 50%;
+            font-size: 14px;
+            border: 1px solid $border-secondary;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease-in-out;
+          }
 
-        .campaign-body-bottom {
-            background-color: $card-bg;
-            position: sticky;
-            inset-inline-end: 0;
-            inset-block-end: 0;
-            padding: 10px 20px;
-            border-top: 1px solid $border-primary;
-            width: 100%;
-            z-index: 100;
+          .text>h6 {
+            line-height: 1;
+            margin-bottom: 6px;
+          }
         }
+      
     }
+  }
+
+  .campaign-body-wrapper {
+    max-width: calc(100% - $c-sidebar);
+    width: 100%;
+
+    @include lg-down {
+      max-width: calc(100% - 0px);
+    }
+
+    .campaign-body {
+      padding: 20px;
+      min-height: calc(100dvh - $header-h);
+      height: 100%;
+
+      @include lg-down {
+        padding-inline: 20px;
+        max-width: calc(100% - 0px);
+      }
+
+      @include md-down {
+        padding-inline: 15px;
+        height: 100%;
+      }
+
+      @include sm-down {
+        padding-inline: 15px;
+      }
+    }
+
+    .campaign-body-bottom {
+      background-color: $card-bg;
+      position: sticky;
+      inset-inline-end: 0;
+      inset-block-end: 0;
+      padding: 10px 20px;
+      border-top: 1px solid $border-primary;
+      width: 100%;
+      z-index: 100;
+    }
+  }
 }
 
 .selected-image {
-  @include flex($align:center,$justify:flex-start,$wrap:wrap,$gap:10px);
+  @include flex($align:center, $justify:flex-start, $wrap:wrap, $gap:10px);
   width: fit-content;
+
   .image {
     width: 120px;
     border: 1px solid $border-primary;
@@ -106,19 +117,22 @@
     text-align: center;
     position: relative;
     z-index: 1;
-    &:hover{
-      .cross{
+
+    &:hover {
+      .cross {
         opacity: 1;
         visibility: visible;
       }
     }
-    > img {
+
+    >img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
+
     .cross {
-      @include square(20px,$radius-rounded);
+      @include square(20px, $radius-rounded);
       transition: 0.3s ease-in-out;
       cursor: pointer;
       color: $color-white;
@@ -159,7 +173,7 @@
     height: 600px;
   }
 
-  > img {
+  >img {
     position: absolute;
     left: 0;
     top: 0;
@@ -178,6 +192,7 @@
     border-radius: $radius-8;
     position: relative;
     z-index: 1;
+
     &::after {
       content: "";
       position: absolute;
@@ -193,15 +208,18 @@
 
     &.w-message {
       background-color: $color-white;
+
       &::after {
         content: unset;
       }
+
       a {
         word-break: break-all;
       }
     }
   }
 }
+
 .mobile-preview {
   border-radius: 20px;
   width: 100%;
@@ -220,6 +238,7 @@
     width: 250px;
     padding: 120px 10px 40px 10px;
   }
+
   .message-content {
     font-size: 16px;
     color: #333;
@@ -246,6 +265,7 @@
       object-fit: cover;
     }
   }
+
   .extra-images {
     position: absolute;
     left: 0;
@@ -274,6 +294,7 @@
     &:first-child {
       border-radius: $radius-12 $radius-12 0 0;
     }
+
     &:last-child {
       border-bottom: 1px solid $border-primary;
       border-radius: 0 0 $radius-12 $radius-12;
@@ -304,6 +325,7 @@
     align-items: center;
     background-color: $color-white;
   }
+
   .content {
     margin-bottom: 30px;
 

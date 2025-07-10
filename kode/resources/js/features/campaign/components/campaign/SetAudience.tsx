@@ -5,8 +5,8 @@ import FileUploader from "../../../../components/common/from/FileUploader";
 
 const SetAudience: FC = () => {
     return (
-        <div className="row g-4">
-            <div className="col-12">
+        <div className="row g-4 fade-in">
+            <div className="col-xxl-9 col-xl-8">
                 <Field
                     label="Choose Groups"
                     inputNote="Select the members of your group where you want to send this campaign."
@@ -24,7 +24,8 @@ const SetAudience: FC = () => {
                     </select>
                 </Field>
             </div>
-            <div className="col-12">
+
+            <div className="col-xxl-9 col-xl-8">
                 <FileUploader
                     label="Or Upload your file"
                     inputNote="Only support extension of .csv, .dsv, .txt or .xlsx."

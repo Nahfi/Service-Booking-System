@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { LuMonitorDot, LuShield, LuUserCog } from "react-icons/lu";
 import { useSelector } from "react-redux";
 import PageHeader from "../../components/common/Page-header/PageHeader";
-import SEO from "../../components/common/seo/SEO";
 import BaseLayout from "../../components/layouts/BaseLayout";
 import type { RootState } from "../../redux/store/store";
 import { valueToKey } from "../../utils/helper";
@@ -42,7 +41,6 @@ const Profile: React.FC = () => {
 
   return (
       <>
-          <SEO title="Profile" />
 
           <BaseLayout>
               <>

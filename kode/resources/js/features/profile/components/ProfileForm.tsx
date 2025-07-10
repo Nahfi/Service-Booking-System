@@ -31,8 +31,6 @@ const ProfileForm: React.FC = ({ user }) => {
         setImages((prevImages) => [...prevImages, ...uploadedImages]);
     };
     
-    console.log(user);
-    
 
     useEffect(() => {
         if (metaData && Object.keys(metaData).length > 0) {
@@ -284,70 +282,70 @@ const ProfileForm: React.FC = ({ user }) => {
                         </div>
                     </div>
 
-                        <div className="info-block">
-                            <div>
-                                <div className="mb-2 d-flex justify-content-between align-items-center gap-3">
-                                    <h6 className="title--sm">
-                                        {t("custom_information", "Custom Information")}
-                                    </h6>
-                               
-                                    <Button
-                                        iconBtn={true}
-                                        tooltipText="Add custom information"
-                                        icon={LuPlus}
-                                        className="dark-soft hover btn-sm circle fs-18"
-                                        onClick={handleAddItem}
-                                        type="button"
-                                    />
-                                </div>
+                    <div className="info-block">
+                        <div>
+                            <div className="mb-2 d-flex justify-content-between align-items-center gap-3">
+                                <h6 className="title--sm">
+                                    {t("custom_information", "Custom Information")}
+                                </h6>
+                            
+                                <Button
+                                    iconBtn={true}
+                                    tooltipText="Add custom information"
+                                    icon={LuPlus}
+                                    className="dark-soft hover btn-sm circle fs-18"
+                                    onClick={handleAddItem}
+                                    type="button"
+                                />
+                            </div>
 
-                                <div className="row g-4">
-                                    {customInputs?.map((item, index) => (
-                                        <div className="col-md-6" key={item.id}>
-                                            <div className='d-flex align-items-center justify-content-between gap-3'>
-                                                <div className="flex-grow-1">
-                                                    <Field label="Field Name">
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Field name"
-                                                            value={item.name}
-                                                            onChange={(e) => {
-                                                                const newCustomInputs = [...customInputs];
-                                                                newCustomInputs[index].name = e.target.value;
-                                                                setCustomInputs(newCustomInputs);
-                                                            }}
-                                                            className="form-control mb-2"
-                                                        />
-                                                    </Field>
-                                                    <Field label="Field Value">
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Field value"
-                                                            value={item.value}
-                                                            onChange={(e) => {
-                                                                const newCustomInputs = [...customInputs];
-                                                                newCustomInputs[index].value = e.target.value;
-                                                                setCustomInputs(newCustomInputs);
-                                                            }}
-                                                            className="form-control"
-                                                        />
-                                                    </Field>
-                                                </div>
-
-                                                <Button
-                                                    iconBtn={true}
-                                                    tooltipText="Remove"
-                                                    icon={LuX}
-                                                    className="danger-soft hover btn-sm circle fs-18 flex-shrink-0"
-                                                    onClick={() => handleRemoveItem(item.id)}
-                                                    type="button"
-                                                />
+                            <div className="row g-4">
+                                {customInputs?.map((item, index) => (
+                                    <div className="col-md-6" key={item.id}>
+                                        <div className='d-flex align-items-center justify-content-between gap-3'>
+                                            <div className="flex-grow-1">
+                                                <Field label="Field Name">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Field name"
+                                                        value={item.name}
+                                                        onChange={(e) => {
+                                                            const newCustomInputs = [...customInputs];
+                                                            newCustomInputs[index].name = e.target.value;
+                                                            setCustomInputs(newCustomInputs);
+                                                        }}
+                                                        className="form-control mb-2"
+                                                    />
+                                                </Field>
+                                                <Field label="Field Value">
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Field value"
+                                                        value={item.value}
+                                                        onChange={(e) => {
+                                                            const newCustomInputs = [...customInputs];
+                                                            newCustomInputs[index].value = e.target.value;
+                                                            setCustomInputs(newCustomInputs);
+                                                        }}
+                                                        className="form-control"
+                                                    />
+                                                </Field>
                                             </div>
+
+                                            <Button
+                                                iconBtn={true}
+                                                tooltipText="Remove"
+                                                icon={LuX}
+                                                className="danger-soft hover btn-sm circle fs-18 flex-shrink-0"
+                                                onClick={() => handleRemoveItem(item.id)}
+                                                type="button"
+                                            />
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
+                    </div>
                
 
                     <div className="text-end mt-4">

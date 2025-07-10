@@ -1,5 +1,5 @@
-import mobileImage from "@/assets/images/bg/mobile-image.png";
-import mobileImageWhatsapp from "@/assets/images/bg/moble-image-w.png";
+import mobileImageWhatsapp from "@/assets/images/bg/mobile-image-w.webp";
+import mobileImage from "@/assets/images/bg/mobile-image.webp";
 import type React from "react";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
