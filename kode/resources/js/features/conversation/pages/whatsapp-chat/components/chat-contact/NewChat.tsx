@@ -56,7 +56,7 @@ const NewChat: React.FC = ({ onHide, modal }) => {
                         openModal(modal.modalUid,
                             "CHOOSE_TEMPLATE",
                             "Choose Template",
-                            "lg",
+                            "xl",
                             contact
                         )}
                     >

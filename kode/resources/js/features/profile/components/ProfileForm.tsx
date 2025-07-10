@@ -1,6 +1,7 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useTranslation } from 'react-i18next'
+import { LuPlus, LuX } from 'react-icons/lu'
 import { useDispatch } from 'react-redux'
 import Button from '../../../components/common/button/Button'
 import Card from '../../../components/common/card/Card'
@@ -13,6 +14,8 @@ import { valueToKey } from '../../../utils/helper'
 import useUpdateProfile from '../api/hooks/useUpdateProfile'
 
 const ProfileForm: React.FC = ({ user }) => {
+
+
     
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -21,11 +24,37 @@ const ProfileForm: React.FC = ({ user }) => {
 
     const address = user?.address?.[0] ?? {}
     const metaData = user?.metaData?.[0] ?? {}
+
+    const [customInputs, setCustomInputs] = useState([]);
     
     const handleImagesUpload = (uploadedImages) => {
         setImages((prevImages) => [...prevImages, ...uploadedImages]);
     };
     
+    console.log(user);
+    
+
+    useEffect(() => {
+        if (metaData && Object.keys(metaData).length > 0) {
+            let formattedInputs = Object.entries(metaData).map(([name, value]) => ({
+                id: Date.now() + Math.random(),
+                name: name,
+                value: value
+            }));
+
+            setCustomInputs(formattedInputs);
+        }
+    }, [metaData]); 
+    
+
+    const handleAddItem = () => {
+        const newItem = { id: Date.now() + Math.random(), name: "", value: "" };
+        setCustomInputs((prev) => [...prev, newItem]);
+    };
+
+    const handleRemoveItem = (id) => {
+        setCustomInputs((prev) => prev.filter((item) => item.id !== id));
+    };
 
     const handleSaveProfile = (e: FormSubmitEvent) => {
         e.preventDefault();
@@ -55,6 +84,18 @@ const ProfileForm: React.FC = ({ user }) => {
         );
 
         postData.address = addressData;
+
+        const metaDataObj = {};
+
+        customInputs.forEach((item) => {
+            if (item.name && item.value) {
+                metaDataObj[item.name] = item.value;
+            }
+        });
+
+        if (Object.keys(metaDataObj).length > 0) {
+            postData.metaData = [metaDataObj];
+        }
 
         profileUpdateFn(postData, {
             onSuccess: (response) => {
@@ -243,34 +284,71 @@ const ProfileForm: React.FC = ({ user }) => {
                         </div>
                     </div>
 
-                    {(metaData && !metaData === null) && (
                         <div className="info-block">
                             <div>
-                                <div className="mb-2">
+                                <div className="mb-2 d-flex justify-content-between align-items-center gap-3">
                                     <h6 className="title--sm">
-                                        {t("Custom Information", "Custom Information")}
+                                        {t("custom_information", "Custom Information")}
                                     </h6>
+                               
+                                    <Button
+                                        iconBtn={true}
+                                        tooltipText="Add custom information"
+                                        icon={LuPlus}
+                                        className="dark-soft hover btn-sm circle fs-18"
+                                        onClick={handleAddItem}
+                                        type="button"
+                                    />
                                 </div>
 
                                 <div className="row g-4">
-                                    {Object.entries(metaData).map(([key, value]) => (
-                                        <div className="col-md-6" key={key}>
-                                            <Field label={keyToValue(key)}>
-                                                <input
-                                                    type="text"
-                                                    id={key}
-                                                    name={`meta_data[${key}]`}
-                                                    className="form-control"
-                                                    defaultValue={value}
+                                    {customInputs?.map((item, index) => (
+                                        <div className="col-md-6" key={item.id}>
+                                            <div className='d-flex align-items-center justify-content-between gap-3'>
+                                                <div className="flex-grow-1">
+                                                    <Field label="Field Name">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Field name"
+                                                            value={item.name}
+                                                            onChange={(e) => {
+                                                                const newCustomInputs = [...customInputs];
+                                                                newCustomInputs[index].name = e.target.value;
+                                                                setCustomInputs(newCustomInputs);
+                                                            }}
+                                                            className="form-control mb-2"
+                                                        />
+                                                    </Field>
+                                                    <Field label="Field Value">
+                                                        <input
+                                                            type="text"
+                                                            placeholder="Field value"
+                                                            value={item.value}
+                                                            onChange={(e) => {
+                                                                const newCustomInputs = [...customInputs];
+                                                                newCustomInputs[index].value = e.target.value;
+                                                                setCustomInputs(newCustomInputs);
+                                                            }}
+                                                            className="form-control"
+                                                        />
+                                                    </Field>
+                                                </div>
+
+                                                <Button
+                                                    iconBtn={true}
+                                                    tooltipText="Remove"
+                                                    icon={LuX}
+                                                    className="danger-soft hover btn-sm circle fs-18 flex-shrink-0"
+                                                    onClick={() => handleRemoveItem(item.id)}
+                                                    type="button"
                                                 />
-                                            </Field>
+                                            </div>
                                         </div>
                                     ))}
-
                                 </div>
                             </div>
                         </div>
-                    )}
+               
 
                     <div className="text-end mt-4">
                         <Button

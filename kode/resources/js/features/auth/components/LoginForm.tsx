@@ -8,13 +8,23 @@ import Field from "../../../components/common/from/Field";
 import useTogglePassword from "../../../hook/useTogglePassword";
 import type { FormSubmitEvent } from "../../../utils/types";
 
+
+interface LoginFormData {
+    email: string;
+    password: string;
+    device_name: string;
+    remember_me?: boolean;
+}
+
 interface LoginFormProps {
     handleLogin: (e: FormSubmitEvent) => void;
     loading: boolean;
+    authenticationCode?: boolean;
+    loginData?: LoginFormData | null;
 }
 
 
-const LoginForm: React.FC = ({ handleLogin ,loading}) => {
+const LoginForm: React.FC<LoginFormProps> = ({ handleLogin, loading, authenticationCode, loginData }) => {
     const { visible, togglePassword } = useTogglePassword();
 
     const userAgent = window?.navigator?.userAgent;
@@ -66,6 +76,25 @@ const LoginForm: React.FC = ({ handleLogin ,loading}) => {
                         </span>
                     </div>
                 </div>
+
+                {authenticationCode && (
+                    <div className="col-12">
+                        <p>Please enter your two-factor authentication code to continue.</p>
+                        <Field label="Authentication code" required>
+                            <input
+                                type="text"
+                                id="code"
+                                name="code"
+                                className="form-control"
+                                placeholder="Enter authentication code"
+                                autoComplete="one-time-code"
+                                autoFocus
+                                maxLength={6}
+                                required
+                            />
+                        </Field>
+                    </div>
+                )}
 
                 <div className="col-12">
                     <div className="row">
