@@ -13,9 +13,6 @@ const SmsCampaignStep = () => {
   const [activeStep, setActiveStep] = useState<number>(1);
   const steps = smsSteps
 
-
-  console.log(activeStep, steps?.length);
-  
   const renderStepContent = (): React.ReactNode => {
     switch (activeStep) {
       case 1:
@@ -50,7 +47,10 @@ const SmsCampaignStep = () => {
   return (
     <form onSubmit={handleOnSubmit} className="campaign-step-form">
       <div>
-        <StepHeader activeStep={activeStep} steps={steps} />
+        <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <h6>SMS Campaign</h6>
+          <StepHeader activeStep={activeStep} steps={steps} />
+        </div>
 
         <div className="campaign-step-body mt-4">
           {renderStepContent()}

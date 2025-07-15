@@ -28,7 +28,7 @@ const CampCard: React.FC<CampCardProps> = ({
             <div className={`icon ${iconColor}`}>{icon}</div>
             <div className="content">
                 <h6>{title}</h6>
-                <p>{description}</p>
+                <p className="fs-14 text-muted">{description}</p>
             </div>
             <Button {...buttonProps }  type="button" className="btn--lg btn--primary">
                 Get Started

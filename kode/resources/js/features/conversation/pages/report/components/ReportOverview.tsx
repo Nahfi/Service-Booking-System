@@ -74,7 +74,7 @@ const ReportOverview: React.FC = () => {
           <Card className="h-100">
             <div className="campaign-status-card">
               <div className="campaign-status">
-                <Progress percentage={80} type="linear" color={"bg--success"} />
+                <Progress percentage={80} type="linear" color={"bg--success"} size="sm" />
                 <div className="row align-items-center mt-3">
                   <div className="col-6">
                     <div className="campaign-status-wrapper">
@@ -103,7 +103,7 @@ const ReportOverview: React.FC = () => {
               </div>
 
               <div className="campaign-status">
-                <Progress percentage={70} type="linear" color={"bg--info"} />
+                <Progress percentage={70} type="linear" color={"bg--info"} size="sm" />
                 <div className="row align-items-center mt-3">
                   <div className="col-6">
                     <div className="campaign-status-wrapper">

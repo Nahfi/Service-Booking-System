@@ -1,7 +1,8 @@
-import { BsEnvelope, BsWhatsapp } from "react-icons/bs";
+import { BsWhatsapp } from "react-icons/bs";
 
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { LuMessageSquare } from "react-icons/lu";
 import Button from "../../../../components/common/button/Button";
 import CampCard from "../../../campaign/components/campaign/CampCard";
 import "./event-create.scss";
@@ -22,13 +23,14 @@ const CreateCampaignModal = ({ onHide }) => {
                 <div className="row justify-content-center g-4">
                     <div className="col-xl-4 col-md-6">
                         <CampCard
-                            icon={<BsEnvelope />}
+                            icon={<LuMessageSquare />}
                             title="SMS Campaign"
                             description="Send an SMS campaign to your selected members."
                             iconColor="color-sms"
                             action={() => setSelectedOption("sms")}
                         />
                     </div>
+                        
                     <div className="col-xl-4 col-md-6">
                         <CampCard
                             icon={<BsWhatsapp />}

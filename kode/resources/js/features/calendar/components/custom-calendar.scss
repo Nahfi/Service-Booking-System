@@ -6,7 +6,7 @@
     overflow-y: auto;
     overflow-x: hidden;
   .calendar-header {
-    padding: 15px 25px;
+    padding: 10px 20px;
     border-bottom: 1px solid $border-primary;
     @include flex($align: center, $justify:space-between, $wrap:wrap, $gap:20px);
     position: sticky;

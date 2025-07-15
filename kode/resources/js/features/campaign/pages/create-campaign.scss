@@ -156,13 +156,12 @@
   justify-content: center;
   position: relative;
   z-index: 1;
-  max-width: 330px;
+  max-width: 280px;
   width: 100%;
   aspect-ratio: 8/16;
   overflow: hidden;
   margin: 0 auto;
   transform: translateX(15px);
-  border-radius: 55px;
 
   @include lg-down {
     transform: translateX(0px);

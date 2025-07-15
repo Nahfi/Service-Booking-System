@@ -4,12 +4,12 @@ import { ImCheckmark } from "react-icons/im";
 import Field from "../../../components/common/from/Field";
 import SmallCalendar from "./SmallCalendar";
 
-const CalendarSidebar:React.FC = () => {
+const CalendarSidebar: React.FC = ({ dateFilter }) => {
   return (
     <aside className="col-auto calendar-sidebar">
       <div className="sidebar-body scroll scroll-3">
         <div className="small-calendar m-3">
-          <SmallCalendar />
+          <SmallCalendar dateFilter={dateFilter} />
         </div>
 
         <div className="border-top p-3">

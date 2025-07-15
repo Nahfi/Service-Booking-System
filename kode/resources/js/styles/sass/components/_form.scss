@@ -53,6 +53,9 @@
       background-color: $light-bg !important;
     }
   }
+  textarea.form-control{
+    height: unset;
+  }
 
   .form-control[type="file"] {
     padding-inline: 12px;

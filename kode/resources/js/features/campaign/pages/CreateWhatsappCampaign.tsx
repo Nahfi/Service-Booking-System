@@ -5,6 +5,7 @@ import Button from "../../../components/common/button/Button";
 import PageHeader from "../../../components/common/Page-header/PageHeader";
 import BaseLayout from "../../../components/layouts/BaseLayout";
 import type { FormSubmitEvent } from "../../../utils/types";
+import CampaignFooter from "../components/campaign/CampaignFooter";
 import CampaignSetup from "../components/campaign/CampaignSetup";
 import CampaignSidebar from "../components/campaign/CampaignSidebar";
 import Review from "../components/campaign/Review";

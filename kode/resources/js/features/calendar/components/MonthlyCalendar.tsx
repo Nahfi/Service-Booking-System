@@ -8,10 +8,10 @@ import {
   getFormattedSchedule,
   getLastDayOfMonth,
   getTotalDasyOfMonth,
-  normalizeDate
-} from "../../../utils/helper";
+} from "../utils/helper";
 
 import Button from "../../../components/common/button/Button";
+import { normalizeDate } from "../../../utils/helper";
 import type { OpenModalFn } from "../../../utils/types";
 import EventCard from './EventCard';
 
@@ -50,7 +50,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
   const [target, setTarget] = useState<EventTarget | null>(null);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleClick = (event: DivClickEvent) : void => {
     setShow(!show);
     setTarget(event.target);
   };
@@ -84,8 +84,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
               <div className="grid gap-1">
                 <div className="d-flex align-items-center justify-content-between">
                   <p
-                    className={`${isToday ? "text-primary" : "fs-14"
-                      }`}
+                    className={`fs-14 ${isToday ? "text-primary fw-600" : ""}`}
                   >
                     {data?.day}
                   </p>
@@ -99,7 +98,7 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
                         modal?.fn(
                           modal?.modalUid,
                           "CREATE_EVENT",
-                          "Create campaign",
+                          "",
                           "xl",
                           data?.date
                         )
@@ -128,7 +127,6 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
                           <Popover.Header as="div">
                             <div className="d-flex justify-content-between">
                               <h4 className="fs-14">
-                                {" "}
                                 Event Title
                               </h4>
                               <div className="d-flex align-items-center gap-1">
@@ -137,8 +135,9 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
                                   tooltipText="Delete"
                                   icon={BsTrash3}
                                   onClick={() =>
-                                    onModalShow(
-                                      "DELETE"
+                                    modal?.fn(
+                                      modal?.modalUid,
+                                      "DELETE","",""
                                     )
                                   }
                                   className="danger-solid circle p-2 fs-10"
@@ -150,11 +149,12 @@ const MonthlyCalendar: React.FC<MonthlyCalendarProps> = ({
                                   icon={BsPencilSquare}
                                   className="dark-solid circle p-2 fs-12"
                                   onClick={() =>
-                                    onModalShow(
+                                    modal?.fn(
+                                      modal?.modalUid,
                                       "UPDATE_EVENT",
-                                      "Update event",
-                                      "md",
-                                      data
+                                      "Update campaign",
+                                      "xl",
+                                      data?.date
                                     )
                                   }
                                 />

@@ -16,7 +16,7 @@ interface MessagePreviewProps {
     buttonSelectValue?: string;
     urlText?: string;
     type?: string;
-    smsType?: "text" | "unicode" | "mms";
+    smsType?: "text" | "unicode";
 }
 
 const MessagePreview: React.FC<MessagePreviewProps> = (props) => {
@@ -109,11 +109,11 @@ const MessagePreview: React.FC<MessagePreviewProps> = (props) => {
                 )}
 
                 {/* SMS Type indicator (if needed) */}
-                {smsType && !whatsapp && (
+                {/* {smsType && !whatsapp && (
                     <div className="sms-type-indicator">
                         Type: {smsType.toUpperCase()}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

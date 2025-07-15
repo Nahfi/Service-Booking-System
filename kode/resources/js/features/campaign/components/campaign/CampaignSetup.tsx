@@ -14,7 +14,7 @@ const CampaignSetup: FC = () => {
     const [selectedDateTime, setSelectedDateTime] = useState(new Date());
 
     return (
-        <div className="row g-4 fade-in">
+        <div className="row g-3 fade-in">
             <div className="col-12">
                 <Field label="Campaign name" required>
                     <input
@@ -71,7 +71,7 @@ const CampaignSetup: FC = () => {
                 </Field>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-12">
                 <Field label="Choose Gateway" required>
                     <select
                         className="form-select"

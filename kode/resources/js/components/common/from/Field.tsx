@@ -132,7 +132,7 @@ const Field: React.FC<FieldProps> = ({
             )}
 
             {inputNote && (
-                <span className="fs-14 mt-2 d-block">{inputNote}</span>
+                <p className="fs-13 mt-1 text-muted">{inputNote}</p>
             )}
         </div>
     );

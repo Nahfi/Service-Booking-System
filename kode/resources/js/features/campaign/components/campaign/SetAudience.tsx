@@ -16,19 +16,18 @@ const SetAudience: FC = () => {
                         id="country"
                         aria-label="State"
                     >
-                        <option selected>Choose your state</option>
-                        <option value="1">Spain</option>
-                        <option value="2">England</option>
-                        <option value="3">Bangladesh</option>
-                        <option value="3">Dhaka</option>
+                        <option selected>Select group</option>
+                        <option value="1">Group-1</option>
+                        <option value="2">Group-2</option>
+                        <option value="3">Group-3</option>
+                        <option value="3">Group-4</option>
                     </select>
                 </Field>
             </div>
 
             <div className="col-xxl-9 col-xl-8">
                 <FileUploader
-                    label="Or Upload your file"
-                    inputNote="Only support extension of .csv, .dsv, .txt or .xlsx."
+                    maxFile="Only support extension of .csv, .dsv, .txt or .xlsx."
                 />
             </div>
         </div>
