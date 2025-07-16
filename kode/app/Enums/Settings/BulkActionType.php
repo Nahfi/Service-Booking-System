@@ -15,5 +15,5 @@ enum BulkActionType: string
     case FORCE_DELETE  = "force_delete";
     case DELETE        = "delete";
     case STATUS        = "status";
-  
+
 }

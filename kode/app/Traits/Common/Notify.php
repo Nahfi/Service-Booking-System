@@ -11,7 +11,7 @@ use App\Enums\Settings\SettingKey;
 use App\Enums\Settings\GlobalConfig;
 use App\Enums\Settings\NotificationLogStatus;
 use App\Models\User;
-use Modules\Settings\Models\DatabaseNotification as ModelsDatabaseNotification;
+use Modules\Settings\Models\DatabaseNotification ;
 use Modules\Settings\Models\NotificationLog as ModelsNotificationLog;
 use Modules\Settings\Models\NotificationTemplate as ModelsNotificationTemplate;
 use Modules\Settings\Models\Settings;
@@ -20,7 +20,6 @@ trait Notify
 {
 
     use Fileable;
-
 
 
     /**
@@ -53,24 +52,48 @@ trait Notify
         ];
 
 
-        if ($template->email_notification == Status::ACTIVE->value) {
+        $notificationConfigurations = [
 
-            $emailBody =   $template->mail_body;
+            'email_notification' => [
+                                        'status'  => $template->email_notification,
+                                        'model_scope' => 'mailGateway',
+                                        'body'    => $template->mail_body,
+                                        'global_template_key' => SettingKey::DEFAULT_MAIL_TEMPLATE->value
+                                    ],
 
-            $gateway =  Settings::withoutGlobalScope(UserScope::class)
+
+            'push_notification' =>  [
+                                        'status'  => $template->push_notification,
+                                        'model_scope' => 'firebaseGateway',
+                                        'body'    => $template->push_notification_body,
+                                        'global_template_key' => SettingKey::DEFAULT_PUSH_TEMPLATE->value
+                                    ]
+        ];
+
+
+        foreach ($notificationConfigurations as $type => $configuration) {
+
+            if ($configuration['status'] == Status::ACTIVE->value) {
+
+                $body        = $configuration['body'];
+                $templateKey = $configuration['global_template_key'];
+                $modelScope  = $configuration['model_scope'];
+
+                $gateway =  Settings::withoutGlobalScope(UserScope::class)
                                         ->where('user_id', $parentUser->id)
-                                        ->mailGateway()
+                                        ->{$modelScope}()
                                         ->default()
                                         ->first();
 
-            if($gateway && !is_null($emailBody)){
+                if ($gateway && !$body) {
 
-                $message = $this->replacePlaceholders( $emailBody,SettingKey::DEFAULT_MAIL_TEMPLATE->value,...$messageData);
+                     $message = $this->replacePlaceholders( $body,$templateKey ,...$messageData);
+                     $this->createLog(gateway: $gateway, message: $message, data: $data);
 
-                $this->createLog(gateway: $gateway, message: $message, data: $data);
+                }
             }
-
         }
+
 
 
         if ($template->site_notificaton == Status::ACTIVE->value && $template->push_notification_body) {
@@ -80,6 +103,7 @@ trait Notify
             if($dbNotification){
 
                 $message = $this->replacePlaceholders($template->push_notification_body, SettingKey::DEFAULT_PUSH_TEMPLATE->value , ...$messageData);
+
                 $receiverModel =  Arr::get($dbNotification , 'receiver_model');
                 if($receiverModel) $this->createDatabaseNotification(message: $message, data: $data);
             }
@@ -224,9 +248,10 @@ trait Notify
 
         $dbNotification = Arr::get($data ,'custom_data.push_notification');
 
+
         $receiverModel =  Arr::get($dbNotification , 'receiver_model');
 
-        $notification  = new ModelsDatabaseNotification();
+        $notification                    = new DatabaseNotification();
         $notification->receiver_model    = get_class($receiverModel);
         $notification->reciever_id       = $receiverModel->id;
         $notification->payload           = Arr::get($dbNotification , 'payload');

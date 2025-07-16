@@ -60,11 +60,7 @@ class MessageService
                             ->withData(resource: $conversations,resourceNamespace: UserConversationResource::class)
                             ->build();
 
-
-
     }
-
-
 
 
 
@@ -371,11 +367,11 @@ class MessageService
 
 
     /**
-     * Summary of destoryConversation
+     * Summary of destroyConversation
      * @param int|string $conversationId
      * @return JsonResponse
      */
-    public function destoryConversation(int | string $conversationId) : JsonResponse{
+    public function destroyConversation(int | string $conversationId) : JsonResponse{
 
         $user    = getAuthUser();
 

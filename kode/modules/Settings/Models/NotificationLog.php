@@ -2,6 +2,7 @@
 
 namespace Modules\Settings\Models;
 
+use App\Traits\Common\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class NotificationLog extends Model
 {
-    use HasFactory;
+    use HasFactory ,Filterable;
 
     protected $fillable = [];
 

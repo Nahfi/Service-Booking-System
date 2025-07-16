@@ -19,6 +19,7 @@ class NotificationTemplate extends Model
      */
     protected static function booted(): void
     {
+
         static::addGlobalScope(new UserScope);
         static::creating(callback: function (Model $model): void {
             $parentUser = parent_user();

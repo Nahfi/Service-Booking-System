@@ -15,6 +15,11 @@ class EmailGatewayController extends Controller
 {
 
 
+
+    /**
+     * Summary of __construct
+     * @param \Modules\Settings\Http\Services\EmailGatewayService $emailGatewayService
+     */
     public function __construct(protected EmailGatewayService $emailGatewayService){
 
         $this->middleware('user.permission.check:view_gateway')->only(['index','show','testGateway']);
@@ -27,11 +32,11 @@ class EmailGatewayController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->emailGatewayService->getGateways();  
+        return $this->emailGatewayService->getGateways();
     }
 
-   
-    
+
+
     /**
      * Update the specified resource in storage.
      * @param Request $request
@@ -40,11 +45,11 @@ class EmailGatewayController extends Controller
      */
     public function update(EmailgatewayRequest $request, $id): JsonResponse
     {
-        return $this->emailGatewayService->save($request);  
+        return $this->emailGatewayService->save($request);
     }
 
 
-    
+
     /**
      * Summary of show
      * @param int|string $id
@@ -52,7 +57,7 @@ class EmailGatewayController extends Controller
      */
     public function show(int | string $id): JsonResponse
     {
-        return $this->emailGatewayService->getGateways($id);  
+        return $this->emailGatewayService->getGateways($id);
     }
 
 
@@ -71,15 +76,15 @@ class EmailGatewayController extends Controller
             'email' => 'required|email',
         ]);
 
-        if ($validator->fails())  
-            throw new ValidationException(validator: $validator,  
+        if ($validator->fails())
+            throw new ValidationException(validator: $validator,
                 response: ApiResponse::error(
                     data : ['errors' => $validator->errors()],
                     code : Response::HTTP_BAD_REQUEST
                 ));
 
 
-        return $this->emailGatewayService->test($request);  
+        return $this->emailGatewayService->test($request);
 
     }
 
@@ -96,16 +101,16 @@ class EmailGatewayController extends Controller
             'id' => 'required|exists:settings,id',
         ]);
 
-        if ($validator->fails())  
-            throw new ValidationException(validator: $validator,  
+        if ($validator->fails())
+            throw new ValidationException(validator: $validator,
                 response: ApiResponse::error(
                     data : ['errors' => $validator->errors()],
                     code : Response::HTTP_BAD_REQUEST
                 ));
 
         return  $this->emailGatewayService->setDefaultGateway($request->input('id'));
-                                 
+
     }
 
-    
+
 }

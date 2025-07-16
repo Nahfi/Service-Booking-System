@@ -35,7 +35,7 @@ const ManageRole: React.FC = () => {
 
     const { mutate: updateStatus } = useRolesStatusUpdate();
     const { mutate: deleteRoleFn, isPending: deleteButtonLoader } = useRoleDelete();
-    
+
     useEffect(() => {
         if (queryRefetch) {
             refetch();
@@ -43,10 +43,11 @@ const ManageRole: React.FC = () => {
     }, [queryRefetch]);
 
     const handleStatusChange = (role) => {
+
         const postData = {
-            id: role?.id,
-            value: role?.status === "active" ? "inactive" : "active",
-        };
+                            id: role?.id,
+                            value: role?.status === "active" ? "inactive" : "active",
+                        };
 
         updateStatus(postData, {
             onSuccess: (response) => {

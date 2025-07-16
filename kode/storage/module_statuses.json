@@ -4,5 +4,6 @@
     "contact": true,
     "user-messaging": true,
     "sms-messaging": true,
-    "whatsapp-messaging": true
+    "whatsapp-messaging": true,
+    "notification": true
 }

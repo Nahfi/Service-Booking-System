@@ -28,7 +28,6 @@ return new class extends Migration
                              ->constrained(table: 'users');
 
 
-
             $table->unsignedBigInteger('last_message_id')
                             ->index()
                             ->nullable()

@@ -22,14 +22,14 @@ use Modules\Settings\Models\NotificationLog;
 use Modules\Settings\Models\NotificationTemplate;
 use Modules\Settings\Models\Settings;
 
-class EmailGatewayService 
+class EmailGatewayService
 {
 
 
     use Fileable , ModelAction , Notify;
 
 
-    
+
     /**
      * Summary of getGateways
      * @param int|string|null $id
@@ -51,7 +51,7 @@ class EmailGatewayService
     }
 
 
-     
+
     /**
      * Summary of save
      * @param \Illuminate\Http\Request $request
@@ -63,7 +63,7 @@ class EmailGatewayService
 
         $credential = $request->input('credential');
 
-       
+
         $mailGateway = Settings::mailGateway()
                                     ->where('id',$request->input('id'))
                                     ->firstOrFail();
@@ -75,7 +75,7 @@ class EmailGatewayService
                                 ->withData(resource: $mailGateway,resourceNamespace: NotificationGatewayResource::class )
                                 ->build();
 
-    
+
     }
 
 
@@ -93,13 +93,13 @@ class EmailGatewayService
 
         $mailGateway->is_default = true;
         $mailGateway->save();
-        
+
         Settings::mailGateway()
                     ->where( 'id','!=',$mailGateway->id)
                     ->update(['is_default' => false]);
 
         return ApiResponse::asSuccess()
-                                ->build();     
+                                ->build();
 
     }
 
@@ -113,7 +113,7 @@ class EmailGatewayService
 
 
         $user = parent_user();
-        
+
         $mailGateway = Settings::mailGateway()
                                 ->where('id',$request->input('id'))
                                 ->firstOrfail();
@@ -122,14 +122,14 @@ class EmailGatewayService
         $template = NotificationTemplate::where('key', NotificationTemplateEnum::TEST_MAIL->value)
                                            ->firstOrfail();
 
-                    
-        
+
+
         $siteLogo = Settings::with(['file'])
                                 ->where('key',SettingKey::SITE_LOGO->value)
                                 ->where('group', SettingKey::LOGO->value)
                                 ->first();
 
-    
+
 
         $email = $request->input('email');
 
@@ -138,7 +138,7 @@ class EmailGatewayService
             'tmpCodes' => ['time' => Carbon::now()],
             'userinfo' => (object)['email' =>  $email , 'username' =>  $email],
             'logo'     => $this->getimageURL(
-                                    file    : $siteLogo?->file , 
+                                    file    : $siteLogo?->file ,
                                     location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value]['user']['path']),
         ];
 
@@ -168,5 +168,5 @@ class EmailGatewayService
 
     }
 
- 
+
 }

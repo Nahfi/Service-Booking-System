@@ -106,9 +106,9 @@ class UserController extends Controller
     public function updateStatus(Request $request): JsonResponse{
 
         $validator = Validator::make($request->all(), rules: [
-            'id'    => 'required|exists:roles,id',
-            'value' => ['required', new Enum(Status::class)],
-        ]);
+                        'id'    => 'required|exists:users,id',
+                        'value' => ['required', new Enum(Status::class)],
+                    ]);
 
         if ($validator->fails())  throw new ValidationException(validator: $validator,  response: ApiResponse::error(
             data: ['errors' => $validator->errors()],
@@ -116,10 +116,10 @@ class UserController extends Controller
         ));
 
         return $this->changeStatus(request: $request->except(keys: "_token"), actionData: [
-            "model"                 => new User(),
-            "filterable_attributes" => ['id' => $request->input(key: 'id'), 'parent_id' => parent_user()->id],
-            'recycle'               => request()->has('is_trash')
-        ]);
+                                            "model"                 => new User(),
+                                            "filterable_attributes" => ['id' => $request->input(key: 'id'), 'parent_id' => parent_user()->id],
+                                            'recycle'               => request()->has('is_trash')
+                                        ]);
     }
 
 

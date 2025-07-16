@@ -24,7 +24,7 @@ trait EnumTrait
     public static function values(array $params  =  [] , ? bool $is_string = false): array
     {
         $result = array_column(self::cases(), 'value');
- 
+
         if(count($params) > 0){
             $result  = [];
             foreach($params as $param){
@@ -53,7 +53,7 @@ trait EnumTrait
      * @return array
      */
     public static function value(mixed $param , ? bool $is_string = false): mixed {
-        
+
         $res = Arr::get(self::toArray(),$param,null);
         if($res && $is_string){
             $res  = strval($res);
@@ -66,6 +66,7 @@ trait EnumTrait
      * @return array
      */
     public static function keyVal(mixed $param , ? bool $is_string = false): mixed {
+
         $res = Arr::get(array_flip(self::toArray()),$param,null);
         if($res && $is_string){
             $res  = strval($res);
@@ -75,6 +76,6 @@ trait EnumTrait
 
 
 
-    
+
 
 }

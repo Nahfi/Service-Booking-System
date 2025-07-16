@@ -50,7 +50,7 @@ class ContactService
       * getContacts
       *
       * @param string|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function getContacts(string|null $uid = null): JsonResponse {
@@ -62,12 +62,12 @@ class ContactService
                               ->date()
                               ->latest('id')
                               ->with(['contactGroups:id,uid,name','file:fileable_id,name,disk'])
-                              ->when($uid, 
-                                   fn(Builder $query): Contact | null 
+                              ->when($uid,
+                                   fn(Builder $query): Contact | null
                                         => $query->where('uid', $uid)->firstOrFail(),
-                                   fn(Builder $query): LengthAwarePaginator|Collection 
+                                   fn(Builder $query): LengthAwarePaginator|Collection
                                         => $query->fetchWithFormat());
-                              
+
           return ApiResponse::asSuccess()
                                 ->withData(resource: $log,resourceNamespace: ContactResource::class)
                                 ->build();
@@ -78,7 +78,7 @@ class ContactService
       *
       * @param ContactRequest $request
       * @param string|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function saveContact(ContactRequest $request, string|null $uid = null): JsonResponse
@@ -89,13 +89,13 @@ class ContactService
                                                   ->whereIn('id', $contactGroupIds)
                                                   ->get();
 
-          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds)) 
+          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds))
                throw new Exception(translate("One or more invalid contact groups selected"), Response::HTTP_FORBIDDEN);
-          
+
 
           $log = DB::transaction(function () use ($request, $uid, $contactGroups) {
-               
-               $log = Contact::updateOrCreate(['uid' => $uid, 
+
+               $log = Contact::updateOrCreate(['uid' => $uid,
                          'user_id' => parent_user()->id
                     ], [
                          'channel'           => $request->get('channel', ContactChannelEnum::ALL),
@@ -110,8 +110,8 @@ class ContactService
                if ($request->hasFile('image')) {
                     $this->saveFile(model: $log,
                          response: $this->storeFile(
-                              file: $request->file('image'), 
-                              location: GlobalConfig::FILE_PATH['contact']['path'], 
+                              file: $request->file('image'),
+                              location: GlobalConfig::FILE_PATH['contact']['path'],
                               removeFile: request()->isMethod('patch') ? $log->file : null
                          ),
                          type: FileKey::AVATAR->value
@@ -135,7 +135,7 @@ class ContactService
       * updateContactFavorites
       *
       * @param ContactFavoriteRequest $request
-      * 
+      *
       * @return JsonResponse
       */
      public function updateContactFavorites(ContactFavoriteRequest $request): JsonResponse{
@@ -155,7 +155,7 @@ class ContactService
       * handleContactBulkRequest
       *
       * @param Request $request
-      * 
+      *
       * @return JsonResponse
       */
      public function handleContactBulkRequest(Request $request): JsonResponse{
@@ -164,12 +164,12 @@ class ContactService
           $parentUser      = parent_user();
 
           $this->validateBulkActonRequest(request: $request, model: $contactModel);
-          
+
           $contacts = Contact::with(['file'])
                               ->where('user_id', $parentUser->id)
                               ->whereIn('id', $request->input('bulk_ids'));
 
-          $response = $this->bulkAction(request: $request, 
+          $response = $this->bulkAction(request: $request,
                                    actionData: [
                                         "model" => $contactModel ,
                                         'query' =>  $contacts,
@@ -180,8 +180,8 @@ class ContactService
           if(!$response)
                throw new Exception(
                     translate('Something went wrong'),
-                    Response::HTTP_UNAUTHORIZED);   
-               
+                    Response::HTTP_UNAUTHORIZED);
+
 
           return ApiResponse::asSuccess()
                                    ->withMessage(translate("Bulk action completed successfully"))
@@ -192,7 +192,7 @@ class ContactService
       * updateContactGroupAttachments
       *
       * @param ContactGroupAttachmentRequest $request
-      * 
+      *
       * @return JsonResponse
       */
      public function updateContactGroupAttachments(ContactGroupAttachmentRequest $request): JsonResponse
@@ -207,10 +207,10 @@ class ContactService
                                              ->whereIn('id', $contactGroupIds)
                                              ->get();
 
-          if ($contactIds && $contacts->count() !== count($contactIds)) 
+          if ($contactIds && $contacts->count() !== count($contactIds))
                throw new Exception(translate("One or more invalid contacts selected"), Response::HTTP_FORBIDDEN);
 
-          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds)) 
+          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds))
                throw new Exception(translate("One or more invalid contact groups selected"), Response::HTTP_FORBIDDEN);
 
           DB::transaction(function () use ($contacts, $contactGroups) {
@@ -230,16 +230,16 @@ class ContactService
       * destroyContact
       *
       * @param string|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function destroyContact(string|null $uid = null) : JsonResponse {
 
           if(!$uid) throw new Exception(
                             translate('Invalid Contact'),
-                            Response::HTTP_NOT_FOUND);   
+                            Response::HTTP_NOT_FOUND);
 
-          $log = Contact::when(request()->has('is_trash'), 
+          $log = Contact::when(request()->has('is_trash'),
                                    fn(Builder $query) => $query->onlyTrashed())
                               ->where('user_id', parent_user()->id)
                               ->where('uid', $uid)
@@ -258,7 +258,7 @@ class ContactService
                     $log->forceDelete();
 
                } else {
-               
+
                     $log->delete();
                }
           });
@@ -272,7 +272,7 @@ class ContactService
       * restoreContact
       *
       * @param string|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function restoreContact(string|null $uid = null): JsonResponse {
@@ -296,7 +296,7 @@ class ContactService
       * getContactGroups
       *
       * @param string|null|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function getContactGroups(string|null $uid = null): JsonResponse {
@@ -308,11 +308,11 @@ class ContactService
                                    ->date()
                                    ->latest('id')
                                    ->withCount(['contacts', 'contactImports'])
-                                   ->when($uid, 
+                                   ->when($uid,
                                         fn(Builder $query): ContactGroup | null
-                                             => $query->where('uid', $uid)->firstOrFail(),
-                                        fn(Builder $query): LengthAwarePaginator|Collection 
-                                             => $query->fetchWithFormat());
+                                                => $query->where('uid', $uid)->firstOrFail(),
+                                        fn(Builder $query): LengthAwarePaginator|Collection
+                                                => $query->fetchWithFormat());
 
           return ApiResponse::asSuccess()
                                 ->withData(resource: $log, resourceNamespace: ContactGroupResource::class)
@@ -324,13 +324,13 @@ class ContactService
       *
       * @param ContactGroupRequest $request
       * @param string|null|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function saveContactGroup(ContactGroupRequest $request, string|null $uid = null): JsonResponse {
 
           $log = ContactGroup::updateOrCreate(
-               ['uid' => $uid, 
+               ['uid' => $uid,
                     'user_id' => parent_user()->id
                ],
                [
@@ -349,21 +349,21 @@ class ContactService
       * destroyContactGroup
       *
       * @param string|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function destroyContactGroup(string|null $uid = null): JsonResponse
      {
           if (!$uid) throw new Exception(translate('Invalid Contact Group'), Response::HTTP_NOT_FOUND);
 
-          $log = ContactGroup::when(request()->has('is_trash'), 
+          $log = ContactGroup::when(request()->has('is_trash'),
                                         fn(Builder $query) => $query->onlyTrashed())
                                    ->where('user_id', parent_user()->id)
                                    ->where('uid', $uid)
                                    ->with(['contactImports', 'contactImports.failures', 'contactImports.file', 'contacts', 'contacts.file'])
                                    ->firstOrFail();
           $immediateDelete = false;
-          
+
 
           if (request()->has('is_trash')) {
 
@@ -377,21 +377,21 @@ class ContactService
                }
                $log->contactImports()
                     ->each(function ($import) {
-                         
+
                     $import?->failures()?->delete();
                     $import?->file()?->delete();
                     ProcessContactImportJob::deleteJob($import->id);
                     $import->delete();
                });
           } else {
-               
+
                $log->delete();
           }
 
           return ApiResponse::asSuccess()
-                              ->withMessage(translate("Contact Group " . 
-                                   (request()->has('is_trash') && !request()->has('detach_contacts') 
-                                   ? ($immediateDelete ? 'deletion completed' : 'deletion initiated') 
+                              ->withMessage(translate("Contact Group " .
+                                   (request()->has('is_trash') && !request()->has('detach_contacts')
+                                   ? ($immediateDelete ? 'deletion completed' : 'deletion initiated')
                                    : (request()->has('detach_contacts') ? 'contacts detached' : 'deleted')) . " successfully"))
                               ->build();
      }
@@ -400,7 +400,7 @@ class ContactService
       * restoreContactGroup
       *
       * @param string|null|null $uid
-      * 
+      *
       * @return JsonResponse
       */
      public function restoreContactGroup(string|null $uid = null): JsonResponse {
@@ -425,7 +425,7 @@ class ContactService
       * getContactImports
       *
       * @param string|int|null $id
-      * 
+      *
       * @return JsonResponse
       */
      public function getContactImports(string|int|null $id = null): JsonResponse {
@@ -435,10 +435,10 @@ class ContactService
                                    ->date()
                                    ->latest('id')
                                    ->with(['contactGroups:id,uid,name'])
-                                   ->when($id, 
-                                        fn(Builder $query): ContactImport | null 
+                                   ->when($id,
+                                        fn(Builder $query): ContactImport | null
                                              => $query->where('id', $id)->firstOrFail(),
-                                        fn(Builder $query): LengthAwarePaginator|Collection 
+                                        fn(Builder $query): LengthAwarePaginator|Collection
                                              => $query->fetchWithFormat());
 
           return ApiResponse::asSuccess()
@@ -450,13 +450,13 @@ class ContactService
       * importContacts
       *
       * @param ContactImportRequest $request
-      * 
+      *
       * @return JsonResponse
       */
      public function importContacts(ContactImportRequest $request): JsonResponse {
 
           $import = $this->createImportRecord($request);
-          if(!$import) throw new Exception(translate("Failed to create import record"), Response::HTTP_UNPROCESSABLE_ENTITY);   
+          if(!$import) throw new Exception(translate("Failed to create import record"), Response::HTTP_UNPROCESSABLE_ENTITY);
 
           if ($request->hasFile('file')) {
                $fileResponse = $this->storeFile(
@@ -464,8 +464,8 @@ class ContactService
                     location: GlobalConfig::FILE_PATH['contact_imports']['path']
                );
                $this->saveFile(
-                    model: $import, 
-                    response: $fileResponse, 
+                    model: $import,
+                    response: $fileResponse,
                     type: FileKey::CONTACT_IMPORT_FILE->value);
           }
 
@@ -473,11 +473,11 @@ class ContactService
           if ($request->input('immediate_import', false)) {
                $this->processImmediateImport($import, $request->get('include_first_row', false), $request->get('column_map', []));
                $this->removeImportFile($import);
-               
+
           } else {
                ProcessContactImportJob::dispatch(
-                    $import, 
-                    $request->get('include_first_row', false), 
+                    $import,
+                    $request->get('include_first_row', false),
                                    $request->get('column_map', []))
                     ->onQueue('imports');
           }
@@ -490,7 +490,7 @@ class ContactService
       * pauseResumeImport
       *
       * @param int|string|null $id
-      * 
+      *
       * @return JsonResponse
       */
      public function pauseResumeImport(int|string|null $id = null): JsonResponse
@@ -500,7 +500,7 @@ class ContactService
           $import = ContactImport::where('user_id', parent_user()->id)
                                         ->where('id', $id)
                                         ->firstOrFail();
-          
+
           $newPausedState = !$import->is_paused;
           $this->handleImportPause($import, $newPausedState);
 
@@ -513,13 +513,13 @@ class ContactService
       * destroyImport
       *
       * @param int|string|null $id
-      * 
+      *
       * @return JsonResponse
       */
      public function destroyImport(int|string|null $id = null): JsonResponse
      {
           if(!$id) throw new Exception(translate("Invalid contact import log"), Response::HTTP_NOT_FOUND);
-          $import = ContactImport::when(request()->has('is_trash'), 
+          $import = ContactImport::when(request()->has('is_trash'),
                                         fn(Builder $query) => $query->onlyTrashed())
                                         ->where('user_id', parent_user()->id)
                                         ->where('id', $id)
@@ -547,7 +547,7 @@ class ContactService
       * createImportRecord
       *
       * @param ContactImportRequest $request
-      * 
+      *
       * @return ContactImport
       */
      private function createImportRecord(ContactImportRequest $request): ContactImport|null
@@ -556,7 +556,7 @@ class ContactService
           $contactGroups      = ContactGroup::where('user_id', parent_user()->id)
                                                   ->whereIn('id', $contactGroupIds)->get();
 
-          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds)) 
+          if ($contactGroupIds && $contactGroups->count() !== count($contactGroupIds))
                throw new Exception(translate("One or more invalid contact groups selected"), Response::HTTP_FORBIDDEN);
 
           $import = DB::transaction(function () use ($request, $contactGroups) {
@@ -570,9 +570,9 @@ class ContactService
                     'total_rows'        => $this->countTotalRows($request->file('file'), $request->get('include_first_row', false)),
                ]);
 
-               if ($contactGroups->isNotEmpty()) 
+               if ($contactGroups->isNotEmpty())
                     $import->contactGroups()->attach($contactGroups->pluck('id')->all());
-               
+
 
                return $import;
           });
@@ -585,7 +585,7 @@ class ContactService
       *
       * @param UploadedFile $file
       * @param bool $includeFirstRow
-      * 
+      *
       * @return int
       */
      private function countTotalRows(UploadedFile $file, bool $includeFirstRow = false): int
@@ -601,25 +601,25 @@ class ContactService
       * @param ContactImport $import
       * @param bool $includeFirstRow
       * @param array $columnMap
-      * 
+      *
       * @return void
       */
      public function processImmediateImport(ContactImport $import, bool $includeFirstRow, array $columnMap): void
      {
           $this->updateImportStatus(
-               import: $import, 
-               totalRows: $import->total_rows, 
-               importedRows: 0, 
+               import: $import,
+               totalRows: $import->total_rows,
+               importedRows: 0,
                failedRows: 0);
 
           $location = GlobalConfig::FILE_PATH['contact_imports']['path'];
 
           Excel::import(
                import: new ContactImportHandler(
-                              import: $import, 
+                              import: $import,
                               includeFirstRow: $includeFirstRow,
-                              columnMap: $columnMap, 
-                              service: $this), 
+                              columnMap: $columnMap,
+                              service: $this),
                filePath: storage_path("../../$location"."/".$import->file->name));
      }
 
@@ -630,7 +630,7 @@ class ContactService
       * @param int|null $totalRows
       * @param int|null $importedRows
       * @param int|null $failedRows
-      * 
+      *
       * @return void
       */
      public function updateImportStatus(ContactImport $import, int|null $totalRows = null, int|null $importedRows = null, int|null $failedRows = null): void
@@ -654,7 +654,7 @@ class ContactService
       * @param array $columnMap
       * @param bool $includeFirstRow
       * @param array|null|null $headerData
-      * 
+      *
       * @return array
       */
      public function mapImportRow(array $row, array $columnMap, bool $includeFirstRow, array|null $headerData = null): array
@@ -671,7 +671,7 @@ class ContactService
                if ($value !== null) {
                     if (in_array($field, ['name', 'email', 'phone_number'])) {
                          $data[$field] = $value;
-                    } 
+                    }
                     // else {
                     //      $data['custom_attributes'][$field] = $value;
                     // }
@@ -694,7 +694,7 @@ class ContactService
       *
       * @param Contact $contact
       * @param ContactImport $import
-      * 
+      *
       * @return void
       */
      public function syncContactGroups(Contact $contact, ContactImport $import): void
@@ -710,7 +710,7 @@ class ContactService
       * @param int $rowNumber
       * @param array $row
       * @param string $error
-      * 
+      *
       * @return void
       */
      public function logImportFailure(ContactImport $import, int $rowNumber, array $row, string $error): void
@@ -731,25 +731,25 @@ class ContactService
       * @param bool $includeFirstRow
       * @param array $columnMap
       * @param int|null $startRow
-      * 
+      *
       * @return void
       */
      public function processImportChunk(ContactImport $import, bool $includeFirstRow, array $columnMap, int|null $startRow = 0): void {
 
           $this->updateImportStatus(
-               import: $import, 
-               totalRows: $import->total_rows, 
-               importedRows: $import->imported_rows, 
+               import: $import,
+               totalRows: $import->total_rows,
+               importedRows: $import->imported_rows,
                failedRows: $import->failed_rows);
 
           $location = GlobalConfig::FILE_PATH['contact_imports']['path'];
           Excel::import(
                import: new ContactImportHandler(
-                         import: $import, 
-                         includeFirstRow: $includeFirstRow, 
-                         columnMap: $columnMap, 
-                         service: $this, 
-                         startRow: $startRow), 
+                         import: $import,
+                         includeFirstRow: $includeFirstRow,
+                         columnMap: $columnMap,
+                         service: $this,
+                         startRow: $startRow),
                filePath: storage_path("../../$location"."/".$import->file->name));
      }
 
@@ -758,7 +758,7 @@ class ContactService
       *
       * @param ContactImport $import
       * @param bool $paused
-      * 
+      *
       * @return void
       */
      public function handleImportPause(ContactImport $import, bool $paused): void
@@ -777,20 +777,20 @@ class ContactService
       *
       * @param ContactGroup $contactGroup
       * @param ContactGroupDeletion|null $contactGroupDeletion
-      * 
+      *
       * @return void
       */
      public function deleteContactGroupAndContacts(ContactGroup $contactGroup, ContactGroupDeletion|null $contactGroupDeletion = null): void
      {
-          $contacts = $contactGroupDeletion 
-                         ? $contactGroup->contacts()->limit(1000)->get() 
+          $contacts = $contactGroupDeletion
+                         ? $contactGroup->contacts()->limit(1000)->get()
                          : $contactGroup->contacts;
 
           DB::transaction(function () use ($contactGroup, $contacts, $contactGroupDeletion): void {
 
                $contactIds = $contacts->pluck('id')->toArray();
                $contactGroup->contacts()->detach($contactIds);
-               
+
                $groupCounts = DB::table('contact_group_contacts')
                                    ->join('contact_groups', 'contact_group_contacts.contact_group_id', '=', 'contact_groups.id')
                                    ->whereIn('contact_group_contacts.contact_id', $contactIds)
@@ -804,7 +804,7 @@ class ContactService
                     ->each(function ($contact) use ($contactGroupDeletion, $groupCounts) {
 
                     $remainingGroups = Arr::get($groupCounts, $contact->id, 0);
-                    if ($remainingGroups === 0) { 
+                    if ($remainingGroups === 0) {
 
                          if ($contact->file) {
                               $this->unlink(
@@ -816,10 +816,10 @@ class ContactService
                     if ($contactGroupDeletion) $contactGroupDeletion->increment('processed_contacts');
                });
 
-               if (!$contactGroupDeletion 
-                    || ($contactGroupDeletion 
+               if (!$contactGroupDeletion
+                    || ($contactGroupDeletion
                          && $contactGroupDeletion->processed_contacts >= $contactGroupDeletion->total_contacts)) $contactGroup->forceDelete();
-               
+
           });
     }
 
@@ -827,7 +827,7 @@ class ContactService
       * scheduleContactGroupDeletion
       *
       * @param ContactGroup $contactGroup
-      * 
+      *
       * @return void
       */
      private function scheduleContactGroupDeletion(ContactGroup $contactGroup): void
@@ -848,7 +848,7 @@ class ContactService
       * removeImportFile
       *
       * @param ContactImport $import
-      * 
+      *
       * @return void
       */
      public function removeImportFile(ContactImport $import): void

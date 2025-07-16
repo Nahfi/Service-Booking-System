@@ -17,7 +17,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
 use Modules\User\Http\Resources\UserResource;
 use Modules\User\Models\Role;
-class UserService 
+class UserService
 {
 
     use Fileable , ModelAction;
@@ -46,15 +46,15 @@ class UserService
                                 fn(Builder $q) : LengthAwarePaginator => $q->paginate(paginateNumber())
                                                   ->appends(request()->all())
                                );
-        
+
 
         return ApiResponse::asSuccess()
                                 ->withData(resource: $users,resourceNamespace: UserResource::class)
                                 ->build();
     }
 
-     
-   
+
+
 
      /**
       * Summary of save
@@ -73,7 +73,7 @@ class UserService
 
         $user =  DB::transaction(function() use($request , $parentUser , $role):  User{
 
-                
+
             $user = User::with(['file','role'])->firstOrNew([
                                                                                 'id'        => $request->input('id'),
                                                                                 'parent_id' => $parentUser->id,
@@ -89,7 +89,7 @@ class UserService
                 $user->password = $request->input('password');
                 $user->visible_password = $request->input('password');
             }
-        
+
             $user->address         = $request->input('address');
             $user->save();
 
@@ -97,8 +97,8 @@ class UserService
 
                 $this->saveFile(model: $user,
                                     response: $this->storeFile(
-                                                            file: $request->file('image'), 
-                                                            location : GlobalConfig::FILE_PATH['profile']['user']['path'], 
+                                                            file: $request->file('image'),
+                                                            location : GlobalConfig::FILE_PATH['profile']['user']['path'],
 
                                                             removeFile: request()->isMethod('patch') ? $user->file : null),
                                     type: FileKey::AVATAR->value);
@@ -108,14 +108,14 @@ class UserService
             return $user;
 
         });
-        
+
 
         return ApiResponse::asSuccess()
                                 ->withData(resource: $user,resourceNamespace: UserResource::class )
                                 ->build();
     }
-   
-     
+
+
 
      /**
       * Summary of destroy
@@ -135,16 +135,22 @@ class UserService
                                 'parent_id' => $parentUser->id
                             ])
                     ->firstOrfail();
-                    
+
 
         if(request()->has('is_trash')){
+
             if($user->file){
                  $this->unlink(
                                    location: GlobalConfig::FILE_PATH['profile']['user']['path'],
                                    file: $user->file
                               );
             }
+
             $user->forceDelete();
+
+            return ApiResponse::asSuccess()
+                            ->withMessage(translate('Deleted'))
+                            ->build();
 
         }
 
@@ -196,13 +202,13 @@ class UserService
         $parentUser = parent_user();
 
         $this->validateBulkActonRequest($request ,  $userModel);
-        
+
         $users = User::with(['file'])
                             ->excludeSelfIfNotParent($user)
                             ->where('parent_id',$parentUser->id)
                             ->whereIn('id',$request->input('bulk_ids'));
 
-        $response = $this->bulkAction( $request , 
+        $response = $this->bulkAction( $request ,
                                         [
                                                         "model" => $userModel ,
                                                         'query' =>  $users,
@@ -213,12 +219,12 @@ class UserService
         if(!$response)
                 throw new \Exception(
                             translate('Something went wrong'),
-                            Response::HTTP_UNAUTHORIZED);   
-            
+                            Response::HTTP_UNAUTHORIZED);
+
 
         return ApiResponse::asSuccess()->build();
     }
 
 
-   
+
 }

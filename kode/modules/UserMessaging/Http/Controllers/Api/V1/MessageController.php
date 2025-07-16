@@ -122,11 +122,11 @@ class MessageController extends Controller
 
 
     /**
-     * Summary of destoryConversation
+     * Summary of destroy
      * @param int $conversationId
      * @return JsonResponse
      */
-    public function destoryConversation(int $conversationId): JsonResponse{
-        return $this->messageService->destoryConversation($conversationId);
+    public function destroyConversation(int $conversationId): JsonResponse{
+        return $this->messageService->destroyConversation($conversationId);
     }
 }

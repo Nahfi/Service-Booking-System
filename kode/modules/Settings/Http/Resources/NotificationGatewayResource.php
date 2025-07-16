@@ -21,7 +21,7 @@ class NotificationGatewayResource extends JsonResource
             'sub_group'      => $this->sub_group,
             'is_default'     => (bool)$this->is_default ,
             'key'            => $this->key,
-            'credential'     => json_decode(json: $this->value),
+            'credential'     => $this->value ? json_decode( $this->value) : null ,
             'created_at'     => get_date_time($this->created_at),
         ];
     }
