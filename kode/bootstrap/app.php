@@ -42,7 +42,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
 
         $exceptions->render(function (Exception $e, Request $request) {
-            
+
              if (
                 $e instanceof \Illuminate\View\ViewException  &&
                 str_contains($e->getMessage(), 'Vite manifest not found')
@@ -65,7 +65,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
 
                 if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException)   {
-
 
                     return ApiResponse::error(
                         data: ['error' => translate('No result found')],

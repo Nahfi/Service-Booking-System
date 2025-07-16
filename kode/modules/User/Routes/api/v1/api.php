@@ -24,7 +24,7 @@ use Modules\User\Http\Controllers\Api\V1\UserSessionController;
 
 
 Route::group(['middleware' => ['sanitization', 'exception.handler']], function () {
-    
+
     #AUTH ROUTE
     Route::post('/login', [AuthenticateController::class,'login'])->middleware(['throttle:' .RateLimit::LOGIN->toThrottleString()]);
 

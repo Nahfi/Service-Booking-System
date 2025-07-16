@@ -15,7 +15,7 @@ use Illuminate\Support\Arr;
 use Modules\Settings\Http\Resources\LanguageResource;
 use Modules\Settings\Models\Settings;
 
-class LanguageService 
+class LanguageService
 {
 
 
@@ -35,7 +35,7 @@ class LanguageService
     }
 
 
-     
+
     /**
      * Summary of save
      * @param \Illuminate\Http\Request $request
@@ -47,11 +47,11 @@ class LanguageService
         $key            = $request->input('lang_code');
 
         if(Settings::language()
-                    ->where('key',$key)->exists())  
+                    ->where('key',$key)->exists())
                          throw new \Exception(translate('Language already exists'),Response::HTTP_FORBIDDEN);
 
 
-        
+
         $language             = new Settings();
         $language->group      = SettingKey::LANGUAGES->value;
         $language->key        = $key;
@@ -66,7 +66,7 @@ class LanguageService
         $language->save();
 
         $this->createLangFile(langCode: $key);
-        
+
         return ApiResponse::asSuccess()
                              ->build();
 
@@ -92,7 +92,7 @@ class LanguageService
             $read = file_get_contents(base_path('resources/lang/en/messages.php'));
             fwrite($langFile, $read);
             fclose($langFile);
-        } 
+        }
 
     }
 
@@ -113,12 +113,12 @@ class LanguageService
 
 
         $langDir = base_path('resources/lang/' . $language->key);
-        
+
         if (File::exists($langDir)) {
             File::cleanDirectory(directory: $langDir);
             File::deleteDirectory($langDir);
         }
-        
+
         $language->delete();
 
         return ApiResponse::asSuccess()
@@ -146,7 +146,7 @@ class LanguageService
                           ->map(function(string $value , string $key) use(&$langArray): void{
                                if(isset($langArray[$key])) $langArray[$key] = $value;
                           });
-                      
+
         $str = "<?php return " . var_export(value: $langArray, return: true) . ";";
         file_put_contents(filename: base_path('resources/lang/' . $language->key . '/messages.php'), data: $str);
 
@@ -172,7 +172,7 @@ class LanguageService
         $language->save();
 
         $value  = json_decode($language->value);
-        
+
         Settings::language()
                         ->where( 'id','!=',$id)
                         ->update(['is_default' => false]);
@@ -185,7 +185,7 @@ class LanguageService
     }
 
 
-   
+
 
     /**
      * Summary of switchDirection
@@ -197,7 +197,7 @@ class LanguageService
         $language = Settings::language()
                                     ->where('id',$id)
                                     ->firstOrFail();
-                                    
+
         $value      = json_decode($language->value,true);
         $direction  = Arr::get( $value ,'direction' ,'ltr');
 
@@ -212,5 +212,5 @@ class LanguageService
     }
 
 
- 
+
 }

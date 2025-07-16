@@ -1,0 +1,13 @@
+{
+    "alias": "notification",
+    "description": "",
+    "keywords": [],
+    "active": true,
+    "order": 0,
+    "providers": [
+        "Modules\\Notification\\Providers\\Main"
+    ],
+    "aliases": [],
+    "files": [],
+    "requires": []
+}

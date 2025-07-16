@@ -446,9 +446,9 @@ enum GlobalConfig {
         ['name' => 'Zambia', 'lang_code' => 'en'],
         ['name' => 'Zimbabwe', 'lang_code' => 'en'],
     ];
-    
 
-    
+
+
     const  TELEPHONE_CODES = [
         ["name" => 'UK (+44)', "code" => '44'],
         ["name" => 'USA (+1)', "code" => '1'],
@@ -665,7 +665,7 @@ enum GlobalConfig {
         ["name" => 'Zambia (+260)', "code" => '260'],
         ["name" => 'Zimbabwe (+263)', "code" => '263'],
     ];
-    
+
 
     CONST SETTINGS_JSON_KEYS = [
         SettingKey::S3_CONFIGURATION->value,
@@ -676,7 +676,7 @@ enum GlobalConfig {
 
     const SUPPORTED_FILE_TYPE = ['3dmf',    '3dm',    'avi',    'ai',    'bin',    'bin',    'bmp',    'cab',    'c',    'c++',    'class',    'css',    'csv',    'cdr',    'doc',    'dot',    'docx',    'dwg',    'eps',    'exe',    'gif',    'gz',    'gtar',    'flv',    'fh4',    'fh5',    'fhc',    'help',    'hlp',    'html',    'htm',    'ico',    'imap',    'inf',    'jpe',    'jpeg',    'jpg',    'js',    'java',    'latex',    'log',    'm3u',    'midi',    'mid',    'mov',    'mp3',    'mpeg',    'mpg',    'mp2',    'ogg',    'phtml',    'php',    'pdf',    'pgp',    'png',    'pps',    'ppt',    'ppz',    'pot',    'ps',    'qt',    'qd3d',    'qd3',    'qxd',    'rar',    'ra',    'ram',    'rm',    'rtf',    'spr',    'sprite',    'stream',    'swf',    'svg',    'sgml',    'sgm',    'tar',    'tiff',    'tif',    'tgz',    'tex',    'txt',    'vob',    'wav',    'wrl',    'wrl',    'xla',    'xls',    'xls',    'xlc',    'xml',    'xlsx',    'zip','mp4','webp'];
 
-    
+
 
     const CURRENCY_ALIGNMENT =  [
         "[symbol][amount]" ,
@@ -685,7 +685,7 @@ enum GlobalConfig {
         "[amount] [symbol]"
     ];
 
-    
+
     const DATE_FORMAT = [
         "d M, Y",
         "m.d.y",
@@ -695,7 +695,7 @@ enum GlobalConfig {
         "Y/m/d"
     ];
 
-    
+
     const TIME_FORMAT =  [
         "h:i A",
         "h:i:s A",
@@ -737,15 +737,15 @@ enum GlobalConfig {
            'user'      => ['path' => self::IMAGE_PATH_PREFIX.'user/messages'],
            'whats_app' => ['path' => self::IMAGE_PATH_PREFIX.'user/whats_app']
         ],
-        
+
         'site_logo' => [
             'user' => [
                 'path' => self::IMAGE_PATH_PREFIX.'user/site_logo',
                 'size' => '150x150',
             ]
         ],
-    
-       
+
+
         'meta_image' => [
             'user' => [
                 'path' => self::IMAGE_PATH_PREFIX.'user/seo',
@@ -798,9 +798,16 @@ enum GlobalConfig {
         ],
 
 
-        "gateway_management" => [  //cheked 
+        "gateway_management" => [  //cheked
             "view_gateway",
-            "save_gateway"
+            "save_gateway",
+            "destroy_gateway",
+        ],
+
+
+        "gateway_notification_management" => [  //cheked
+            "view_gateway_notification",
+            "destroy_gateway_notification",
         ],
 
         "language_management" => [ //checked
@@ -822,31 +829,31 @@ enum GlobalConfig {
             "destroy_contact"
         ],
 
-        "contact_group" => [ 
+        "contact_group" => [
             "view_contact_group",
             "save_contact_group",
             "destroy_contact_group"
         ],
 
-        "contact_import" => [ 
+        "contact_import" => [
             "view_contact_import",
             "save_contact_import",
             "destroy_contact_import"
         ],
-        
-        "sms_provider" => [ 
+
+        "sms_provider" => [
             "view_sms_provider",
             "save_sms_provider",
             "destroy_sms_provider"
         ],
 
-        "sms_provider_device" => [ 
+        "sms_provider_device" => [
             "view_sms_provider_devices",
             "save_sms_provider_devices",
             "destroy_sms_provider_devices"
         ],
 
-        "sms_gateway" => [ 
+        "sms_gateway" => [
             "view_sms_gateway",
             "save_sms_gateway",
             "destroy_sms_gateway"
@@ -867,5 +874,5 @@ enum GlobalConfig {
     const  GLOBAL_MIDDLEWARE = ['api','cors','app.verification'];
 
 
-    
+
 }

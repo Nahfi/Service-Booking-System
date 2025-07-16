@@ -38,17 +38,8 @@ class LanguageController extends Controller
     }
 
 
-    /**
-     * Store a newly created resource in storage.
-     * @param LanguageRequest $request
-     * @return Response
-     */
-    public function store(LanguageRequest $request): JsonResponse
-    {
-      return  $this->languageService->save($request);
-    }
 
-   
+
     /**
      * Update the specified resource in storage.
      * @param LanguageRequest $request
@@ -71,7 +62,7 @@ class LanguageController extends Controller
     }
 
 
-    
+
     /**
      * Summary of updateStatus
      * @param \Modules\Settings\Http\Requests\LanguageStatusUpdateRequest $request
@@ -116,8 +107,8 @@ class LanguageController extends Controller
 
 
 
-     
-    
+
+
     /**
      * Summary of translate
      * @param \Illuminate\Http\Request $request
@@ -125,20 +116,20 @@ class LanguageController extends Controller
      */
     public function translate(Request $request): JsonResponse | array{
 
-    
+
         $validator = Validator::make($request->all() ,rules: [
             'code'                 => 'required',
             'key_values'           => 'required|array',
         ]);
 
-        
+
         if ($validator->fails())  throw new ValidationException( validator: $validator,  response: ApiResponse::error(
                                                                     data    : ['errors' => $validator->errors()],
                                                                     code    : Response::HTTP_BAD_REQUEST));
 
 
         return  $this->languageService->translate($request);
-        
+
     }
 
 
@@ -164,7 +155,7 @@ class LanguageController extends Controller
 
         return  $this->languageService->setDefaultLanguage($request->input('id'));
 
-                                                        
+
     }
 
 
@@ -185,7 +176,7 @@ class LanguageController extends Controller
                                                                     data    : ['errors' => $validator->errors()],
                                                                     code    : Response::HTTP_BAD_REQUEST
                                                                 ));
-        
+
         return  $this->languageService->switchDirection($request->input('id'));
     }
 

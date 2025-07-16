@@ -5,6 +5,7 @@ namespace Modules\Settings\Models;
 use App\Enums\Common\Status;
 use App\Enums\Settings\SettingKey;
 use App\Models\Scopes\UserScope;
+use App\Traits\Common\Filterable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Settings extends Model
 {
-    use HasFactory;
+    use HasFactory ,Filterable;
 
 
 
@@ -23,12 +24,12 @@ class Settings extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new UserScope);
-            static::creating(callback: function (Model $model): void {
-                $parentUser = parent_user();
-                if($parentUser){
-                    $model->user_id = parent_user()->id;
-                }
-            });
+        static::creating(callback: function (Model $model): void {
+            $parentUser = parent_user();
+            if($parentUser){
+                $model->user_id = parent_user()->id;
+            }
+        });
     }
 
      /**
@@ -90,7 +91,7 @@ class Settings extends Model
     }
 
 
-   
+
     /**
      * Summary of scopeMailGateway
      * @param \Illuminate\Database\Eloquent\Builder $q
@@ -99,6 +100,17 @@ class Settings extends Model
     public function scopeMailGateway(Builder $q) : Builder {
         return $q->where('group',SettingKey::NOTIFICATION_GATEWAY->value)
                          ->where('sub_group',SettingKey::MAIL_GATEWAY->value);
+    }
+
+
+
+    /**
+     * Summary of scopeMailGateway
+     * @param \Illuminate\Database\Eloquent\Builder $q
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeNotificationGateway(Builder $q) : Builder {
+        return $q->where('group',SettingKey::NOTIFICATION_GATEWAY->value);
     }
 
 
@@ -129,7 +141,7 @@ class Settings extends Model
      * scopeActive
      *
      * @param Builder $q
-     * 
+     *
      * @return Builder
      */
     public function scopeActive(Builder $q): Builder{
@@ -140,5 +152,5 @@ class Settings extends Model
 
 
 
- 
+
 }

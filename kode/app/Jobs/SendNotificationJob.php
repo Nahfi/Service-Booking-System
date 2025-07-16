@@ -27,22 +27,22 @@ class SendNotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $receiverInstance = @$this->log?->receiver;
+        $receiverInstance = $this->log?->receiver;
 
         if($this->log->gateway) {
 
             $subGroup = $this->log->gateway->sub_group;
-            
+
             switch (true) {
                 case ($subGroup == SettingKey::MAIL_GATEWAY->value && $receiverInstance):
                     SendMail::send($this->log, $receiverInstance);
                     break;
-    
+
                 case ($subGroup == SettingKey::FIREBASE_GATEWAY->value):
                     SendPushNotification::send($this->log, $receiverInstance);
                     break;
             }
-          
+
         }
 
     }

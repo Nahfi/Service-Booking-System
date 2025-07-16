@@ -124,7 +124,7 @@ trait ModelAction
 
         $validator = Validator::make($request->all(), rules: [
                         'bulk_ids'    => ['required' ,'array'],
-                        'bulk_id.*'   => ["required",'exists:'.$tableName.',id'],
+                        'bulk_ids.*'   => ["required",'exists:'.$tableName.',id'],
                         'type'        => ['required', ValidationRule::in(BulkActionType::toArray())],
                         'value'       => [
                             ValidationRule::requiredIf(fn () :bool => in_array($request->get("type"),[BulkActionType::STATUS->value])),
@@ -134,8 +134,6 @@ trait ModelAction
                         ]
 
                     ]);
-
-
 
 
         if ($validator->fails())  throw new ValidationException(validator: $validator,  response: ApiResponse::error(
@@ -313,7 +311,7 @@ trait ModelAction
 
         $code = generateOTP();
 
-        $expiredTime = 200;
+        $expiredTime = 200; //second
 
         $otp               = new VerificationCode();
         $otp->otp          = $code;

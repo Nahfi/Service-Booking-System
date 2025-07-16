@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Route;
 use Modules\Settings\Enums\RateLimit;
 use Modules\Settings\Http\Controllers\Api\V1\EmailGatewayController;
+use Modules\Settings\Http\Controllers\Api\V1\FirebaseGatewayController;
 use Modules\Settings\Http\Controllers\Api\V1\LanguageController;
 use Modules\Settings\Http\Controllers\Api\V1\NotificationTemplateController;
 use Modules\Settings\Http\Controllers\Api\V1\SettingsController;
@@ -31,12 +32,14 @@ use Modules\Settings\Http\Controllers\Api\V1\SettingsController;
                 'settings'                 => SettingsController::class,
                 'languages'                => LanguageController::class,
                 'email-gateways'           => EmailGatewayController::class,
+                'firebase-gateways'        => FirebaseGatewayController::class,
                 'notification-templates'   => NotificationTemplateController::class,
             ]);
 
 
             Route::post('/email-gateways/test',[EmailGatewayController::class ,'testGateway']);
             Route::post('/email-gateways/make-default',[EmailGatewayController::class ,'makeDefault']);
+            Route::post('/firebase-gateways/make-default',[FirebaseGatewayController::class ,'makeDefault']);
 
             #CUSTOM LANGUAGE ROUTE
             Route::controller(LanguageController::class)->prefix('languages/')->group(function () {

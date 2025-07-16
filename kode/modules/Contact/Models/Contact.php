@@ -26,42 +26,39 @@ class Contact extends Model
     protected static function booted(): void
     {
         static::addGlobalScope(new UserScope);
-        static::creating(callback: function (Model $model): void {
 
-            $parentUser = parent_user();
+        static::creating(callback: function (Model $model): void {
             $model->uid = Str::uuid();
-            if($parentUser) $model->user_id = parent_user()->id;
         });
     }
 
 
     //Model Relations
 
+
     /**
-     * user
-     *
-     * @return BelongsTo
+     * Summary of user
+     * @return BelongsTo<User, Contact>
      */
     public function user(): BelongsTo{
         return $this->belongsTo(User::class);
     }
-    
+
+
     /**
-     * file
-     *
-     * @return MorphOne
+     * Summary of file
+     * @return MorphOne<File, Contact>
      */
     public function file(): MorphOne{
         return $this->morphOne(File::class, 'fileable');
     }
 
     /**
-     * contactGroups
-     *
-     * @return BelongsToMany
+     * Summary of contactGroups
+     * @return BelongsToMany<ContactGroup, Contact>
      */
     public function contactGroups(): BelongsToMany{
-        
+
         return $this->belongsToMany(ContactGroup::class, 'contact_group_contacts', 'contact_id', 'contact_group_id');
     }
 }
