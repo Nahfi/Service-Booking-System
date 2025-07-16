@@ -1,12 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Button from "../../../../components/common/button/Button";
 
 interface CampCardProps {
     icon: React.ReactNode;
     title: string;
     description: string;
     iconColor: string;
-    link: string;
+    link: string | null;
+    action : (() => void) | null;
 }
 
 const CampCard: React.FC<CampCardProps> = ({
@@ -14,18 +15,24 @@ const CampCard: React.FC<CampCardProps> = ({
     title,
     description,
     iconColor,
-    link,
+    link = null,
+    action= null
 }) => {
+
+    const buttonProps: { [key: string]: any } = {};
+    if (link) buttonProps.href = link;
+    if (action) buttonProps.onClick = action;
+
     return (
         <div className="camp-card">
             <div className={`icon ${iconColor}`}>{icon}</div>
             <div className="content">
                 <h6>{title}</h6>
-                <p>{description}</p>
+                <p className="fs-14 text-muted">{description}</p>
             </div>
-            <Link to={link} className="i-btn btn--lg btn--primary">
+            <Button {...buttonProps }  type="button" className="btn--lg btn--primary">
                 Get Started
-            </Link>
+            </Button>
         </div>
     );
 };

@@ -1,6 +1,6 @@
+import MainApi from "@/api-manager/MainApi";
+import { onErrorResponse } from "@/api-manager/api-error-response/ErrorResponses";
 import { useQuery } from "@tanstack/react-query";
-import MainApi from "../../../../api-manager/MainApi";
-import { onErrorResponse } from "../../../../api-manager/api-error-response/ErrorResponses";
 
 const getData = async () => {
     try {

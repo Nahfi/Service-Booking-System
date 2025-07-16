@@ -5,10 +5,11 @@ import ForgotPassword from "../features/auth/ForgotPassword";
 import Login from "../features/auth/Login";
 import VerifyEmail from "../features/auth/VerifyEmail";
 import Calendar from "../features/calendar/Calendar";
-import Campaign from "../features/campaign/Campaign";
-import ChooseCampaign from "../features/campaign/ChooseCampaign";
-import CreateSmsCampaign from "../features/campaign/CreateSmsCampaign";
-import CreateWhatsappCampaign from "../features/campaign/CreateWhatsappCampaign";
+import Campaign from "../features/campaign/pages/Campaign";
+import CampaignDetails from "../features/campaign/pages/CampaignDetails";
+import ChooseCampaign from "../features/campaign/pages/ChooseCampaign";
+import CreateSmsCampaign from "../features/campaign/pages/CreateSmsCampaign";
+import CreateWhatsappCampaign from "../features/campaign/pages/CreateWhatsappCampaign";
 import Conversation from "../features/conversation/Conversation";
 import CreateAccount from "../features/conversation/pages/channels/CreateAccount";
 import SmsChannel from "../features/conversation/pages/channels/SmsChannel";
@@ -140,6 +141,10 @@ const router: RouteObject[] = createBrowserRouter(
                 {
                     path: "/campaign",
                     element: <Campaign />,
+                },
+                {
+                    path: "/campaign/:campaignId/details",
+                    element: <CampaignDetails />,
                 },
                 {
                     path: "/campaign/create-sms",

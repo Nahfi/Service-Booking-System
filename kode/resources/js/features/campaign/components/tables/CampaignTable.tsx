@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Dropdown, ProgressBar } from "react-bootstrap";
 import { BsFillPauseFill, BsFillPlayFill } from "react-icons/bs";
-import { LuEllipsisVertical, LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { LuEllipsisVertical, LuEye, LuSquarePen, LuTrash2 } from "react-icons/lu";
+import { Link } from "react-router";
 
 const CampaignTable: React.FC = ({ actions }) => {
 
@@ -93,24 +94,25 @@ const CampaignTable: React.FC = ({ actions }) => {
                 <Dropdown className="icon-dropdown">
                   <Dropdown.Toggle
                     id="dropdown-5"
-                    className="icon-btn dark-soft btn-ghost hover btn-md fs-18 rounded-3 p-0"
+                    className="icon-btn dark-soft btn-ghost hover btn-md fs-18 circle p-0"
                   >
                     <LuEllipsisVertical />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu align={`end`}>
                     <div className="dropdown-content">
-                      <Dropdown.Item as="button" onClick={() => actions.modal.fn(
-                        actions.modal.modalUid,
-                        "EDIT",
-                        "Update attribute",
-                        "md"
-                      )
-                      }
-                      >
+
+                      <Dropdown.Item as={Link} to={`/campaign/${ind + 1}/details`}>
+                        <LuEye />
+                        View details
+                      </Dropdown.Item>
+
+                      <Dropdown.Item as={Link} to={`${(ind + 1) % 2 === 0 ? "/campaign/create-sms" :"/campaign/create-whatsapp"}`}>
                         <LuSquarePen />
                         Edit
                       </Dropdown.Item>
+
+
 
                       <Dropdown.Item as="button" onClick={() => actions.modal.fn(
                         actions.modal.modalUid,

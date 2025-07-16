@@ -5,7 +5,11 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { getToken } from "../utils/helper";
 
 
-export const baseUrl: string | undefined = import.meta.env.VITE_API_BASE_URL;
+// export const baseUrl: string | undefined = import.meta.env.VITE_API_BASE_URL;
+
+export const baseUrl: string | undefined = import.meta.env.DEV
+    ? "/quick-message-laravel-react/api/user/v1"
+    : import.meta.env.VITE_API_BASE_URL;
 
 const MainApi: AxiosInstance = axios.create({
     baseURL: baseUrl,

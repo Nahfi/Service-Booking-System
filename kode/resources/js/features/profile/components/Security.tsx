@@ -6,14 +6,14 @@ import CardHeader from "../../../components/common/card/CardHeader";
 import PasswordUpdate from "./PasswordUpdate";
 import TwoFactorAuthentication from "./TwoFactorAuthentication";
 
-const Security: React.FC = () => {
+const Security: React.FC = ({ user }) => {
     return (
         <>
             <div className="row g-4">
                 <div className="col-xl-9 col-lg-8">
                     <div className="d-flex flex-column gap-4">
                         <PasswordUpdate/>
-                        <TwoFactorAuthentication/>
+                        <TwoFactorAuthentication user={user} />
                     </div>
                 </div>
 

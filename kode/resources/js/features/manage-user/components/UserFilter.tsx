@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BsCalendar2Range } from "react-icons/bs";
-import { LuFilter, LuRefreshCw, LuUserPlus } from "react-icons/lu";
+import { LuFilter, LuRefreshCw } from "react-icons/lu";
 import Button from "../../../components/common/button/Button";
 import DateTimePicker from "../../../components/common/datepicker/DateTimePicker";
 import Field from "../../../components/common/from/Field";
@@ -88,9 +88,8 @@ const UserFilter = ({ roles, onReset }) => {
             <Field>
                 <SelectBox
                     options={roles}
-                    icon={<LuUserPlus />}
                     name="role_id"
-                    placeholder={"Choose user"}
+                    placeholder={"Search by role"}
                     size="lg"
                     id="role_id"
                     value={selectInput.role_id}

@@ -28,7 +28,7 @@ const ModalWrapper: React.FC<ModalWrapperProps> = ({ children, title, onHide, an
                     <Button
                         iconBtn={true}
                         icon={LuX}
-                        className="dark-soft btn-ghost circle hover btn-sm"
+                        className="dark-soft btn-ghost circle hover btn-sm fs-20"
                         onClick={onHide}
                     />
                 </Modal.Header>

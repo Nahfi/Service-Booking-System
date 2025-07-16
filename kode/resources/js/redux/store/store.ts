@@ -10,9 +10,16 @@ import userReducer from "../slices/userSlice";
 
 export type RootState = ReturnType<typeof rootReducer>;
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
     user: userReducer,
 });
+
+const rootReducer = (state, action) => {
+    if (action.type === "RESET_STORE") {
+        state = undefined;
+    }
+    return appReducer(state, action);
+};
 
 const persistConfig: PersistConfig<RootState> = {
     key: "quk-msg",
@@ -27,7 +34,11 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {
-                ignoredActions: ["persist/PERSIST", "persist/REHYDRATE"],
+                ignoredActions: [
+                    "persist/PURGE",
+                    "persist/PERSIST",
+                    "persist/REHYDRATE",
+                ],
             },
         }),
 });

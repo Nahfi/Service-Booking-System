@@ -39,7 +39,7 @@ const WhatsappCompose: React.FC = () => {
   };
 
   return (
-    <div className="row">
+    <div className="row g-0 fade-in">
       <div className="col-xxl-8 col-xl-7 col-lg-6 py-30 border-lg-end pe-lg-30">
         <div className="form-wrapper-width ms-0 me-auto">
           <form>

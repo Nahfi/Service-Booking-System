@@ -26,8 +26,8 @@ const CampaignSidebar: React.FC<CampaignSidebarProps> = ({
                         >
                             <div className="number">{index + 1}</div>
                             <div className="text">
-                                <h6>{step.title}</h6>
-                                <p className="fs-14">{step.description}</p>
+                                <h6 className="fs-14">{step.title}</h6>
+                                <p className="fs-12">{step.description}</p>
                             </div>
                         </div>
                     );

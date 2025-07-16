@@ -29,10 +29,10 @@ const DeleteModal: React.FC<DeleteModalProps> = ({ ...props }) => {
     return (
         <div className="text-center">
             <div>
-                <h3 className="fs-22 mb-2 fw-700">
+                <h3 className="fs-20 mb-2 fw-600">
                     {message || `Delete this record`}
                 </h3>
-                <p className="text-muted">{description || `Do You Want To Delete this Records?`}</p>
+                <p className="text-muted fs-14">{description || `Do You Want To Delete this Records?`}</p>
             </div>
 
             <div className="d-flex align-items-center justify-content-center gap-3 mt-5">

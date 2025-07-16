@@ -1,13 +1,21 @@
+
+import { useQueryClient } from '@tanstack/react-query';
 import { Dropdown } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { LuLogOut, LuSettings, LuUser } from 'react-icons/lu';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { handleLogout } from '../../../features/auth/utils/authController';
+import useLogout from '../../../features/profile/api/hooks/useLogout';
 import type { RootState } from '../../../redux/store/store';
 
 const ProfileDropdown = () => {
     const { t } = useTranslation();
+    const queryClient = useQueryClient();
     const user = useSelector((state: RootState) => state.user);
+    const navigate = useNavigate();
+
+    const { mutate: logoutFn } = useLogout()
 
     return (
         <Dropdown>
@@ -57,14 +65,14 @@ const ProfileDropdown = () => {
                 </Dropdown.Item>
 
                 <Dropdown.Item
-                    as={Link}
-                    to={`/login`}
+                    as={"button"}
+                    onClick={() => handleLogout(logoutFn, navigate, queryClient)}
                     className="text-dark d-flex align-items-center gap-3 w-100 p-3"
                 >
                     <span>
                         <LuLogOut className="fs-18" />
                     </span>
-                    <span>{t("sign_out", "Sign out")}</span>
+                    <span>{t("log_out", "Log out")}</span>
                 </Dropdown.Item>
             </Dropdown.Menu>
         </Dropdown>

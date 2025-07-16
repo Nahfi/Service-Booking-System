@@ -61,4 +61,55 @@ export enum BulkActionTypes {
           "save_contact_import",
           "destroy_contact_import",
       ],
-  };
+};
+  
+
+
+// Sms steps
+
+interface Step {
+    title: string;
+    description: string;
+}
+
+export const smsSteps: Step[] = [
+    {
+        title: "Campaign Setup",
+        description:
+            "Define the campaign name, type, and scheduling preferences.",
+    },
+    {
+        title: "Compose Message",
+        description:
+            "Create and customize the SMS message content and templates.",
+    },
+    {
+        title: "Set Audience",
+        description:
+            "Choose the target audience by selecting contact groups or segments.",
+    },
+    {
+        title: "Review",
+        description:
+            "Preview your message, audience, and settings before launching.",
+    },
+];
+
+
+export const whatsappSteps: Step[] = [
+    {
+        title: "Campaign Setup",
+        description:
+            "Define the campaign name, type, and scheduling preferences.",
+    },
+    {
+        title: "Compose Message",
+        description:
+            "Create and customize the SMS message content and templates.",
+    },
+    {
+        title: "Review",
+        description:
+            "Preview your message, audience, and settings before launching.",
+    },
+];

@@ -96,21 +96,17 @@
 
   span {
     display: inline-block;
-    font-size: 16px;
+    font-size: 14px;
     color: $text-ternary;
-    margin-bottom: 10px;
-    font-weight: 500;
-
     @include md-down {
-      font-size: 14px;
+      font-size: 13px;
     }
   }
 
   h4 {
-    font-size: 25px;
-
+    font-size: 20px;
     @include md-down {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 }

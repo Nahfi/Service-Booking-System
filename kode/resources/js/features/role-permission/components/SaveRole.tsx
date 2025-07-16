@@ -41,11 +41,11 @@ const SaveRole = ({ role, isLoading, refetchFn }) => {
             const totalPermissions = Object.values(permissions).flat().length;
             setSelectAll(newCheckedPermissions.length === totalPermissions && totalPermissions > 0);
 
-            console.log('Role loaded, updating permissions:', {
-                role: role,
-                newCheckedPermissions,
-                newFormattedPermissions
-            });
+            // console.log('Role loaded, updating permissions:', {
+            //     role: role,
+            //     newCheckedPermissions,
+            //     newFormattedPermissions
+            // });
         }
     }, [role, permissions]);
 

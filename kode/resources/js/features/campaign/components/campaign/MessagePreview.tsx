@@ -1,5 +1,5 @@
-import mobileImage from "@/assets/images/bg/mobile-image.png";
-import mobileImageWhatsapp from "@/assets/images/bg/moble-image-w.png";
+import mobileImageWhatsapp from "@/assets/images/bg/mobile-image-w.webp";
+import mobileImage from "@/assets/images/bg/mobile-image.webp";
 import type React from "react";
 import { BsBoxArrowUpRight } from "react-icons/bs";
 import { Link } from "react-router-dom";
@@ -16,7 +16,7 @@ interface MessagePreviewProps {
     buttonSelectValue?: string;
     urlText?: string;
     type?: string;
-    smsType?: "text" | "unicode" | "mms";
+    smsType?: "text" | "unicode";
 }
 
 const MessagePreview: React.FC<MessagePreviewProps> = (props) => {
@@ -109,11 +109,11 @@ const MessagePreview: React.FC<MessagePreviewProps> = (props) => {
                 )}
 
                 {/* SMS Type indicator (if needed) */}
-                {smsType && !whatsapp && (
+                {/* {smsType && !whatsapp && (
                     <div className="sms-type-indicator">
                         Type: {smsType.toUpperCase()}
                     </div>
-                )}
+                )} */}
             </div>
         </div>
     );

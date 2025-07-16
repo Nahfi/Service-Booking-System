@@ -2,23 +2,42 @@
 
 @use "@/styles/sass/abstracts" as *;
 
-.create-event {
-  .date-time {
-    border: 1px solid $border-primary;
-    border-radius: $radius-12;
-    .date-time-header {
-      padding: 12px;
-      -webkit-border-after: 1px solid $border-primary;
-      border-block-end: 1px solid $border-primary;
-    }
-
-    .date-time-body {
-      padding: 12px;
-      @include flex($direction: column, $gap: 12px);
-    }
-  }
-
-  .react-datepicker-wrapper {
+.campaign-steps-header{
+    @include flex($align: center, $justify: space-between);
+    border-radius: $radius-pill;
+    overflow: hidden;
+    max-width:  fit-content;
     width: 100%;
-  }
+    border: 1px solid $border-secondary;
+    .step-item {
+        @include flex($align: center,
+          $justify: flex-start,
+          $gap:10px);
+          flex-grow: 1;
+          padding:10px;
+          transition: background-color 0.4s ease-in-out;
+        &.active {
+          background-color: $light-bg;
+          .number {
+            background-color: $text-primary;
+            border: 1px solid $text-primary;
+            color: $color-white;
+          }
+        }
+
+        .number {
+          @include square(30px,$radius-rounded);
+          @include item-center;
+          width: 25px;
+          height: 25px;
+          font-size: 13px;
+          border: 1px solid $border-secondary;
+          font-weight: 600;
+          transition: all 0.4s ease-in-out;
+        }
+
+        .text>h6 {
+          line-height: 1;
+        }
+    }
 }

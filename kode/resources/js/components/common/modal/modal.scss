@@ -1,6 +1,11 @@
 @use "@/styles/sass/abstracts/" as *;
 
 .modal {
+  .modal-fullscreen{
+    .modal-content{
+      border-radius: 0;
+    }
+  }
   .modal-content {
     border-color: $border-primary;
     border-radius: $radius-20;

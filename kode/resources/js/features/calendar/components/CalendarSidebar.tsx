@@ -1,17 +1,15 @@
 import type React from "react";
 
-import { BsPlusLg } from "react-icons/bs";
 import { ImCheckmark } from "react-icons/im";
-import Button from "../../../components/common/button/Button";
 import Field from "../../../components/common/from/Field";
 import SmallCalendar from "./SmallCalendar";
 
-const CalendarSidebar:React.FC = () => {
+const CalendarSidebar: React.FC = ({ dateFilter }) => {
   return (
     <aside className="col-auto calendar-sidebar">
       <div className="sidebar-body scroll scroll-3">
         <div className="small-calendar m-3">
-          <SmallCalendar />
+          <SmallCalendar dateFilter={dateFilter} />
         </div>
 
         <div className="border-top p-3">
@@ -50,12 +48,6 @@ const CalendarSidebar:React.FC = () => {
                   </label>
                 </li>
               ))}
-
-              <li>
-                <Button className="fs-14 lh-1">
-                  <BsPlusLg className="fs-16 me-2" /> Add Calendar
-                </Button>
-              </li>
             </ul>
           </div>
         </div>

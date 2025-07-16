@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 
-import DateTimePicker from "../../../components/common/datepicker/DateTimePicker";
+import DateTimePicker, { CustomDatePickerHeader } from "../../../components/common/datepicker/DateTimePicker";
 
-const SmallCalendar: React.FC = () => {
-   const [startDate, setStartDate] = useState<Date | null>(new Date());
-   const [endDate, setEndDate] = useState<Date | null>(null);
-   const onChange = (dates: [Date | null, Date | null]) => {
-       const [start, end] = dates;
-       setStartDate(start);
-       setEndDate(end);
-   };
+const SmallCalendar: React.FC = ({ dateFilter }) => {
+   
+  const { startDate, endDate, handleDateChange } = dateFilter;
+  
   return (
     <DateTimePicker
+      renderCustomHeader={CustomDatePickerHeader}
       selected={startDate}
-      onChange={onChange}
+      onChange={handleDateChange}
       startDate={startDate}
       endDate={endDate}
       selectsRange
