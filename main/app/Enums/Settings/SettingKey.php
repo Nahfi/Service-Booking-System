@@ -33,6 +33,7 @@ enum SettingKey: string
     case SITE_LOGO                      = "site_logo";
     case DEFAULT_MAIL_TEMPLATE          = "default_mail_template";
     case MAIL_GATEWAY                   = "mail_gateway";
+    case NOTIFICATION_GATEWAY           = "notification_gateway";
 
 
 
