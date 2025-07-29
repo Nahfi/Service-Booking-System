@@ -6,13 +6,13 @@ use App\Enums\Settings\GlobalConfig;
 use App\Enums\Settings\SettingKey;
 use App\Enums\Settings\StorageKey;
 use App\Facades\ApiResponse;
+use App\Models\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response as HttpResponse;
 use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Arr;
-use Modules\Settings\Models\File;
 use Throwable;
 use Illuminate\Support\Facades\Storage;
 use Modules\Settings\Http\Resources\FileResource;
@@ -35,7 +35,7 @@ trait Fileable
     private function storeFile(
                                 UploadedFile $file,
                                 string $location,
-                                ?string $size = null, 
+                                ?string $size = null,
                                 ?File $removeFile = null,
                                 ?string $name = null
                              ): array{
@@ -74,7 +74,7 @@ trait Fileable
             default:
                 $configurationFn = StorageKey::getConfigurationFnName($disk );
                 if($configurationFn){
-                    
+
                     $this->{$configurationFn}();
                     \Storage::disk($disk)->putFileAs(
                         $location,
@@ -82,7 +82,7 @@ trait Fileable
                         $name
                     );
                 }
-           
+
                 break;
         }
 
@@ -109,7 +109,7 @@ trait Fileable
 
     /**
      * Get file size
-     * 
+     *
      * @param  int|string $bytes
      * @return string
      */
@@ -124,7 +124,7 @@ trait Fileable
 
 
 
-    
+
     /**
      * Summary of unlink
      * @param string $location
@@ -146,7 +146,7 @@ trait Fileable
                             @unlink($location . '/' . $fileName);
                         break;
                     default:
-                  
+
                         $configurationFn = StorageKey::getConfigurationFnName($disk );
 
                         if($configurationFn){
@@ -176,7 +176,7 @@ trait Fileable
                                        array $files,
                                        string $location = GlobalConfig::FILE_PATH['text_editor']['path']
                                     ): void{
-       
+
         try {
             collect($files)->map(function(string $file) use($location): void{
                 if(file_exists(filename: $location . '/' . @$file) && is_file($location . '/' . @$file)) @unlink($location . '/' . @$file);
@@ -186,7 +186,7 @@ trait Fileable
 
 
 
-    
+
     /**
      * Summary of getimageURL
      * @param \Modules\Settings\Models\File|FileResource|null $file
@@ -195,11 +195,11 @@ trait Fileable
      * @return string
      */
     private function getimageURL(
-                                File | FileResource | null $file = null, 
+                                File | FileResource | null $file = null,
                                 string $location ,
                                 ?string $foreceSize  = null
                              ): string{
-   
+
         $imageURL  = asset('assets/FileManager/images/default/default.jpg');
 
         if(!$file) return $imageURL;
@@ -216,7 +216,7 @@ trait Fileable
             default:
 
                 $configurationFn = StorageKey::getConfigurationFnName($disk );
-                
+
                 if($configurationFn){
                     $this->{$configurationFn}();
                     if (Storage::disk($disk)->exists($image))
@@ -269,7 +269,7 @@ trait Fileable
                 HttpResponse::HTTP_INTERNAL_SERVER_ERROR
             );
         }
-        
+
         return response()->file($content, [
             'Content-Type'        => \Storage::disk($file->disk)->mimeType($filePath) ?? 'application/octet-stream',
             'Content-Disposition' => 'attachment; filename="' . $file->name . '"',
@@ -278,7 +278,7 @@ trait Fileable
 
 
 
- 
+
 
     /**
      * Check if file exists or not
@@ -296,7 +296,7 @@ trait Fileable
      *
      * @param Model $model
      * @param string $path
-     * 
+     *
      * @return bool
      */
     public function unlinkLogFile(Model $model ,string $path): bool{
@@ -320,7 +320,7 @@ trait Fileable
 
 
 
-    
+
     /**
      * Set aws configuration
      *

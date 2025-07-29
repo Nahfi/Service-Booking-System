@@ -3,14 +3,14 @@
 namespace App\Traits\Common;
 
 use App\Facades\ApiResponse;
+use App\Models\File;
+use App\Models\VerificationCode;
 use App\Traits\Common\Fileable as CommonFileable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
-use Modules\Settings\Models\File as ModelsFile;
-use Modules\User\Models\VerificationCode;
 
 trait ModelAction
 {
@@ -48,7 +48,7 @@ trait ModelAction
      * @param \Illuminate\Database\Eloquent\Model $model
      * @param mixed $response
      * @param mixed $type
-     * @return bool|ModelsFile
+     * @return bool|File
      */
     private function saveFile(Model $model ,
                               ? array $response  = null ,
@@ -59,7 +59,7 @@ trait ModelAction
 
         if(is_array($response) && Arr::has($response,'status')){
 
-            $file = new ModelsFile([
+            $file = new File([
 
                             'display_name' => Arr::get($response, 'display_name'),
                             'name'         => Arr::get($response, 'name', 'default'),
@@ -99,8 +99,8 @@ trait ModelAction
 
 
         $files = collect($responses)
-                            ->map(fn (array $response, int $index) : ModelsFile =>
-                                    new ModelsFile([
+                            ->map(fn (array $response, int $index) : File =>
+                                    new File([
 
                                         'display_name' => Arr::get($response, 'display_name'),
                                         'name'         => Arr::get($response, 'name', 'default'),

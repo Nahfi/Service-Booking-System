@@ -3,18 +3,15 @@
 
 namespace App\Traits\Common;
 
-use App\Models\Scopes\UserScope;
+use App\Enums\Common\NotificationLogStatus;
 use Illuminate\Support\Arr;
 use App\Enums\Common\Status;
 use App\Jobs\SendNotificationJob;
 use App\Enums\Settings\SettingKey;
 use App\Enums\Settings\GlobalConfig;
-use App\Enums\Settings\NotificationLogStatus;
-use App\Models\User;
-use Modules\Settings\Models\DatabaseNotification ;
-use Modules\Settings\Models\NotificationLog as ModelsNotificationLog;
-use Modules\Settings\Models\NotificationTemplate as ModelsNotificationTemplate;
-use Modules\Settings\Models\Settings;
+use App\Models\Admin\NotificationTemplate;
+use App\Models\Admin\Settings;
+use App\Models\NotificationLog;
 
 trait Notify
 {
@@ -26,15 +23,13 @@ trait Notify
      * Summary of sendNotification
      * @param string $templateKey
      * @param array $data
-     * @param \App\Models\User|null $parentUser
      * @return bool
      */
-    public function sendNotification(string $templateKey,  array $data = [] , User | null $parentUser = null): bool
+    public function sendNotification(string $templateKey,  array $data = [] ): bool
     {
 
-        if(!$parentUser) $parentUser = parent_user();
 
-        $template = ModelsNotificationTemplate::where('key', $templateKey)
+        $template = NotificationTemplate::where('key', $templateKey)
                                     ->first();
 
 
@@ -45,8 +40,7 @@ trait Notify
 
         $messageData = [
             'tmpCodes'   => Arr::get($data, 'template_code'),
-            'userinfo'   => Arr::get($data, 'receiver_model'),
-            'parentUser' => $parentUser
+            'userinfo'   => Arr::get($data, 'receiver_model')
         ];
 
 
@@ -83,21 +77,6 @@ trait Notify
         }
 
 
-
-        if ($template->site_notificaton == Status::ACTIVE->value && $template->push_notification_body) {
-
-            $dbNotification = Arr::get($data ,'custom_data.push_notification');
-
-            if($dbNotification){
-
-                $message = $this->replacePlaceholders($template->push_notification_body, SettingKey::DEFAULT_PUSH_TEMPLATE->value , ...$messageData);
-
-                $receiverModel =  Arr::get($dbNotification , 'receiver_model');
-                if($receiverModel) $this->createDatabaseNotification(message: $message, data: $data);
-            }
-
-        }
-
         return true;
     }
 
@@ -109,21 +88,17 @@ trait Notify
      * @param string $settingsKey
      * @param array $tmpCodes
      * @param mixed $userinfo
-     * @param null|\App\Models\User $parentUser
      * @return array|string
      */
     public function replacePlaceholders( string $body ,
                                          string $settingsKey ,
                                          array $tmpCodes,
-                                         mixed $userinfo,
-                                         null | User $parentUser  = null
+                                         mixed $userinfo
                                          ): array|string
     {
 
 
         $siteLogo = Settings::with(relations: ['file'])
-                                ->withoutGlobalScope(UserScope::class)
-                                ->where('user_id', $parentUser->id)
                                 ->where('key',SettingKey::SITE_LOGO->value)
                                 ->where('group', SettingKey::LOGO->value)
                                 ->first();
@@ -131,7 +106,7 @@ trait Notify
 
         $logo = $this->getimageURL(
                                     file    : $siteLogo?->file ,
-                                    location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value]['user']['path']
+                                    location: GlobalConfig::FILE_PATH[SettingKey::SITE_LOGO->value]['admin']['path']
                                 );
 
 
@@ -183,8 +158,6 @@ trait Notify
 
 
 
-
-
     /**
      * createLog
      *
@@ -198,7 +171,7 @@ trait Notify
      */
     public function createLog(Settings  $gateway , string $message , array $data): void{
 
-        $notificationLog = new ModelsNotificationLog();
+        $notificationLog = new NotificationLog();
 
         $receiverModel =  Arr::get($data , 'receiver_model');
 

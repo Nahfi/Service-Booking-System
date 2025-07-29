@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('uid',100)->index()->nullable();
+            $table->unsignedBigInteger('language_id')->index()->nullable()->constrained(table: 'settings');
             $table->string('name', 191);
             $table->string('email',191)->index();
             $table->string('phone',100)->nullable()->index();
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('address')->nullable();
             $table->string('password');
             $table->timestamp('last_login_time')->nullable();
-            $table->enum('status',Status::getValues());
+            $table->enum('status',Status::getValues())->default(Status::ACTIVE);
             $table->rememberToken();
             $table->timestamps();
         });
